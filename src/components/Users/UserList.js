@@ -12,6 +12,7 @@ const UserList = () => {
   const getUsers = async () => {
     try {
       const res = await axios.get("http://103.110.127.211:3001/get-users");
+       console.log(res);
       if (Array.isArray(res.data.users)) {
         setUsers(res.data.users);
       } else {
@@ -46,15 +47,20 @@ const UserList = () => {
 
   return (
     <Box width="80.3%" bg="#f8f9fa" minH="100vh" p={6}>
-      <Text fontSize="2xl" fontWeight="600" mb={4}>
+      <Flex justify="space-between">
+       <Text fontSize="2xl" fontWeight="600" mb={4}>
         User List
       </Text>
+      
+       <Text>
+        Total Users : {users.length}
+       </Text>
+              </Flex>
 
-      <Box overflowX="auto" px={4} maxW="100vw">
-        
+      <Box bg = "f8f9fa" overflowX="auto" px={4} maxW="100vw">
         
           <Table>
-            <Thead className="productsTable Thead">
+            <Thead bg = "gray.100" className="productsTable Thead">
               <Tr>
                 <Th className="productsTable Thead Tr Th">Name</Th>
                 <Th className="productsTable Thead Tr Th">Email</Th>
