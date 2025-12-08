@@ -6,10 +6,11 @@ import { Box } from "@chakra-ui/react";
 const Categories = ()=>{
     return(
         <>
+        <Box width="100%" backgroundColor="#EEF0FF" p="5" >
         <Box display="flex" justifyContent="space-between">
-
            <Box> <LeftSidebar/></Box>
             <CategoryList/>
+        </Box>
         </Box>
         </>
     )

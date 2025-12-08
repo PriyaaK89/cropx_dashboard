@@ -56,12 +56,12 @@ const ProductList = () => {
     onOpen();
     setProductId(id)
   }
-  console.log(productId, "ProductIDinlist")
+  console.log(productId, "ProductIDilist")
 
   return (
     <>
     <DeleteProductModal isOpen={isOpen} onClose={onClose} productId={productId} getProducts={getProducts}/>
-    <Box width="80.3%" bg="#f8f9fa" minH="100vh">
+    <Box bg="#f8f9fa" minH="100vh" mt={10}>
       <TopBar />
       <Box p={6}>
         <Text fontSize="2xl" fontWeight="600" mb={4}> Product List </Text>

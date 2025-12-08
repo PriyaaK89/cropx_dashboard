@@ -6,8 +6,10 @@ const TopBar = () => {
     <Box  >
     <Flex
       w="100%" h="70px" bg="white"
+      mt={5}
       align="center" px={6} justify="space-between"
       boxShadow="sm" borderBottom="1px solid #e2e8f0"
+      rounded="lg"
       position="sticky" top="0" zIndex={10} >
       {/* LEFT AREA → Search */}
       <InputGroup w="350px">
