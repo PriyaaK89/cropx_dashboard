@@ -1,18 +1,4 @@
-import {
-  Box,
-  Button,
-  Flex,
-  FormControl,
-  FormLabel,
-  Input,
-  Select,
-  Textarea,
-  Heading,
-  VStack,
-  useToast,
-  SimpleGrid,
-  Image,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, FormControl, FormLabel, Input, Select, Textarea, Heading, VStack, useToast, SimpleGrid, Image,} from "@chakra-ui/react";
 import React, { useState } from "react";
 import axios from "axios";
 import LeftSidebar from "../LeftSidebarLayout/LeftSidebar";
@@ -27,9 +13,6 @@ const AddProduct = () => {
     product_category: "",
     product_description: "",
     product_type: "",
-    quantity_type: "",
-    quantity_value: "",
-    stock_qty: "",
     mfg_date: "",
     exp_date: "",
   });
@@ -152,59 +135,12 @@ const AddProduct = () => {
                   <option value="liquid">Liquid</option>
                 </Select>
               </FormControl>
-
-              {formData.product_type && (
-                <FormControl>
-                  <FormLabel fontWeight="600">Quantity Type</FormLabel>
-                  <Select
-                    bg="#f1f4f9"
-                    name="quantity_type"
-                    value={formData.quantity_type}
-                    onChange={handleChange}
-                  >
-                    <option value="">Select Quantity Type</option>
-                    {formData.product_type === "solid" && (
-                      <>
-                        <option value="gram">Gram</option>
-                        <option value="kg">Kg</option>
-                      </>
-                    )}
-                    {formData.product_type === "liquid" && (
-                      <>
-                        <option value="ml">ml</option>
-                        <option value="liter">Liter</option>
-                      </>
-                    )}
-                  </Select>
-                </FormControl>
-              )}
-
-              {formData.quantity_type && (
-                <FormControl>
-                  <FormLabel fontWeight="600">Quantity Value</FormLabel>
-                  <Input
-                    name="quantity_value"
-                    value={formData.quantity_value}
-                    onChange={handleChange}
-                    placeholder="e.g. 500"
-                    bg="#f1f4f9"
-                  />
-                </FormControl>
-              )}
+  
             </VStack>
 
             {/* Right Section */}
             <VStack spacing={5} align="stretch">
-              <FormControl>
-                <FormLabel fontWeight="600">Stock Quantity</FormLabel>
-                <Input
-                  type="number"
-                  name="stock_qty"
-                  value={formData.stock_qty}
-                  onChange={handleChange}
-                  bg="#f1f4f9"
-                />
-              </FormControl>
+              
 
               <FormControl>
                 <FormLabel fontWeight="600">Mfg Date</FormLabel>

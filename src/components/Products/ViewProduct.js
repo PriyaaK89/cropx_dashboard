@@ -1,15 +1,4 @@
-import {
-  Box,
-  Image,
-  Heading,
-  Text,
-  Flex,
-  Button,
-  SimpleGrid,
-  Divider,
-  Badge,
-  Stack,
-  useDisclosure,
+import { Box, Image, Heading, Text, Flex, Button, SimpleGrid, Divider, Badge, Stack, useDisclosure,
 } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -117,16 +106,15 @@ const ViewProduct = () => {
       />
 
       {/* ===================== LAYOUT FIXED HERE ===================== */}
-      <Box display="flex">
+      <Box display="flex"  bg="#f8f9fa" >
         {/* LEFT SIDEBAR */}
         <Box width="17.5%">
           <LeftSidebar />
         </Box>
 
         {/* RIGHT MAIN AREA */}
-        <Box
-          width="82.5%"
-          bg="#f8f9fa"
+        <Box 
+          width="82.5%"         
           minH="100vh"
           pl="40px" // Same spacing left
           pr="40px" // Same spacing right

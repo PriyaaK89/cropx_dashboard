@@ -61,9 +61,9 @@ const ProductList = () => {
   return (
     <>
     <DeleteProductModal isOpen={isOpen} onClose={onClose} productId={productId} getProducts={getProducts}/>
-    <Box bg="#f8f9fa" minH="100vh" mt={10}>
+    <Box width="77.5%" minH="100vh" pl="1rem" mr="1rem">
       <TopBar />
-      <Box p={6}>
+      <Box p={5} bg='white' my='1rem' borderRadius="0.75rem">
         <Text fontSize="2xl" fontWeight="600" mb={4}> Product List </Text>
 
         <Flex mb={4} gap={4} flexWrap="wrap">

@@ -6,7 +6,7 @@ import BannerList from "../components/Banner/BannerList";
 const Banner = () => {
   return (
     <>
-        <Box width="100%" backgroundColor="#EEF0FF" p="5" >
+        <Box width="100%" backgroundColor="#f8f8fb" p="5" >
       <Box display="flex" justifyContent="space-between">
         <Box> <LeftSidebar /> </Box>
         <BannerList/>

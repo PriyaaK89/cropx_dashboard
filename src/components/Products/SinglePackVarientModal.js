@@ -10,6 +10,7 @@ const SinglePackVarientModal = ({ isOpen, onClose, productId, productType, fetch
   const quantityOptions = productType === "solid" ? ["gm", "kg"] : productType === "liquid" ? ["ml", "liter"] : [];
 
   const [formData, setFormData] = useState({
+    stock_qty: "",
     quantity_type: "",
     quantity_value: "",
     actual_price: "",
@@ -66,6 +67,19 @@ const SinglePackVarientModal = ({ isOpen, onClose, productId, productType, fetch
 
         <ModalBody>
           <VStack spacing={5} mt={2} className="modal-stack">
+            <FormControl>
+              <FormLabel fontWeight="600" color="gray.700">Stock Quantity</FormLabel>
+               <Input
+                type="number"
+                name="stock_qty"
+                placeholder="Enter Stock quantity"
+                value={formData.stock_qty}
+                onChange={handleChange}
+                borderRadius="lg"
+                size='sm'
+                focusBorderColor="blue.400"
+              />
+            </FormControl>
             <FormControl>
               <FormLabel fontWeight="600" color="gray.700">Quantity Type</FormLabel>
               <Select

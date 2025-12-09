@@ -5,7 +5,7 @@ import LeftSidebar from "../LeftSidebarLayout/LeftSidebar";
 
 const Home = () => {
   return (
-    <Flex>
+    <Flex gap="0">
       {/* LEFT SIDEBAR */}
       <LeftSidebar />
 

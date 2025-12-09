@@ -50,10 +50,10 @@ const LeftSidebar = () => {
       color="black"
       h="93.6vh"
       position="fixed"
-      left={7}
+      left={4}
       top={5}
       rounded="lg"
-        boxShadow="2xl"
+        boxShadow="xl"
       p="0px" >
       {/* Logo */}
       <Box p="1rem 2rem">

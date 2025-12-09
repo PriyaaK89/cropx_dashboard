@@ -137,7 +137,7 @@ const BannerList = () => {
                 <Flex
                   key={data?.banner_id}
                   p={4}
-                  bg="#EEF0FF"
+                  bg="#f8f8fb"
                   borderRadius="lg"
                   boxShadow="md"
                   mb={4}
