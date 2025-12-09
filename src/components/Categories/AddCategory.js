@@ -17,6 +17,7 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
 } from "@chakra-ui/react";
+
 import { useState } from "react";
 import axios from "axios";
 import { FiUploadCloud } from "react-icons/fi";
@@ -62,9 +63,10 @@ const AddCategory = () => {
     fd.append("image", form.image);
 
     try {
-      const res = await axios.post(`${Config?.add_categories}`, fd,
-        { headers: { "Content-Type": "multipart/form-data" }, }
-      );
+      const res = await axios.post(`${Config?.add_categories}`, fd, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
       if (res.data.success) {
         toast({
           title: "Category Added",
@@ -86,139 +88,167 @@ const AddCategory = () => {
 
   return (
     <Box width="100%">
-      <HStack justifyContent="space-between">
+      <HStack justifyContent="space-between" alignItems="flex-start">
+        
+        {/* LEFT SIDEBAR */}
         <Box>
           <LeftSidebar />
         </Box>
+
         {/* MAIN CONTENT */}
-        <Box width="80.3%" bg="#f8f9fa">
+        <Box width="82.5%" minH="100vh" pl={10}>
           <TopBar />
-          <HStack justifyContent="space-between" alignItems="flex-start">
-            <Breadcrumb color="#8B8D97" mt="1rem" ml="10px" height="20px">
-              <BreadcrumbItem><BreadcrumbLink as={Link} to="/">  <GoHomeFill color="#5570F1" /> </BreadcrumbLink></BreadcrumbItem>
-              <BreadcrumbItem>
-                <BreadcrumbLink
-                  as={Link}
-                  to="/categories-list"
-                  color="#8B8D97"
-                  fontSize="13px">
-                  Category List
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbItem>
-                <BreadcrumbLink to="" as={Link} color="#8B8D97" fontSize="13px">
-                  Add Categories
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-            </Breadcrumb>
-          </HStack>
-          <Heading size="sm" ml="10px" mb={8} fontWeight="600" color="#2b2d42">
-            Add Category
-          </Heading>
 
-          <Flex justify="center">
-            <Box
-              bg="whiteAlpha.700"
-              backdropFilter="blur(10px)"
-              w="500px"
-              p={8}
-              rounded="2xl"
-              boxShadow="0 8px 30px rgba(0,0,0,0.08)"
-              border="1px solid #e2e8f0">
-              <VStack>
-                {/* INPUT: NAME */}
-                <FormControl>
-                  <FormLabel fontWeight="600" color="#2d3748">
-                    Category Name
-                  </FormLabel>
-                  <Input
-                    name="cate_name"
-                    value={form.cate_name}
-                    onChange={handleChange}
-                    placeholder="Enter category name"
-                    bg="white"
-                    p={3}
-                    rounded="lg"
-                  />
-                </FormControl>
+          <Box width="100%" backgroundColor="#EEF0FF" p={5} rounded="lg">
 
-                {/* INPUT: DESCRIPTION */}
-                <FormControl>
-                  <FormLabel fontWeight="600" color="#2d3748">
-                    Description
-                  </FormLabel>
-                  <Textarea
-                    name="cate_des"
-                    value={form.cate_des}
-                    onChange={handleChange}
-                    placeholder="Write a short description..."
-                    bg="white"
-                    p={3}
-                    rounded="lg"
-                  />
-                </FormControl>
+            <HStack justifyContent="space-between" alignItems="flex-start">
+              <Breadcrumb color="#8B8D97" mt="1rem" ml="10px" height="20px">
+                <BreadcrumbItem>
+                  <BreadcrumbLink as={Link} to="/">
+                    <GoHomeFill color="#5570F1" />
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
 
-                {/* IMAGE UPLOAD BOX */}
-                <FormControl>
-                  <FormLabel fontWeight="600" color="#2d3748">
-                    Upload Image
-                  </FormLabel>
+                <BreadcrumbItem>
+                  <BreadcrumbLink
+                    as={Link}
+                    to="/categories-list"
+                    color="#8B8D97"
+                    fontSize="13px"
+                  >
+                    Category List
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
 
-                  <Box
-                    border="2px dashed #a0aec0"
-                    rounded="xl"
-                    p={6}
-                    textAlign="center"
-                    cursor="pointer"
-                    _hover={{ bg: "#f1f5f9" }}
-                    position="relative">
+                <BreadcrumbItem>
+                  <BreadcrumbLink color="#8B8D97" fontSize="13px">
+                    Add Categories
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+              </Breadcrumb>
+
+              <Heading
+                size="sm"
+                ml="10px"
+                mb={8}
+                fontWeight="600"
+                color="#2b2d42"
+              >
+                Add Category
+              </Heading>
+            </HStack>
+
+            {/* FORM CARD */}
+            <Flex justify="center">
+              <Box
+                bg="whiteAlpha.700"
+                backdropFilter="blur(10px)"
+                w="500px"
+                p={8}
+                rounded="2xl"
+                boxShadow="0 8px 30px rgba(0,0,0,0.08)"
+                border="1px solid #e2e8f0"
+              >
+                <VStack spacing={4}>
+                  
+                  {/* INPUT: NAME */}
+                  <FormControl>
+                    <FormLabel fontWeight="600" color="#2d3748">
+                      Category Name
+                    </FormLabel>
                     <Input
-                      type="file"
-                      name="image"
-                      opacity="0"
-                      position="absolute"
-                      top="0"
-                      left="0"
-                      width="100%"
-                      height="100%"
-                      cursor="pointer"
+                      name="cate_name"
+                      value={form.cate_name}
                       onChange={handleChange}
+                      placeholder="Enter category name"
+                      bg="white"
+                      p={3}
+                      rounded="lg"
                     />
+                  </FormControl>
 
-                    <Icon as={FiUploadCloud} boxSize={10} color="gray.500" />
-                    <Text mt={2} color="gray.600">
-                      Click to upload category image
-                    </Text>
-                  </Box>
-                </FormControl>
+                  {/* INPUT: DESCRIPTION */}
+                  <FormControl>
+                    <FormLabel fontWeight="600" color="#2d3748">
+                      Description
+                    </FormLabel>
+                    <Textarea
+                      name="cate_des"
+                      value={form.cate_des}
+                      onChange={handleChange}
+                      placeholder="Write a short description..."
+                      bg="white"
+                      p={3}
+                      rounded="lg"
+                    />
+                  </FormControl>
 
-                {/* IMAGE PREVIEW */}
-                {preview && (
-                  <Image
-                    src={preview}
-                    alt="Preview"
+                  {/* IMAGE UPLOAD */}
+                  <FormControl>
+                    <FormLabel fontWeight="600" color="#2d3748">
+                      Upload Image
+                    </FormLabel>
+
+                    <Box
+                      border="2px dashed #a0aec0"
+                      rounded="xl"
+                      p={6}
+                      textAlign="center"
+                      cursor="pointer"
+                      _hover={{ bg: "#f1f5f9" }}
+                      position="relative"
+                    >
+                      <Input
+                        type="file"
+                        name="image"
+                        opacity="0"
+                        position="absolute"
+                        top="0"
+                        left="0"
+                        width="100%"
+                        height="100%"
+                        cursor="pointer"
+                        onChange={handleChange}
+                      />
+
+                      <Icon as={FiUploadCloud} boxSize={10} color="gray.500" />
+                      <Text mt={2} color="gray.600">
+                        Click to upload category image
+                      </Text>
+                    </Box>
+                  </FormControl>
+
+                  {/* IMAGE PREVIEW */}
+                  {preview && (
+                    <Image
+                      src={preview}
+                      alt="Preview"
+                      w="100%"
+                      h="220px"
+                      objectFit="cover"
+                      rounded="xl"
+                      border="1px solid #e2e8f0"
+                    />
+                  )}
+
+                  {/* BUTTON */}
+                  <Button
+                    colorScheme="blue"
+                    size="lg"
                     w="100%"
-                    h="220px"
-                    objectFit="cover"
+                    mt={3}
                     rounded="xl"
-                    border="1px solid #e2e8f0"
-                  />
-                )}
+                    fontWeight="600"
+                    onClick={handleSubmit}
+                    boxShadow="0 4px 10px rgba(66,153,225,0.3)"
+                  >
+                    Add Category
+                  </Button>
+                </VStack>
+              </Box>
+            </Flex>
 
-                <Button
-                  colorScheme="blue"
-                  size="lg"
-                  w="100%"
-                  mt={3}
-                  rounded="xl"
-                  fontWeight="600"
-                  onClick={handleSubmit}
-                  boxShadow="0 4px 10px rgba(66,153,225,0.3)">
-                  Add Category
-                </Button>
-              </VStack>
-            </Box>
-          </Flex>
+          </Box>
         </Box>
       </HStack>
     </Box>

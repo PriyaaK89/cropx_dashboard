@@ -68,10 +68,10 @@ const CategoryList = () => {
   return (
     <>
     <DeleteCategory isOpen={isOpen} onClose={onClose} categoryId={categoryId} fetchCategories={fetchCategories}/>
-    <Box width="80.3%" bg="#f8f9fa" minH="100vh">
+    <Box width="82.5%"  minH="100vh" pl="10">
       {/* HEADER */}
       <TopBar />
-      <Box px="2rem" pt="1rem">
+      <Box px="2rem"  pt="1rem" mt="5" backgroundColor="white" rounded="lg">
         <Flex justify="space-between" align="center" mb="25px">
           <Text fontSize="2xl" fontWeight="bold" color="#333">
             Categories
@@ -126,7 +126,7 @@ const CategoryList = () => {
             {filtered.map((cat) => (
               <Box
                 key={cat.id}
-                bg="white"
+                bg="#EEF0FF"
                 borderRadius="lg"
                 p="18px"
                 boxShadow="md"

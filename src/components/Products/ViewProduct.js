@@ -21,11 +21,13 @@ import SinglePackVarientModal from "./SinglePackVarientModal";
 import MultiPackVariantModal from "./MultiPackVarientModal";
 import UpdateSingleVariantModal from "./UpdateSingleVariantModal";
 import UpdateMultiVariantModal from "./UpdateMultiVariantModal";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import DeleteSingleVariantModal from "./DeleteSingleVariantModal";
 
 const ViewProduct = () => {
   const { id } = useParams();
   const [productData, setProductData] = useState(null);
-  const [variantID, setVariantID] = useState();
+  const [variantID, setVariantID] = useState(null);
   const [multiPackId, setMultiPackId] = useState();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -44,28 +46,14 @@ const ViewProduct = () => {
     onClose: onUpdateMultiVariantClose,
   } = useDisclosure();
 
-  const handleSingleVariantModal = () => {
-    onOpen();
-  };
-
-  const handleMultiVariantModal = (id) => {
-    onMultiVariantOpen();
-    setVariantID(id);
-  };
-
-  const handleUpdateSinlgeVariantModal = (id) => {
-    onUpdateSinglePackVariantOpen();
-    setVariantID(id);
-  };
-
-  const handleUpdateMultiVariantModal = (multiId, variantId) => {
-    onUpdateMultiVariantOpen();
-    setMultiPackId(multiId);
-    setVariantID(variantId);
-  };
-
-  // console.log(variantID, "variantid")
-  // console.log(handleMultiVariantModal,"open multipack")
+  const {isOpen: isSinglePackVariantModalOpen, onOpen: onSinglePackVariantModalOpen, onClose: onSinglePackVariantModalClose} = useDisclosure();
+ 
+  const handleSinglePackDeleteClick = (id) =>{
+   console.log("clicked varient id", id);
+   setVariantID(id);
+   onSinglePackVariantModalOpen(); 
+}
+ 
 
   const fetchDetails = async () => {
     try {
@@ -83,11 +71,15 @@ const ViewProduct = () => {
   }, []);
 
   if (!productData) return <p>Loading...</p>;
-
   const { product, variants } = productData;
+
+  const handleDeleteModal = ()=>{
+    onSinglePackVariantModalOpen()
+  }
 
   return (
     <>
+    <DeleteSingleVariantModal isSinglePackVariantModalOpen={isSinglePackVariantModalOpen} onSinglePackVariantModalClose={onSinglePackVariantModalClose} variantID={variantID} fetchDetails={fetchDetails}/>
       <SinglePackVarientModal
         isOpen={isOpen}
         onClose={onClose}
@@ -95,6 +87,7 @@ const ViewProduct = () => {
         productType={product?.product_type}
         fetchDetails={fetchDetails}
       />
+
       <MultiPackVariantModal
         isMultiVariantOpen={isMultiVariantOpen}
         onMultiVariantClose={onMultiVariantClose}
@@ -103,10 +96,16 @@ const ViewProduct = () => {
         variantID={variantID}
         fetchDetails={fetchDetails}
       />
+
       <UpdateSingleVariantModal
         isUpdateSinglePackVariantOpen={isUpdateSinglePackVariantOpen}
-        onUpdateSinglePackVariantClose={onUpdateSinglePackVariantClose} productId={product?.id} variantID={variantID} fetchDetails={fetchDetails} variants={variants}
+        onUpdateSinglePackVariantClose={onUpdateSinglePackVariantClose}
+        productId={product?.id}
+        variantID={variantID}
+        fetchDetails={fetchDetails}
+        variants={variants}
       />
+
       <UpdateMultiVariantModal
         isUpdateMultiVariantOpen={isUpdateMultiVariantOpen}
         onUpdateMultiVariantClose={onUpdateMultiVariantClose}
@@ -116,15 +115,25 @@ const ViewProduct = () => {
         fetchDetails={fetchDetails}
         variants={variants}
       />
-      <Box display="flex" justifyContent="space-between">
-        <Box>
+
+      {/* ===================== LAYOUT FIXED HERE ===================== */}
+      <Box display="flex">
+        {/* LEFT SIDEBAR */}
+        <Box width="17.5%">
           <LeftSidebar />
         </Box>
-        <Box width="80.3%" bg="#f8f9fa" minH="100vh">
-          <Box>
-            <TopBar />
-          </Box>
-          <Box p="25px">
+
+        {/* RIGHT MAIN AREA */}
+        <Box
+          width="82.5%"
+          bg="#f8f9fa"
+          minH="100vh"
+          pl="40px" // Same spacing left
+          pr="40px" // Same spacing right
+        >
+          <TopBar />
+
+          <Box mt="25px">
             {/* PRODUCT HEADER */}
             <Flex gap="30px" align="flex-start" mb="40px">
               <Image
@@ -139,17 +148,14 @@ const ViewProduct = () => {
                 <Heading size="lg">{product.product_name}</Heading>
                 <Flex gap="10px" mt="10px">
                   <Badge colorScheme="green" fontSize="14px">
-                    {" "}
-                    {product.product_category}{" "}
+                    {product.product_category}
                   </Badge>
                   <Badge colorScheme="blue" fontSize="14px">
-                    {" "}
-                    {product.product_type}{" "}
+                    {product.product_type}
                   </Badge>
                 </Flex>
                 <Text mt="15px" fontSize="16px" color="gray.600">
-                  {" "}
-                  {product.product_description}{" "}
+                  {product.product_description}
                 </Text>
               </Box>
             </Flex>
@@ -159,11 +165,7 @@ const ViewProduct = () => {
             {/* ====================== SINGLE PACKS ====================== */}
             <Flex justify="space-between" align="center" mb="15px">
               <Heading size="md">Single Pack Variants</Heading>
-
-              <Button
-                colorScheme="blue"
-                size="sm"
-                onClick={handleSingleVariantModal}>
+              <Button colorScheme="blue" size="sm" onClick={onOpen}>
                 + Add Single Pack
               </Button>
             </Flex>
@@ -180,38 +182,45 @@ const ViewProduct = () => {
                     p="16px"
                     shadow="sm"
                     _hover={{ shadow: "md", transform: "translateY(-3px)" }}
-                    transition="0.2s">
+                    transition="0.2s"
+                  >
                     <Stack spacing="6px">
+                      <Flex justifyContent="space-between" mr={2}>
                       <Text fontSize="17px" fontWeight="bold">
-                        {" "}
-                        {v.base_quantity_value} {v.base_quantity_type}{" "}
+                        {v.base_quantity_value} {v.base_quantity_type}
                       </Text>
+                      <Box border="1px solid red" borderRadius="4px" p={2} onClick={()=> handleSinglePackDeleteClick(v.variant_id)}>
+                         <RiDeleteBin6Line color="red"  /></Box>
+                                               </Flex>
+
                       <Text color="gray.600">
-                        {" "}
-                        Actual Price: ₹{v.total_actual_price}{" "}
+                        Actual Price: ₹{v.total_actual_price}
                       </Text>
+
                       <Text>Discount Price: ₹{v.total_discounted_price}</Text>
+
                       <Badge mt="5px" colorScheme="purple" width="fit-content">
-                        {" "}
                         {v.discount_percent}% OFF
                       </Badge>
+
                       <Button
                         mt="12px"
                         size="sm"
                         width="100%"
                         colorScheme="teal"
                         onClick={() =>
-                          handleUpdateSinlgeVariantModal(v.variant_id)
-                        }>
-                        {" "}
-                        Update Variant{" "}
+                          onUpdateSinglePackVariantOpen(v.variant_id)
+                        }
+                      >
+                        Update Variant
                       </Button>
+
                       <Button
                         colorScheme="blue"
                         size="sm"
-                        onClick={() => handleMultiVariantModal(v.variant_id)}>
-                        {" "}
-                        + Add Multi Pack{" "}
+                        onClick={() => onMultiVariantOpen(v.variant_id)}
+                      >
+                        + Add Multi Pack
                       </Button>
                     </Stack>
                   </Box>
@@ -238,7 +247,8 @@ const ViewProduct = () => {
                     p="16px"
                     shadow="sm"
                     _hover={{ shadow: "md", transform: "translateY(-3px)" }}
-                    transition="0.2s">
+                    transition="0.2s"
+                  >
                     <Stack spacing="6px">
                       <Text fontSize="17px" fontWeight="bold">
                         {m.pack_quantity} Packs × {m.base_quantity_value}{" "}
@@ -246,14 +256,14 @@ const ViewProduct = () => {
                       </Text>
 
                       <Text color="gray.600">
-                        {" "}
-                        Total Qty: {m.total_quantity_value}{" "}
+                        Total Qty: {m.total_quantity_value}
                       </Text>
+
                       <Text>Actual Price: ₹{m.total_actual_price}</Text>
                       <Text>Discount Price: ₹{m.total_discounted_price}</Text>
+
                       <Badge mt="5px" colorScheme="pink" width="fit-content">
-                        {" "}
-                        {m.discount_percentage}% OFF{" "}
+                        {m.discount_percentage}% OFF
                       </Badge>
 
                       <Button
@@ -262,9 +272,9 @@ const ViewProduct = () => {
                         width="100%"
                         colorScheme="teal"
                         onClick={() =>
-                          handleUpdateMultiVariantModal( m.multipack_id,  m.variant_id)
-                        }>
-                        {" "}
+                          onUpdateMultiVariantOpen(m.multipack_id, m.variant_id)
+                        }
+                      >
                         Update Variant
                       </Button>
                     </Stack>

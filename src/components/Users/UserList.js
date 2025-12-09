@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Box, Flex, Text, Table, Thead, Tbody, Tr, Th, Td, Spinner } from "@chakra-ui/react";
 import axios from "axios";
 import "../../../src/App.css";
+import TopBar from "../TopBar/TopBar";
+import { Config } from "../../utils/Config";
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -11,7 +13,7 @@ const UserList = () => {
   // Fetch Users
   const getUsers = async () => {
     try {
-      const res = await axios.get("http://103.110.127.211:3001/get-users");
+      const res = await axios.get(`${Config?.get_users}`);
        console.log(res);
       if (Array.isArray(res.data.users)) {
         setUsers(res.data.users);
@@ -31,10 +33,16 @@ const UserList = () => {
 
   if (loading) {
     return (
-      <Flex justify="center" mt={10}>
-        <Spinner size="xl" />
-      </Flex>
-    );
+      <Box width="82.5%" minH="100vh" pl={10}>
+      <TopBar />
+      
+      <Box backgroundColor="white" p={8} mt={5} boxShadow="2xl" rounded="2xl">
+        <Flex justify="center" mt={10}>
+          <Spinner size="xl" />
+        </Flex>
+      </Box>
+    </Box>
+    )
   }
 
   if (error) {
@@ -46,19 +54,19 @@ const UserList = () => {
   }
 
   return (
-    <Box width="80.3%" bg="#f8f9fa" minH="100vh" p={6}>
-      <Flex justify="space-between">
-       <Text fontSize="2xl" fontWeight="600" mb={4}>
+    <>
+  <Box width="82.5%" minH="100vh" pl={10}>
+           <TopBar/>
+            <Box backgroundColor="white"  p={8} mt={5} boxShadow="2xl" rounded="2xl">
+      <Flex justify="space-between" alignItems="center" px={5} mt={5}>
+       <Text fontSize="2xl" fontWeight="600">
         User List
       </Text>
-      
        <Text>
         Total Users : {users.length}
        </Text>
               </Flex>
-
       <Box bg = "f8f9fa" overflowX="auto" px={4} maxW="100vw">
-        
           <Table>
             <Thead bg = "gray.100" className="productsTable Thead">
               <Tr>
@@ -70,8 +78,8 @@ const UserList = () => {
             </Thead>
 
             <Tbody className="productsTable tbody">
-              {users.map((user, index) => (
-                <Tr>
+              {users.map((user) => (
+                <Tr key={user.id}>
                   <Td className="productsTable Tbody Tr Td">{user.name}</Td>
                   <Td className="productsTable Tbody Tr Td">{user.email}</Td>
                   <Td className="productsTable Tbody Tr Td">{user.password}</Td>
@@ -82,6 +90,8 @@ const UserList = () => {
           </Table>
         </Box>
       </Box>
+        </Box>
+          </>
   );
 };
 

@@ -46,16 +46,17 @@ const LeftSidebar = () => {
   return (
     <Box
       w="251px"
-      bg="#4f5260"
-      color="#fff"
-      h="100vh"
+      bg="#fff"
+      color="black"
+      h="93.6vh"
       position="fixed"
-      left="0"
-      top="0"
-      //   boxShadow="lg"
-      p="0px">
+      left={7}
+      top={5}
+      rounded="lg"
+        boxShadow="2xl"
+      p="0px" >
       {/* Logo */}
-      <Box padding="1rem 2rem">
+      <Box p="1rem 2rem">
         <Text fontSize="2xl" fontWeight="bold">
           CropX
         </Text>
@@ -81,7 +82,7 @@ const LeftSidebar = () => {
           align="center"
           p="8px 14px"
           cursor="pointer"
-          _hover={{ bg: "#434444ff" }}
+          _hover={{ bg: "#434444ff", color:"#fff" }}
           onClick={toggleCatalog}>
           <Icon as={FiLayers} mr={4} />
           <Text flex="1" fontSize="14px">
