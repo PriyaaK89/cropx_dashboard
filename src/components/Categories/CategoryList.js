@@ -126,7 +126,7 @@ const CategoryList = () => {
             {filtered.map((cat) => (
               <Box
                 key={cat.id}
-                bg="#EEF0FF"
+                bg="#f8f8fb"
                 borderRadius="lg"
                 p="18px"
                 boxShadow="md"

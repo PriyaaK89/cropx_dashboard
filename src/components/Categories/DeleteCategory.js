@@ -36,8 +36,8 @@ const DeleteCategory = ({ isOpen, onClose, categoryId, fetchCategories }) => {
           duration: 3000,
         });
 
-        fetchCategories(); // Refresh list
-        onClose(); // Close modal
+        fetchCategories(); 
+        onClose(); 
       }
     } catch (error) {
       toast({

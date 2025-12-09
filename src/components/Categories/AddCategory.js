@@ -99,7 +99,7 @@ const AddCategory = () => {
         <Box width="82.5%" minH="100vh" pl={10}>
           <TopBar />
 
-          <Box width="100%" backgroundColor="#EEF0FF" p={5} rounded="lg">
+          <Box width="100%" backgroundColor="#f8f8fb" p={5} rounded="lg">
 
             <HStack justifyContent="space-between" alignItems="flex-start">
               <Breadcrumb color="#8B8D97" mt="1rem" ml="10px" height="20px">

@@ -6,26 +6,12 @@ import ProductList from "../components/Products/ProductList";
 const Products = () => {
   return (
     <>
-      <Flex minH="100vh" bg="#EEF0FF">
-        
-        {/* LEFT SIDEBAR FIXED WIDTH */}
-        <Box 
-          width="250px"  
-          minH="100vh"
-          boxShadow="md"
-        >
-          <LeftSidebar />
-        </Box>
-
-        {/* RIGHT CONTENT AREA */}
-        <Box 
-          flex="1"
-          px={{ base: 4, md: 6, lg: 14 }}  // equal left-right spacing
-        >
+      <Box width="100%" backgroundColor="#f8f8fb"  >
+        <Box display="flex" justifyContent="space-between">
+          <Box> <LeftSidebar /></Box>
           <ProductList />
         </Box>
-
-      </Flex>
+      </Box>
     </>
   );
 };
