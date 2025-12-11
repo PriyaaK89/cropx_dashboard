@@ -33,11 +33,11 @@ const UserList = () => {
 
   if (loading) {
     return (
-      <Box width="82.5%" minH="100vh" pl={10}>
+      <Box width="77.5%" minH="100vh" pl="1rem" mr="1rem">
       <TopBar />
       
-      <Box backgroundColor="white" p={8} mt={5} boxShadow="2xl" rounded="2xl">
-        <Flex justify="center" mt={10}>
+      <Box p={5} bg="white" my="1rem" borderRadius="0.75rem">
+        <Flex justify="center">
           <Spinner size="xl" />
         </Flex>
       </Box>
@@ -55,9 +55,9 @@ const UserList = () => {
 
   return (
     <>
-  <Box width="82.5%" minH="100vh" pl={10}>
+  <Box width="77.5%" minH="100vh" pl="1rem" mr="1rem">
            <TopBar/>
-            <Box backgroundColor="white"  p={8} mt={5} boxShadow="2xl" rounded="2xl">
+                 <Box p={5} bg='white' my='1rem' borderRadius="0.75rem">
       <Flex justify="space-between" alignItems="center" px={5} mt={5}>
        <Text fontSize="2xl" fontWeight="600">
         User List

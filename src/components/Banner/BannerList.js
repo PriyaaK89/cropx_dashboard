@@ -81,19 +81,14 @@ const BannerList = () => {
         selectedBannerId={selectedBannerId}
       />
 
-      {/* MAIN WRAPPER */}
       <Box
-        w="100%"
-        maxW="1200px"
-        mx="auto"
-        minH="100vh"
-        pl={{ base: 4, md: 10, lg: 20 }}
+        width="77.5%" minH="100vh" pl ="1rem" mr ="1rem"
       >
         <TopBar />
 
         {/* OUTER CARD */}
         <Box
-          p={{ base: 4, md: 6, lg: 8 }}
+          p={8}
           mt={5}
           rounded="lg"
           boxShadow="2xl"
@@ -104,10 +99,9 @@ const BannerList = () => {
             justify="space-between"
             align="center"
             p={5}
-            flexDir={{ base: "column", md: "row" }}
             gap={4}
           >
-            <Text fontSize={{ base: "xl", md: "2xl" }} fontWeight="bold">
+            <Text fontSize="2xl" fontWeight="bold">
               Banners
             </Text>
 
@@ -149,7 +143,7 @@ const BannerList = () => {
                   transition="0.2s"
                 >
                   {/* IMAGE */}
-                  <Box width={{ base: "100%", md: "40%" }}>
+                  <Box width="44.4%">
                     <Image
                       src={data?.banner_img}
                       borderRadius="md"

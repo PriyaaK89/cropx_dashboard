@@ -6,6 +6,9 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Context/AuthContext";
 import { MdArrowDropDown, MdArrowLeft } from "react-icons/md";
 import { FaUser, FaThList  } from "react-icons/fa";
+import { FaCartShopping } from "react-icons/fa6";
+
+
 
 const LeftSidebar = () => {
   const navigate = useNavigate();
@@ -23,6 +26,7 @@ const LeftSidebar = () => {
     "/add-product",
     "/categories-list",
     "/add-category",
+    "/order"
   ];
 
   const shouldCatalogBeOpen = catalogRoutes.includes(location.pathname);
@@ -161,6 +165,13 @@ const LeftSidebar = () => {
             <Text>Banner</Text>
           </Flex>
         </Link>
+
+        <Link to="/order">
+          <Flex align="center" p="8px 14px" _hover={{ bg: "#434444ff", color: "#fff" }}>
+            <Icon as={FaCartShopping} mr={4} />
+            <Text>Order</Text>
+          </Flex>
+        </Link>
       </VStack>
 
       {/* Logout */}
@@ -178,6 +189,7 @@ const LeftSidebar = () => {
         <Icon as={FiLogOut} mr={4} />
         <Text>Logout</Text>
       </Flex>
+      
     </Box>
   );
 };

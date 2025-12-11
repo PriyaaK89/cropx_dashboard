@@ -14,8 +14,7 @@ const Home = () => {
         flex="1"
         display="flex"
         justifyContent="center"
-        minH="100vh"
-      >
+        minH="100vh" >
         <Box
           maxW="1400px"   // FIXED RESPONSIVE WIDTH
           w="100%"
@@ -25,12 +24,12 @@ const Home = () => {
           {/* TOP BAR */}
           <TopBar />
 
-          {/* PAGE CONTENT */}
-          <Box mt={5} bg="white" p={8} rounded="xl" boxShadow="md">
-            Hello world
-          </Box>
-        </Box>
+      {/* PAGE CONTENT */}
+      <Box mt={5} bg="white" p={8} rounded="xl" boxShadow="md">
+        Hello world
       </Box>
+
+    </Box></Box>
     </Flex>
   );
 };
