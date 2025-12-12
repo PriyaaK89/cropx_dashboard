@@ -67,23 +67,23 @@ const UserList = () => {
        </Text>
               </Flex>
       <Box bg = "f8f9fa" overflowX="auto" px={4} maxW="100vw">
-          <Table>
-            <Thead bg = "gray.100" className="productsTable Thead">
+          <Table className="productsTable">
+            <Thead bg = "gray.100">
               <Tr>
-                <Th className="productsTable Thead Tr Th">Name</Th>
-                <Th className="productsTable Thead Tr Th">Email</Th>
-                <Th className="productsTable Thead Tr Th">Password</Th>
-                <Th className="productsTable Thead Tr Th">Role</Th>
+                 <Th>Name</Th>
+                <Th>Email</Th>
+                <Th>Password</Th>
+                <Th>Role</Th>
               </Tr>
             </Thead>
 
             <Tbody className="productsTable tbody">
               {users.map((user) => (
                 <Tr key={user.id}>
-                  <Td className="productsTable Tbody Tr Td">{user.name}</Td>
-                  <Td className="productsTable Tbody Tr Td">{user.email}</Td>
-                  <Td className="productsTable Tbody Tr Td">{user.password}</Td>
-                  <Td className="productsTable Tbody Tr Td">{user.role}</Td>
+                  <Td>{user.name}</Td>
+                  <Td>{user.email}</Td>
+                  <Td>{user.password}</Td>
+                  <Td>{user.role}</Td>
                 </Tr>
               ))}
             </Tbody>
