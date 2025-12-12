@@ -5,25 +5,21 @@ import LeftSidebar from "../components/LeftSidebarLayout/LeftSidebar";
 
 const Dashboard = () => {
   return (
-    <Flex
-      w="100%"
-      maxW="1500px"
-      mx="auto"
-      minH="100vh"
-      gap= {5}
-      px={5} // horizontal padding for both sides
-      mt={5}
-    >
-      {/* LEFT SIDEBAR */}
-      <Box w="250px" flexShrink={0}>
-        <LeftSidebar />
-      </Box>
+    <Box width="100%" backgroundColor="#f8f8fb">
+      <Flex>
+        
+        {/* LEFT SIDEBAR */}
+        <Box width="22.5%">
+          <LeftSidebar />
+        </Box>
 
-      {/* RIGHT CONTENT */}
-      <Box flex="1">
-        <Home />
-      </Box>
-    </Flex>
+        {/* MAIN CONTENT */}
+        <Box width="77.5%">
+          <Home />
+        </Box>
+
+      </Flex>
+    </Box>
   );
 };
 

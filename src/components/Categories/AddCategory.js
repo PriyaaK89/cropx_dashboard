@@ -87,16 +87,20 @@ const AddCategory = () => {
   };
 
   return (
-    <Box width="100%">
-      <HStack justifyContent="space-between" alignItems="flex-start">
+
+             <Box width="100%" backgroundColor="#f8f8fb" >
+
         
         {/* LEFT SIDEBAR */}
+             <Flex justifyContent="space-between">
+         
         <Box>
           <LeftSidebar />
         </Box>
 
         {/* MAIN CONTENT */}
-        <Box width="82.5%" minH="100vh" pl={10}>
+         
+        <Box width="77.5%" minH="100vh" mr={4}>
           <TopBar />
 
           <Box width="100%" backgroundColor="#f8f8fb" p={5} rounded="lg">
@@ -247,11 +251,14 @@ const AddCategory = () => {
                 </VStack>
               </Box>
             </Flex>
+             </Box>
+                       </Box>
 
-          </Box>
-        </Box>
-      </HStack>
-    </Box>
+
+        </Flex>
+        {/* </HStack> */}
+
+            </Box>
   );
 };
 

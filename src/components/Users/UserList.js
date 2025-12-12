@@ -33,11 +33,11 @@ const UserList = () => {
 
   if (loading) {
     return (
-      <Box width="82.5%" minH="100vh" pl={10}>
+      <Box width="77.5%" minH="100vh" pl="1rem" mr="1rem">
       <TopBar />
       
-      <Box backgroundColor="white" p={8} mt={5} boxShadow="2xl" rounded="2xl">
-        <Flex justify="center" mt={10}>
+      <Box p={5} bg="white" my="1rem" borderRadius="0.75rem">
+        <Flex justify="center">
           <Spinner size="xl" />
         </Flex>
       </Box>
@@ -55,9 +55,9 @@ const UserList = () => {
 
   return (
     <>
-  <Box width="82.5%" minH="100vh" pl={10}>
+  <Box width="77.5%" minH="100vh" pl="1rem" mr="1rem">
            <TopBar/>
-            <Box backgroundColor="white"  p={8} mt={5} boxShadow="2xl" rounded="2xl">
+                 <Box p={5} bg='white' my='1rem' borderRadius="0.75rem">
       <Flex justify="space-between" alignItems="center" px={5} mt={5}>
        <Text fontSize="2xl" fontWeight="600">
         User List
@@ -67,23 +67,23 @@ const UserList = () => {
        </Text>
               </Flex>
       <Box bg = "f8f9fa" overflowX="auto" px={4} maxW="100vw">
-          <Table>
-            <Thead bg = "gray.100" className="productsTable Thead">
+          <Table className="productsTable">
+            <Thead bg = "gray.100">
               <Tr>
-                <Th className="productsTable Thead Tr Th">Name</Th>
-                <Th className="productsTable Thead Tr Th">Email</Th>
-                <Th className="productsTable Thead Tr Th">Password</Th>
-                <Th className="productsTable Thead Tr Th">Role</Th>
+                 <Th>Name</Th>
+                <Th>Email</Th>
+                <Th>Password</Th>
+                <Th>Role</Th>
               </Tr>
             </Thead>
 
             <Tbody className="productsTable tbody">
               {users.map((user) => (
                 <Tr key={user.id}>
-                  <Td className="productsTable Tbody Tr Td">{user.name}</Td>
-                  <Td className="productsTable Tbody Tr Td">{user.email}</Td>
-                  <Td className="productsTable Tbody Tr Td">{user.password}</Td>
-                  <Td className="productsTable Tbody Tr Td">{user.role}</Td>
+                  <Td>{user.name}</Td>
+                  <Td>{user.email}</Td>
+                  <Td>{user.password}</Td>
+                  <Td>{user.role}</Td>
                 </Tr>
               ))}
             </Tbody>

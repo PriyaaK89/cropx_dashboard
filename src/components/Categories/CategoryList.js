@@ -68,7 +68,7 @@ const CategoryList = () => {
   return (
     <>
     <DeleteCategory isOpen={isOpen} onClose={onClose} categoryId={categoryId} fetchCategories={fetchCategories}/>
-    <Box width="82.5%"  minH="100vh" pl="10">
+    <Box width="77.5%"  minH="100vh" pl="1rem" mr="1rem">
       {/* HEADER */}
       <TopBar />
       <Box px="2rem"  pt="1rem" mt="5" backgroundColor="white" rounded="lg">

@@ -14,6 +14,7 @@ import Banner from './pages/Banners';
 import UpdateProduct from './components/Products/UpdateProduct';
 import ProductDetails from './components/Products/ProductDetails';
 import Users from './pages/Users';
+import OrderList from './pages/OrderList';
 
 function App() {
   return (
@@ -33,6 +34,8 @@ function App() {
           <Route path='/banner' element={<Banner/>}/>
           <Route path='/update-product/:id' element={<UpdateProduct/>}/>
           <Route path='/users' element={<Users/>}/>
+          <Route path='/order' element={<OrderList/>}/>
+
         </Routes>
       </Router>
       </AuthProvider>

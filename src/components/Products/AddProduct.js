@@ -64,27 +64,23 @@ const AddProduct = () => {
   };
 
   return (
+        <Box width="100%" backgroundColor="#f8f8fb" >
+    
     <Flex justifyContent="space-between">
     <Box>  <LeftSidebar /></Box>
 
-      <Box w="80.3%" bg="#f3f6fb" minH="100vh">
+      <Box w="77.5%" minH="100vh" pl="1rem" mr="1rem">
         <TopBar />
 
         {/* Page Header */}
-        <Box p={6}>
+          <Box bgColor="white" mt={4} p={4} borderRadius="0.75rem">
           <Heading fontSize="sm" mb={3}>
             Add New Product
           </Heading>
-        </Box>
 
         {/* Form Card */}
         <Box
-          mx="auto"
-          w="92%"
-          bg="white"
-          p={8}
-          borderRadius="xl"
-          boxShadow="0 4px 20px rgba(0,0,0,0.08)"
+         
         >
           <SimpleGrid columns={[1, 1, 2]} spacing={8}>
             {/* Left Section */}
@@ -205,7 +201,10 @@ const AddProduct = () => {
           </Flex>
         </Box>
       </Box>
+                  </Box>
     </Flex>
+
+    </Box>
   );
 };
 
