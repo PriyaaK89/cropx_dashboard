@@ -9,17 +9,42 @@ import {
   Tr,
   Th,
   Td,
-  TableContainer,
   Flex,
   Spinner,
   Text,
+  Button,
 } from "@chakra-ui/react";
 import { Config } from "../../utils/Config";
+import ViewOrderListModal from "./ViewOrderListModal";
+import { useDisclosure } from "@chakra-ui/react";
 
 const Order = () => {
-  const [orders, SetOrders] = useState([]);
+  const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [orderedProducts, setOrderedProducts] = useState([]);
+  const [selectedOrderID, setSelectedOrderID] = useState(null);
+  const [selectedItems, setSelectedItems] = useState([]);
+
+  const formatData = (dateString) => {
+    const date = new Date(dateString);
+
+    const options = {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    };
+
+    const formattedDate = date.toLocaleDateString("en-Us", options);
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    const ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12 || 12;
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+    return `${formattedDate}, ${hours}:${minutes} ${ampm}`;
+  };
 
   // Fetch Orders
   const getOrders = async () => {
@@ -28,7 +53,8 @@ const Order = () => {
       console.log("response", res);
 
       if (Array.isArray(res.data.orders)) {
-        SetOrders(res.data.orders);
+        setOrders(res.data.orders);
+        console.log(res?.data?.orders[0]?.items, "orderedItems");
       } else {
         setError("Invalid API format");
       }
@@ -48,7 +74,6 @@ const Order = () => {
     return (
       <Box width="77.5%" minH="100vh" pl="1rem" mr="1rem">
         <TopBar />
-
         <Box p={5} bg="white" my="1rem" borderRadius="0.75rem">
           <Flex justify="center">
             <Spinner size="xl" />
@@ -68,24 +93,25 @@ const Order = () => {
   }
 
   return (
-    <Box width="77.5%" minH="100vh" pl="1rem">
-      <TopBar />
+    <>
+      <ViewOrderListModal
+        isOpen={isOpen}
+        onClose={onClose}
+        orderId={selectedOrderID}
+        selectedItems={selectedItems}
+      />
 
-      <Box p={5} bg='white' my='1rem' borderRadius="0.75rem">
-        <Box overflowX="auto" px={4} maxW="100vw">
-          <Box overflowX="auto" whiteSpace="nowrap" sx={{
-            "&::-webkit-scrollbar": { width: "8px", height: '8px' },
-            "&::-webkit-scrollbar-thumb": {
-              width: "8px",
-              backgroundColor: "#7A7A7A",
-              borderRadius: "4px",
-            },
-            "&::-webkit-scrollbar-track": {
-              background: "#E8E8E8",
-              borderRadius: "4px",
-            },
-          }}>
-            <Table variant="simple" colorScheme="gray" minW="1300px" className='productsTable'>
+      <Box width="77.5%" minH="100vh" pl="1rem">
+        <TopBar />
+
+        <Box p={5} bg="white" my="1rem" borderRadius="0.75rem">
+          <Box overflowX="auto" px={4} maxW="100vw">
+            <Table
+              variant="simple"
+              colorScheme="gray"
+              minW="1500px"
+              className="productsTable"
+            >
               <Thead bg="gray.100">
                 <Tr>
                   <Th>Serial Id</Th>
@@ -97,18 +123,22 @@ const Order = () => {
                   <Th>Payment Method</Th>
                   <Th>Payment Status</Th>
                   <Th>Order Status</Th>
-                  <Th>Order Date</Th>
+                  <Th width="30%">Order Date</Th>
+                  <Th>View Status</Th>
                 </Tr>
               </Thead>
 
               <Tbody>
                 {orders.map((order, index) => (
-                  <Tr key={order.id}>
-                    <Td>{index+1}</Td>
+                  <Tr key={order.order_id}>
+                    <Td>{index + 1}</Td>
                     <Td>{order.user_name}</Td>
 
-                    {/* Product name line-break */}
-                    <Td fontSize="13px"><Text width="250px" whiteSpace="break-spaces">{order.product_names}</Text></Td>
+                    <Td fontSize="13px">
+                      <Text width="250px" whiteSpace="break-spaces">
+                        {order.product_names}
+                      </Text>
+                    </Td>
 
                     <Td>{order.subtotal}</Td>
                     <Td>{order.delivery_fee}</Td>
@@ -116,13 +146,31 @@ const Order = () => {
                     <Td>{order.payment_method}</Td>
                     <Td>{order.payment_status}</Td>
                     <Td>{order.order_status}</Td>
-                    <Td>{order.created_at}</Td>
+                    <Td>{formatData(order.created_at)}</Td>
+
+                    <Td>
+                      <Button
+                        size="sm"
+                        bgColor="green"
+                        color="white"
+                        p={4}
+                        onClick={() => {
+                          setSelectedOrderID(order.order_id);
+                          setSelectedItems(order.items)
+                          onOpen();
+                        }}
+                      >
+                        View
+                      </Button>
+                    </Td>
                   </Tr>
                 ))}
               </Tbody>
-            </Table></Box></Box>
+            </Table>
+          </Box>
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 

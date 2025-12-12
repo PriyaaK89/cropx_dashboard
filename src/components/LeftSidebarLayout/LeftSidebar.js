@@ -1,50 +1,55 @@
-import React from "react";
-import { Box, Flex, Icon, Text, VStack, Collapse, useDisclosure, useToast } from "@chakra-ui/react";
-import { useContext } from "react";
-import { FiHome, FiUser, FiShoppingCart, FiSettings, FiLogOut, FiLayers } from "react-icons/fi";
+import React, { useContext, useState } from "react";
+import {
+  Box,
+  Flex,
+  Icon,
+  Text,
+  VStack,
+  Collapse,
+  useDisclosure,
+  useToast,
+} from "@chakra-ui/react";
+
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Context/AuthContext";
+
+import { FiHome, FiLogOut, FiLayers } from "react-icons/fi";
 import { MdArrowDropDown, MdArrowLeft } from "react-icons/md";
-import { FaUser, FaThList  } from "react-icons/fa";
+
+import { FaUser, FaThList } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
-
-
 
 const LeftSidebar = () => {
   const navigate = useNavigate();
   const toast = useToast();
   const { logout } = useContext(AuthContext);
   const location = useLocation();
+
   const isActive = (path) => location.pathname === path;
 
-  // dropdown toggles
-  const catalog = useDisclosure();
-  const customers = useDisclosure();
-
+  // Catalog dropdown
   const catalogRoutes = [
     "/product-list",
     "/add-product",
     "/categories-list",
     "/add-category",
-    "/order"
   ];
 
   const shouldCatalogBeOpen = catalogRoutes.includes(location.pathname);
-  const [openCatalog, setOpenCatalog] = React.useState(false);
+  const [openCatalog, setOpenCatalog] = useState(shouldCatalogBeOpen);
 
   const toggleCatalog = () => setOpenCatalog(!openCatalog);
-  const isCatalogOpen = shouldCatalogBeOpen || openCatalog;
 
   const handleLogout = () => {
     logout();
     toast({
       title: "Logged out successfully",
       status: "success",
-      duration: 2000,
+      duration: 1500,
       isClosable: true,
     });
 
-    setTimeout(() => navigate("/"), 1200);
+    setTimeout(() => navigate("/"), 1000);
   };
 
   return (
@@ -57,8 +62,9 @@ const LeftSidebar = () => {
       left={4}
       top={5}
       rounded="lg"
-        boxShadow="xl"
-      p="0px" >
+      boxShadow="xl"
+      p="0"
+    >
       {/* Logo */}
       <Box p="1rem 2rem">
         <Text fontSize="2xl" fontWeight="bold">
@@ -72,104 +78,125 @@ const LeftSidebar = () => {
           <Flex
             align="center"
             p="8px 14px"
-            // borderRadius="md"
             bg={isActive("/dashboard") ? "#e9ecee" : "transparent"}
-            color={isActive("/dashboard") ? "#4d4d4d" : "#white"}
-            _hover={{ bg: "#434444ff", color: "#fff" }}>
+            color={isActive("/dashboard") ? "#4d4d4d" : "#black"}
+            _hover={{ bg: "#434444ff", color: "#fff" }}
+          >
             <Icon as={FiHome} mr={4} />
             <Text fontSize="14px">Dashboard</Text>
           </Flex>
         </Link>
 
-        {/* Catalog Dropdown */}
+        {/* Catalog */}
         <Flex
           align="center"
           p="8px 14px"
           cursor="pointer"
-          _hover={{ bg: "#434444ff", color:"#fff" }}
-          onClick={toggleCatalog}>
+          _hover={{ bg: "#434444ff", color: "#fff" }}
+          onClick={toggleCatalog}
+        >
           <Icon as={FiLayers} mr={4} />
           <Text flex="1" fontSize="14px">
             Catalog
           </Text>
-          <Box>{isCatalogOpen ? <MdArrowDropDown /> : <MdArrowLeft />}</Box>
+          <Box>{openCatalog ? <MdArrowDropDown /> : <MdArrowLeft />}</Box>
         </Flex>
 
-        <Collapse
-          in={isCatalogOpen}
-          animateOpacity
-          startingHeight="0px"
-          style={{ overflow: "visible" }}>
+        <Collapse in={openCatalog} animateOpacity>
           <Box mt="5px">
             <Link to="/product-list">
               <Text
-                p="4px"
+                p="6px"
                 paddingLeft="3rem"
                 bg={isActive("/product-list") ? "#e9ecee" : "transparent"}
-                color={isActive("/product-list") ? "#4d4d4d" : "#white"}
+                color={isActive("/product-list") ? "#4d4d4d" : "#black"}
                 _hover={{ bg: "#434444ff", color: "#fff" }}
-                fontSize="14px">
+                fontSize="14px"
+              >
                 Products List
               </Text>
             </Link>
+
             <Link to="/add-product">
               <Text
-                p="4px"
+                p="6px"
                 paddingLeft="3rem"
-                fontSize="14px"
                 bg={isActive("/add-product") ? "#e9ecee" : "transparent"}
-                color={isActive("/add-product") ? "#4d4d4d" : "#white"}
-                _hover={{ bg: "#434444ff", color: "#fff" }}>
+                color={isActive("/add-product") ? "#4d4d4d" : "#black"}
+                _hover={{ bg: "#434444ff", color: "#fff" }}
+                fontSize="14px"
+              >
                 Product
               </Text>
             </Link>
+
             <Link to="/categories-list">
               <Text
-                p="4px"
-                bg={isActive("/categories-list") ? "#e9ecee" : "transparent"}
-                color={isActive("/categories-list") ? "#4d4d4d" : "#white"}
-                _hover={{ bg: "#434444ff", color: "#fff" }}
+                p="6px"
                 paddingLeft="3rem"
-                fontSize="14px">
+                bg={isActive("/categories-list") ? "#e9ecee" : "transparent"}
+                color={isActive("/categories-list") ? "#4d4d4d" : "#black"}
+                _hover={{ bg: "#434444ff", color: "#fff" }}
+                fontSize="14px"
+              >
                 Categories List
               </Text>
             </Link>
+
             <Link to="/add-category">
               <Text
-                p="4px"
-                bg={isActive("/add-category") ? "#e9ecee" : "transparent"}
-                color={isActive("/add-category") ? "#4d4d4d" : "#white"}
-                _hover={{ bg: "#434444ff", color: "#fff" }}
+                p="6px"
                 paddingLeft="3rem"
+                bg={isActive("/add-category") ? "#e9ecee" : "transparent"}
+                color={isActive("/add-category") ? "#4d4d4d" : "#black"}
+                _hover={{ bg: "#434444ff", color: "#fff" }}
                 fontSize="14px"
-         >
+              >
                 Category
               </Text>
             </Link>
           </Box>
         </Collapse>
 
-        {/* Customers Dropdown */}
-
-        {/* Settings */}
+        {/* Users */}
         <Link to="/users">
-          <Flex align="center" p="8px 14px" _hover={{ bg: "#434444ff", color: "#fff" }}>
+          <Flex
+            align="center"
+            p="8px 14px"
+            bg={isActive("/users") ? "#e9ecee" : "transparent"}
+            color={isActive("/users") ? "#4d4d4d" : "#black"}
+            _hover={{ bg: "#434444ff", color: "#fff" }}
+          >
             <Icon as={FaUser} mr={4} />
-            <Text>Users</Text>
+            <Text fontSize="14px">Users</Text>
           </Flex>
         </Link>
 
-          <Link to="/banner">
-          <Flex align="center" p="8px 14px" _hover={{ bg: "#434444ff", color: "#fff" }}>
+        {/* Banner */}
+        <Link to="/banner">
+          <Flex
+            align="center"
+            p="8px 14px"
+            bg={isActive("/banner") ? "#e9ecee" : "transparent"}
+            color={isActive("/banner") ? "#4d4d4d" : "#black"}
+            _hover={{ bg: "#434444ff", color: "#fff" }}
+          >
             <Icon as={FaThList} mr={4} />
-            <Text>Banner</Text>
+            <Text fontSize="14px">Banner</Text>
           </Flex>
         </Link>
 
+        {/* Order */}
         <Link to="/order">
-          <Flex align="center" p="8px 14px" _hover={{ bg: "#434444ff", color: "#fff" }}>
+          <Flex
+            align="center"
+            p="8px 14px"
+            bg={isActive("/order") ? "#e9ecee" : "transparent"}
+            color={isActive("/order") ? "#4d4d4d" : "#black"}
+            _hover={{ bg: "#434444ff", color: "#fff" }}
+          >
             <Icon as={FaCartShopping} mr={4} />
-            <Text>Order</Text>
+            <Text fontSize="14px">Order</Text>
           </Flex>
         </Link>
       </VStack>
@@ -177,19 +204,18 @@ const LeftSidebar = () => {
       {/* Logout */}
       <Flex
         align="center"
-        mt="auto"
         position="absolute"
         bottom="20px"
         w="85%"
         p="12px"
         borderRadius="md"
         cursor="pointer"
-        _hover={{ bg: "red.600" }}
-        onClick={handleLogout}>
+        _hover={{ bg: "red.600", color: "white" }}
+        onClick={handleLogout}
+      >
         <Icon as={FiLogOut} mr={4} />
-        <Text>Logout</Text>
+        <Text fontSize="14px">Logout</Text>
       </Flex>
-      
     </Box>
   );
 };
