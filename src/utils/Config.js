@@ -23,5 +23,6 @@ export const Config = {
     delete_category: `${BASE_URL}category/delete-category`,
     get_users: `${BASE_URL}get-users`,
     Delete_Single_variant: `${BASE_URL}product/variant`,
-    Order_List :  `${BASE_URL}admin/order-list`
+    Order_List :  `${BASE_URL}admin/order-list`,
+     update_order_status: `${BASE_URL}api/update-order-status`
 }
