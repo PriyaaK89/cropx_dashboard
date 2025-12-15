@@ -21,6 +21,7 @@ const UpdateOrderModal = ({ isOpen, onClose, orderId, refreshOrders }) => {
   const { auth } = useContext(AuthContext);
   const apiToken = auth?.token;
   const toast = useToast();
+  console.log(orderId ,"orderId")
 
   // status button click
   const handleStatusClick = (status) => {
@@ -44,29 +45,30 @@ const UpdateOrderModal = ({ isOpen, onClose, orderId, refreshOrders }) => {
 
       const payload = {
         order_id: orderId,
-        order_status: selectedStatus,
+        new_status: selectedStatus,
       };
 
-      const res = await axios.put(
-        Config.Update_Order_Status,
-        payload,
-        {
-          headers: {
-            Authorization: `Bearer ${apiToken}`,
-          },
+     const response = await axios.put(`${Config?.update_order_status}`, payload, 
+      {
+        headers: {
+          Authorization: `Bearer ${apiToken}`
         }
-      );
-
-      toast({
+      }
+     )
+     if(response?.status === 200){
+ toast({
         title: "Order status updated successfully",
         status: "success",
         duration: 2000,
         isClosable: true,
       });
-
+     
       refreshOrders();      // list refresh
       setSelectedStatus(""); // reset
       onClose();
+     }
+
+     
     } catch (error) {
       toast({
         title: "Failed to update order",

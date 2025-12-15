@@ -122,6 +122,7 @@ const Order = () => {
               <Thead bg="gray.100">
                 <Tr>
                   <Th>#</Th>
+                    <Th>Order ID</Th>
                   <Th>User</Th>
                   <Th>Products</Th>
                   <Th>Subtotal</Th>
@@ -138,6 +139,7 @@ const Order = () => {
                 {orders.map((order, index) => (
                   <Tr key={order.order_id}>
                     <Td>{index + 1}</Td>
+                        <Td>{order.order_id}</Td>
                     <Td>{order.user_name}</Td>
                     <Td>{order.product_names}</Td>
                     <Td>{order.subtotal}</Td>

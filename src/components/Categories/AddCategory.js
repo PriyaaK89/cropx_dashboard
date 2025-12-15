@@ -88,9 +88,9 @@ const AddCategory = () => {
 
   return (
 
-             <Box width="100%" backgroundColor="#f8f8fb" >
+             <Box width="100%" backgroundColor="#f8f8fb" mt={5} >
 
-        
+    
         {/* LEFT SIDEBAR */}
              <Flex justifyContent="space-between">
          
@@ -103,7 +103,7 @@ const AddCategory = () => {
         <Box width="77.5%" minH="100vh" mr={4}>
           <TopBar />
 
-          <Box width="100%" backgroundColor="#f8f8fb" p={5} rounded="lg">
+          <Box width="100%" backgroundColor="#fff" p={5} rounded="lg" boxShadow="lg" mt={5}>
 
             <HStack justifyContent="space-between" alignItems="flex-start">
               <Breadcrumb color="#8B8D97" mt="1rem" ml="10px" height="20px">
@@ -145,7 +145,7 @@ const AddCategory = () => {
             {/* FORM CARD */}
             <Flex justify="center">
               <Box
-                bg="whiteAlpha.700"
+                bg="white"
                 backdropFilter="blur(10px)"
                 w="500px"
                 p={8}

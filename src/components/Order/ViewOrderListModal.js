@@ -1,21 +1,22 @@
 import {
-  Heading,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Card,
-  CardBody,
+  Box,
   Text,
   Image,
   Flex,
   HStack,
-  SimpleGrid,
+  Button,
+  Heading,
 } from "@chakra-ui/react";
 
-const ViewOrderListModal = ({ isOpen, onClose, selectedItems }) => {
+const ViewOrderListModal = ({ isOpen, onClose, selectedItems,orderId }) => {
+  console.log(orderId ,'orderID123')
+  console.log("selected items", selectedItems);
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xl" isCentered>
       <ModalOverlay />
@@ -24,65 +25,59 @@ const ViewOrderListModal = ({ isOpen, onClose, selectedItems }) => {
         <ModalCloseButton />
 
         <ModalBody>
-          {/* GRID START */}
-          <SimpleGrid columns={2} spacing={4}>
-            {selectedItems?.map((item) => (
-              <Card
-                key={item.id}
-                p={3}
-                boxShadow="sm"
-                borderRadius="md"
-              >
-                <Flex align="center" gap={3}>
-                  {/* Image */}
+          {selectedItems?.map((order, index) => (
+            <Box
+              key={index}
+              p={5}
+              mb={6}
+              border="1px solid #e5e5e5"
+              borderRadius="lg"
+              bg="white"
+            >
+              {order.variant_quantity_value && (
+                <Flex
+                  p={4}
+                  borderBottom="1px solid #e5e5e5"
+                  gap={4}
+                  align="center"
+                >
                   <Image
-                    src={item.product_img}
-                    alt={item.product_name}
+                    src={order.product_img}
+                    alt={order.product_name}
                     boxSize="70px"
                     objectFit="contain"
-                    flexShrink={0}
                   />
-
-                  {/* Details */}
-                  <Flex direction="column" flex="1" minW={0}>
-                    <Text fontWeight="bold" fontSize="14px" noOfLines={1}>
-                      {item.product_name}
+                  <Box flex="1">
+                    <Text fontSize="16px" fontWeight="600">
+                      {order.product_name}
                     </Text>
 
-                    {/* Size single line */}
-                    <Text
-                      fontSize="13px"
-                      whiteSpace="nowrap"
-                      overflow="hidden"
-                      textOverflow="ellipsis"
-                    >
-                      Size{" "}
-                      <Text as="span" fontWeight="bold">
-                        {item.base_pack && item.pack_quantity
-                          ? `${item.variant_quantity_value * item.pack_quantity} ${item.variant_quantity_type} (${item.variant_quantity_value}${item.variant_quantity_type} × ${item.pack_quantity})`
-                          : `${item.variant_quantity_value} ${item.variant_quantity_type}`}
-                      </Text>
+                    <Text fontSize="14px" mt={1}>
+                      Size <b>{order.variant_quantity_value + " " + order.variant_quantity_type}</b>
                     </Text>
 
-                    {/* Price */}
                     <HStack spacing={2} mt={1}>
-                      <Text fontWeight="bold" fontSize="14px">
-                        ₹{item.variant_discounted_price}
+                      <Text fontSize="16px" fontWeight="bold">
+                        ₹{order.variant_discounted_price}
                       </Text>
-                      <Text
-                        fontSize="12px"
-                        color="gray.500"
-                        textDecoration="line-through"
-                      >
-                        ₹{item.variant_actual_price}
+                      <Text fontSize="14px" color="gray.500" as="s">
+                        ₹{order.variant_actual_price}
                       </Text>
                     </HStack>
-                  </Flex>
+                    {
+                      order.base_pack && (
+                        <Text fontSize="14px" mt={1}>
+                      Size <b>{order.variant_quantity_value + " " + order.variant_quantity_type}</b>
+                    </Text>
+
+                      )
+
+                    }
+                  </Box>
                 </Flex>
-              </Card>
-            ))}
-          </SimpleGrid>
-          {/* GRID END */}
+              )}
+            </Box>
+          ))}
         </ModalBody>
       </ModalContent>
     </Modal>
