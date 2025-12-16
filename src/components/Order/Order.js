@@ -23,6 +23,8 @@ import { useDisclosure } from "@chakra-ui/react";
 const Order = () => {
   const { auth } = useContext(AuthContext);
   const apiToken = auth?.token;
+   console.log("Auth:", auth);
+  console.log("Token:", apiToken);
 
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -78,7 +80,7 @@ const Order = () => {
 
   if (loading) {
     return (
-      <Box width="77.5%" minH="100vh" pl="1rem">
+      <Box width="77.5%" minH="100vh" pl="1rem" mr="1rem">
         <TopBar />
         <Flex justify="center" mt={10}>
           <Spinner size="xl" />
@@ -113,10 +115,10 @@ const Order = () => {
         refreshOrders={getOrders}
       />
 
-      <Box width="77.5%" minH="100vh" pl="1rem">
+      <Box width="77.5%" minH="100vh" pl="1rem" mr="1rem">
         <TopBar />
 
-        <Box p={5} bg="white" my="1rem" borderRadius="0.75rem">
+        <Box p={4} bg="white" mt={4} borderRadius="0.75rem" boxShadow="lg">
           <Box overflowX="auto">
             <Table minW="1500px">
               <Thead bg="gray.100">

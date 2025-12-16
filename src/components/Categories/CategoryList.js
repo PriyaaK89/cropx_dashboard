@@ -71,7 +71,7 @@ const CategoryList = () => {
     <Box width="77.5%"  minH="100vh" pl="1rem" mr="1rem">
       {/* HEADER */}
       <TopBar />
-      <Box px="2rem"  pt="1rem" mt="5" backgroundColor="white" rounded="lg">
+      <Box mt={4}  p={4} borderRadius="0.75rem"  backgroundColor="white" rounded="lg" >
         <Flex justify="space-between" align="center" mb="25px">
           <Text fontSize="2xl" fontWeight="bold" color="#333">
             Categories

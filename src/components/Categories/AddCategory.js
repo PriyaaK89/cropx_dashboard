@@ -88,22 +88,22 @@ const AddCategory = () => {
 
   return (
 
-             <Box width="100%" backgroundColor="#f8f8fb" mt={5} >
+    <Box width="100%" backgroundColor="#f8f8fb">
 
-    
-        {/* LEFT SIDEBAR */}
-             <Flex justifyContent="space-between">
-         
+
+      {/* LEFT SIDEBAR */}
+      <Flex justifyContent="space-between">
+
         <Box>
           <LeftSidebar />
         </Box>
 
         {/* MAIN CONTENT */}
-         
-        <Box width="77.5%" minH="100vh" mr={4}>
+
+        <Box width="77.5%" minH="100vh" pl="1rem" mr="1rem">
           <TopBar />
 
-          <Box width="100%" backgroundColor="#fff" p={5} rounded="lg" boxShadow="lg" mt={5}>
+          <Box width="100%" backgroundColor="#fff" mt={4} p={4} borderRadius="0.75rem" boxShadow="lg">
 
             <HStack justifyContent="space-between" alignItems="flex-start">
               <Breadcrumb color="#8B8D97" mt="1rem" ml="10px" height="20px">
@@ -154,7 +154,7 @@ const AddCategory = () => {
                 border="1px solid #e2e8f0"
               >
                 <VStack spacing={4}>
-                  
+
                   {/* INPUT: NAME */}
                   <FormControl>
                     <FormLabel fontWeight="600" color="#2d3748">
@@ -251,14 +251,11 @@ const AddCategory = () => {
                 </VStack>
               </Box>
             </Flex>
-             </Box>
-                       </Box>
-
-
-        </Flex>
-        {/* </HStack> */}
-
-            </Box>
+          </Box>
+        </Box>
+      </Flex>
+      {/* </HStack> */}
+    </Box>
   );
 };
 

@@ -11,6 +11,9 @@ const AddProduct = () => {
   const [formData, setFormData] = useState({
     product_name: "",
     product_category: "",
+    sub_category: "",
+    child_category: "",
+    brand : "",
     product_description: "",
     product_type: "",
     mfg_date: "",
@@ -73,7 +76,7 @@ const AddProduct = () => {
         <TopBar />
 
         {/* Page Header */}
-          <Box bgColor="white" mt={4} p={4} borderRadius="0.75rem">
+          <Box bgColor="white" mt={4} p={4} borderRadius="0.75rem" boxShadow="lg">
           <Heading fontSize="sm" mb={3}>
             Add New Product
           </Heading>
@@ -102,9 +105,39 @@ const AddProduct = () => {
                   name="product_category"
                   value={formData.product_category}
                   onChange={handleChange}
-                  placeholder="e.g. Organic Fertilizer"
+                  placeholder="product category"
                   bg="#f1f4f9"
                 />
+              </FormControl>
+              <FormControl>
+                <FormLabel fontWeight="600px"> Sub Category</FormLabel>
+                  <Input 
+                     name="sub_category"
+                     value={formData.sub_category}
+                     onChange={handleChange}
+                     placeholder="enter your sub category"
+                     bg="#f1f4f9"
+                  />
+              </FormControl>
+               <FormControl>
+                <FormLabel fontWeight="600px"> Child Category</FormLabel>
+                  <Input 
+                     name="child_category"
+                     value={formData.child_category}
+                     onChange={handleChange}
+                     placeholder="enter your category category"
+                     bg="#f1f4f9"
+                  />
+              </FormControl>
+              <FormControl>
+                <FormLabel fontWeight="600px">
+                  Brand
+                  <Input name="brand" value={formData.brand} 
+                    onChange={handleChange}
+                    placeholder="Enter brand name"
+                    bg="#f1f4f9"
+                   />
+                </FormLabel>
               </FormControl>
 
               <FormControl>
