@@ -68,14 +68,14 @@ const Login = () => {
 
   return (
     <Box bg={"linear-gradient(348deg, #2e686c, #008d9242)"} height="100vh">
-      <Flex height="100%" justifyContent="center" alignItems="center" padding="1rem">
+      <Flex height="100%" justifyContent="center" alignItems="center" px={{base: 4 , md:0}}>
         <Box
-          width={["90%", "70%", "35%"]} bg="white" padding="2.5rem" borderRadius="1rem" boxShadow="2xl"
+          w={{base: "100%",sm: "90%", md:"420px", lg:"450px"}} bg="white" p={{base: 6, md:8}} borderRadius="1rem" boxShadow="2xl"
           border="1px solid #e2e8f0">
-          <Heading size="lg" textAlign="center" color="#2e686c">
+          <Heading size={{base:"md", md:"lg"}} textAlign="center" color="#2e686c">
             Welcome Back
           </Heading>
-          <Text textAlign="center" mb="2rem" color="gray.600">
+          <Text textAlign="center" mb="2rem" color="gray.600" fontSize={{base:"sm",md: "md"}}>
             Sign in to continue to your dashboard
           </Text>
 

@@ -24,5 +24,9 @@ export const Config = {
     get_users: `${BASE_URL}get-users`,
     Delete_Single_variant: `${BASE_URL}product/variant`,
     Order_List :  `${BASE_URL}admin/order-list`,
-    update_order_status: `${BASE_URL}api/update-order-status`
+    update_order_status: `${BASE_URL}api/update-order-status`,
+    add_sub_category: `${BASE_URL}/create-subCategory`,
+    get_sub_category: `${BASE_URL}/get-subcategories?category_id=4`,
+    add_child_category: `${BASE_URL}/create-child-category`,
+    get_child_category: `${BASE_URL}/get-child-categories?sub_category_id=1`
 }

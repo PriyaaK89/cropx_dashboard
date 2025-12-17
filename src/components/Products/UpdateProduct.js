@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState,useEffect } from "react";
 import {
   Box,
   Button,
@@ -18,12 +18,11 @@ import axios from "axios";
 import { Config } from "../../utils/Config";
 import LeftSidebar from "../LeftSidebarLayout/LeftSidebar";
 import TopBar from "../TopBar/TopBar";
-
+  
 const UpdateProduct = () => {
   const { id } = useParams();
   const toast = useToast();
-
-  const [loading, setLoading] = useState(false);
+const [loading, setLoading] = useState(false);
   const [productLoading, setProductLoading] = useState(true);
 
   const [formData, setFormData] = useState({
@@ -174,13 +173,13 @@ const UpdateProduct = () => {
           <SimpleGrid columns={[1,1,2]} spacingY={4} spacingX={8}>
 
           <FormControl mb={1}>
-            <FormLabel>Product Name</FormLabel>
-            <Input name="product_name" value={formData.product_name} onChange={handleChange} />
+            <FormLabel fontSize="12px">Product Name</FormLabel>
+            <Input fontSize="12px" name="product_name" value={formData.product_name} onChange={handleChange} />
           </FormControl>
 
           <FormControl mb={1}>
-            <FormLabel>Product Category</FormLabel>
-            <Input name="product_category" value={formData.product_category} onChange={handleChange} />
+            <FormLabel fontSize="12px">Product Category</FormLabel>
+            <Input fontSize="12px" name="product_category" value={formData.product_category} onChange={handleChange} />
           </FormControl>
 
           <FormControl mb={1}>
