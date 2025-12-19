@@ -106,7 +106,7 @@ const ViewProduct = () => {
       />
 
       {/* ===================== LAYOUT FIXED HERE ===================== */}
-      <Box display="flex"  bg="#f8f9fa" >
+      <Box display="flex"  gap={5} bg="#f8f8fb" minH="100vh" pl="1rem" mr="1rem" mt={2}>
         {/* LEFT SIDEBAR */}
         <Box width="17.5%">
           <LeftSidebar />
@@ -114,16 +114,16 @@ const ViewProduct = () => {
 
         {/* RIGHT MAIN AREA */}
         <Box 
-          width="82.5%"         
+          width="77.5%"         
           minH="100vh"
-          pl="40px" // Same spacing left
-          pr="40px" // Same spacing right
+          pl="1.5rem" // Same spacing left
+          mr="0.5rem"
         >
           <TopBar />
 
-          <Box mt="25px">
+          <Box mt="30px" backgroundColor="white" rounded="lg" boxShadow="lg" p={5}>
             {/* PRODUCT HEADER */}
-            <Flex gap="30px" align="flex-start" mb="40px">
+            <Flex gap="30px" align="flex-start">
               <Image
                 src={product.product_img}
                 alt={product.product_name}
@@ -148,7 +148,6 @@ const ViewProduct = () => {
               </Box>
             </Flex>
 
-            <Divider mb="35px" />
 
             {/* ====================== SINGLE PACKS ====================== */}
             <Flex justify="space-between" align="center" mb="15px">
@@ -232,7 +231,7 @@ const ViewProduct = () => {
                     key={m.multipack_id}
                     border="1px solid #eaeaea"
                     borderRadius="lg"
-                    p="16px"
+                    p="20px"
                     shadow="sm"
                     _hover={{ shadow: "md", transform: "translateY(-3px)" }}
                     transition="0.2s"

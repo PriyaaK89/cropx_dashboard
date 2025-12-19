@@ -88,24 +88,24 @@ const BannerList = () => {
 
         {/* OUTER CARD */}
         <Box
-          p={8}
-          mt={5}
-          rounded="lg"
-          boxShadow="2xl"
+         p={4}
+          mt={4}
+          boxShadow="xl"
           bg="white"
+          borderRadius="0.75rem"
         >
           {/* HEADER SECTION */}
           <Flex
             justify="space-between"
             align="center"
-            p={5}
             gap={4}
           >
-            <Text fontSize="2xl" fontWeight="bold">
+            <Text fontSize="2xl" fontWeight="bold" p={1}>
               Banners
             </Text>
 
             <Button
+            m={1}
               leftIcon={<AddIcon />}
               colorScheme="blue"
               borderRadius="lg"

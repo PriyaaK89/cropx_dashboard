@@ -18,6 +18,8 @@ import { Link } from "react-router-dom";
 import TopBar from "../TopBar/TopBar";
 import { Config } from "../../utils/Config";
 import DeleteCategory from "./DeleteCategory";
+import SubCategory from "./SubCategoryModal";
+import ChildCategory from "./ChildCategoryModal";
 
 const CategoryList = () => {
   const [categories, setCategories] = useState([]);
@@ -26,7 +28,8 @@ const CategoryList = () => {
   const [search, setSearch] = useState("");
   const {isOpen, onOpen, onClose} = useDisclosure();
   const [categoryId, setCategoryId] = useState();
-
+  const {isOpen:isSubOpen, onOpen:onSubOpen, onClose:onSubClose} = useDisclosure();
+  const {isOpen:isChildOpen, onOpen:onChildOpen , onClose: onChildClose} = useDisclosure();
   const toast = useToast();
 
   const fetchCategories = async () => {
@@ -67,22 +70,34 @@ const CategoryList = () => {
 
   return (
     <>
+    <SubCategory isOpen={isSubOpen} onClose={onSubClose} />
+    <ChildCategory isOpen={isChildOpen} onClose={onChildClose} />
     <DeleteCategory isOpen={isOpen} onClose={onClose} categoryId={categoryId} fetchCategories={fetchCategories}/>
     <Box width="77.5%"  minH="100vh" pl="1rem" mr="1rem">
       {/* HEADER */}
       <TopBar />
-      <Box px="2rem"  pt="1rem" mt="5" backgroundColor="white" rounded="lg">
-        <Flex justify="space-between" align="center" mb="25px">
+      <Box mt={4}  p={4} borderRadius="0.75rem"  backgroundColor="white" rounded="lg" >
+        <Flex justifyContent="space-between" gap={4} align="center" mb="25px">
           <Text fontSize="2xl" fontWeight="bold" color="#333">
             Categories
           </Text>
+          <Box>
+           <Button colorScheme="blue" px="6" mr={4} onClick={onSubOpen}>
+                + Sub Category
+            </Button>
+             <Button colorScheme="blue" px="6" mr={4} onClick={onChildOpen} >
+               + Child Category
+            </Button>
 
           <Link to="/add-category">
-            <Button colorScheme="blue" px="6" >
+            <Button colorScheme="blue" px="6"mr={4} >
               {" "}
               + Add Category
             </Button>
+
           </Link>
+                    </Box>
+
         </Flex>
 
         {/* SEARCH BAR */}

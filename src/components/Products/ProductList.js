@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Flex, Text, Image, Badge, Input, Select, Table, Thead, Tbody, Tr, Th, Td, Button, HStack, Spinner, useDisclosure} from "@chakra-ui/react";
+import { Box,  Text, Image, Badge, Flex, Input, Select, Table, Thead, Tbody, Tr, Th, Td, Button, HStack, Spinner, useDisclosure} from "@chakra-ui/react";
 import axios from "axios";
 import TopBar from "../TopBar/TopBar";
 import { Config } from "../../utils/Config";
@@ -12,7 +12,7 @@ const ProductList = () => {
   const [loading, setLoading] = useState(true);
   const [productId, setProductId] = useState('');
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(15);
+  const [limit, setLimit] = useState(50);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState('');
   const [status, setStatus] = useState('')
@@ -26,6 +26,7 @@ const ProductList = () => {
     try {
       const res = await axios.get(`${Config?.get_products}?page=${page}&limit=${limit}&search=${search}&category=${category}&expiry_status=${status}`);
       if (res.data.success) {
+        console.log("resdata",res);
         setProducts(res.data.data);
         setFiltered(res.data.data);
       }
@@ -62,12 +63,13 @@ const ProductList = () => {
     <>
     <DeleteProductModal isOpen={isOpen} onClose={onClose} productId={productId} getProducts={getProducts}/>
     <Box width="77.5%" minH="100vh" pl="1rem" mr="1rem">
-      <TopBar />
-      <Box p={5} bg='white' my='1rem' borderRadius="0.75rem">
+               <TopBar />
+      <Box mt={4} bg='white' p={4} borderRadius="0.75rem" boxShadow="lg">
+
         <Text fontSize="2xl" fontWeight="600" mb={4}> Product List </Text>
 
         <Flex mb={4} gap={4} flexWrap="wrap">
-          <Input
+          <Input 
             placeholder="Search product..."
             width="250px"
             value={search}
@@ -105,6 +107,9 @@ const ProductList = () => {
               <Tr>
                 <Th width="23%">Product</Th>
                 <Th width="10%">Category</Th>
+                  <Th width="10%"> Sub Category</Th>
+                <Th width="10%"> Child Category</Th>
+                <Th width="8%">Brand</Th>
                 <Th width="8%">Type</Th>
                 <Th width="8%">Variants</Th>
                 <Th width="15%">Stock</Th>
@@ -127,6 +132,9 @@ const ProductList = () => {
                   </Td>
 
                   <Td>{item.product_category}</Td>
+                      <Td>{item.sub_category}</Td>
+                  <Td>{item.child_category}</Td>
+                    <Td>{item.brand}</Td>
                   <Td>{item.product_type}</Td>
                   <Td>{item.single_packs.length + item.multi_packs.length}</Td>
                   <Td>
@@ -154,7 +162,7 @@ const ProductList = () => {
           </Table>
           </Box></Box>
         )}
-      </Box>
+    </Box>
     </Box>
     </>
   );

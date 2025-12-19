@@ -1,16 +1,24 @@
-import { Box, Flex, InputGroup, InputLeftElement, Input, Avatar, Text, Badge, IconButton } from "@chakra-ui/react";
-import { SearchIcon, BellIcon } from "@chakra-ui/icons";
+import { Box, Flex, InputGroup, InputLeftElement, Input, Avatar, Text, Badge, IconButton ,Drawer,DrawerBody,DrawerHeader,DrawerOverlay,DrawerContent,useDisclosure,VStack} from "@chakra-ui/react";
+import { SearchIcon, BellIcon,HamburgerIcon } from "@chakra-ui/icons";
 
 const TopBar = () => {
+   const {isOpen, onOpen, onClose} = useDisclosure ();
   return (
     <Box  >
     <Flex
       w="100%" h="70px" bg="white"
       mt={5}
-      align="center" px={6} justify="space-between"
+      align="center" px={{base:4, md:6}} justify="space-between"
       boxShadow="sm" borderBottom="1px solid #e2e8f0"
       rounded="lg"
       position="sticky" top="0" zIndex={10} >
+        <IconButton
+        icon={<HamburgerIcon/>}
+        display={{base:"flex" ,md:"none"}}
+        onClick={onOpen}
+        variant="ghost"
+        fontSize="22px"
+        />
       {/* LEFT AREA → Search */}
       <InputGroup w="350px">
         <InputLeftElement pointerEvents="none">
@@ -25,7 +33,7 @@ const TopBar = () => {
       </InputGroup>
 
       {/* RIGHT AREA → Flags, Notification, User */}
-      <Flex align="center" gap={6}>
+      <Flex align="center" gap={6} display={{base:"none" ,md:"flex"}}>
         {/* Country Flag */}
         <Box fontSize="25px" cursor="pointer">
           🇩🇪
@@ -71,6 +79,31 @@ const TopBar = () => {
         </Flex>
       </Flex>
     </Flex>
+    <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
+      <DrawerOverlay/>
+      <DrawerHeader>Menu</DrawerHeader>
+      <DrawerBody>
+        <VStack align="start" spacing={4} >
+          <InputGroup>
+          <InputLeftElement pointerEvents="none">
+              <SearchIcon/>
+          </InputLeftElement>
+           <Input _placeholder="search ..."/>
+          </InputGroup>
+           <Flex align="center" gap={3}>
+            <Avatar size="sm"/>
+            <Box>
+              <Text fontWeight="600">Priya Kumawat</Text>
+               <Text fontSize="sm">priya@example.com</Text>
+
+            </Box>
+           </Flex>
+           <Text>Dashboard</Text>
+           <Text>Profile</Text>
+           <Text>Logout</Text>
+        </VStack>
+      </DrawerBody>
+    </Drawer>
     </Box>
   );
 };

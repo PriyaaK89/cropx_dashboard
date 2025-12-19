@@ -15,6 +15,7 @@ import UpdateProduct from './components/Products/UpdateProduct';
 import ProductDetails from './components/Products/ProductDetails';
 import Users from './pages/Users';
 import OrderList from './pages/OrderList';
+import AddProduct2 from './components/Products/AddProduct2';
 
 function App() {
   return (
@@ -28,7 +29,7 @@ function App() {
           <Route path='/categories-list' element={<Categories/>}/>
           <Route path='/add-category' element={<AddCategory/>}/>
           <Route path='/product-list' element={<Products/>}/>
-          <Route path='/add-product' element={<AddProduct/>}/>
+          <Route path='/add-product' element={<AddProduct2/>}/>
           <Route path='/product/:id' element={<ViewProduct/>}/>
           <Route path='/product-details/:id' element={<ProductDetails/>}/>
           <Route path='/banner' element={<Banner/>}/>

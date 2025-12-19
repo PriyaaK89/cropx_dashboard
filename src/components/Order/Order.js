@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import TopBar from "../TopBar/TopBar";
+import { AuthContext } from "../Context/AuthContext";
 import {
   Box,
   Table,
@@ -9,31 +10,65 @@ import {
   Tr,
   Th,
   Td,
-  TableContainer,
   Flex,
   Spinner,
   Text,
+  Button,
 } from "@chakra-ui/react";
 import { Config } from "../../utils/Config";
+import ViewOrderListModal from "./ViewOrderListModal";
+import UpdateOrdersModal from "./UpdateOrdersModal";
+import { useDisclosure } from "@chakra-ui/react";
 
 const Order = () => {
-  const [orders, SetOrders] = useState([]);
+  const { auth } = useContext(AuthContext);
+  const apiToken = auth?.token;
+   console.log("Auth:", auth);
+  console.log("Token:", apiToken);
+
+  const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const [selectedOrderID, setSelectedOrderID] = useState(null);
+  const [selectedItems, setSelectedItems] = useState([]);
+
+  // View Modal
+  const {
+    isOpen: isViewOpen,
+    onOpen: onViewOpen,
+    onClose: onViewClose,
+  } = useDisclosure();
+
+  // Update Modal
+  const {
+    isOpen: isUpdateOrdersModalOpen,
+    onOpen: onUpdateOrdersModalOpen,
+    onClose: onUpdateOrdersModalClose,
+    orderId: order_id
+  } = useDisclosure();
+
+  const formatData = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleString("en-IN");
+  };
 
   // Fetch Orders
   const getOrders = async () => {
     try {
-      const res = await axios.get(`${Config?.Order_List}`);
-      console.log("response", res);
+      const res = await axios.get(Config?.Order_List, {
+        headers: {
+          Authorization: `Bearer ${apiToken}`,
+        },
+      });
 
       if (Array.isArray(res.data.orders)) {
-        SetOrders(res.data.orders);
+        setOrders(res.data.orders);
       } else {
         setError("Invalid API format");
       }
     } catch (err) {
-      setError("Failed to fetch data");
+      setError("Failed to fetch orders");
     } finally {
       setLoading(false);
     }
@@ -43,22 +78,17 @@ const Order = () => {
     getOrders();
   }, []);
 
-  // Loading UI
   if (loading) {
     return (
       <Box width="77.5%" minH="100vh" pl="1rem" mr="1rem">
         <TopBar />
-
-        <Box p={5} bg="white" my="1rem" borderRadius="0.75rem">
-          <Flex justify="center">
-            <Spinner size="xl" />
-          </Flex>
-        </Box>
+        <Flex justify="center" mt={10}>
+          <Spinner size="xl" />
+        </Flex>
       </Box>
     );
   }
 
-  // Error UI
   if (error) {
     return (
       <Flex justify="center" mt={10}>
@@ -68,61 +98,92 @@ const Order = () => {
   }
 
   return (
-    <Box width="77.5%" minH="100vh" pl="1rem">
-      <TopBar />
+    <>
+      {/* VIEW MODAL */}
+      <ViewOrderListModal
+        isOpen={isViewOpen}
+        onClose={onViewClose}
+        orderId={selectedOrderID}
+        selectedItems={selectedItems}
+      />
 
-      <Box p={5} bg='white' my='1rem' borderRadius="0.75rem">
-        <Box overflowX="auto" px={4} maxW="100vw">
-          <Box overflowX="auto" whiteSpace="nowrap" sx={{
-            "&::-webkit-scrollbar": { width: "8px", height: '8px' },
-            "&::-webkit-scrollbar-thumb": {
-              width: "8px",
-              backgroundColor: "#7A7A7A",
-              borderRadius: "4px",
-            },
-            "&::-webkit-scrollbar-track": {
-              background: "#E8E8E8",
-              borderRadius: "4px",
-            },
-          }}>
-            <Table variant="simple" colorScheme="gray" minW="1300px" className='productsTable'>
+      {/* UPDATE MODAL */}
+      <UpdateOrdersModal
+        isOpen={isUpdateOrdersModalOpen}
+        onClose={onUpdateOrdersModalClose}
+        orderId={selectedOrderID}
+        refreshOrders={getOrders}
+      />
+
+      <Box width="77.5%" minH="100vh" pl="1rem" mr="1rem">
+        <TopBar />
+
+        <Box p={4} bg="white" mt={4} borderRadius="0.75rem" boxShadow="lg">
+          <Box overflowX="auto">
+            <Table minW="1500px">
               <Thead bg="gray.100">
                 <Tr>
-                  <Th>Serial Id</Th>
-                  <Th>User Name</Th>
-                  <Th width="30%">Product Name</Th>
-                  <Th>SubTotal</Th>
-                  <Th>Delivery Fee</Th>
-                  <Th>Total Amount</Th>
-                  <Th>Payment Method</Th>
-                  <Th>Payment Status</Th>
-                  <Th>Order Status</Th>
-                  <Th>Order Date</Th>
+                  <Th>#</Th>
+                    <Th>Order ID</Th>
+                  <Th>User</Th>
+                  <Th>Products</Th>
+                  <Th>Subtotal</Th>
+                  <Th>Total</Th>
+                  <Th>Payment</Th>
+                  <Th>Status</Th>
+                  <Th>Date</Th>
+                  <Th>View</Th>
+                  <Th>Update</Th>
                 </Tr>
               </Thead>
 
               <Tbody>
                 {orders.map((order, index) => (
-                  <Tr key={order.id}>
-                    <Td>{index+1}</Td>
+                  <Tr key={order.order_id}>
+                    <Td>{index + 1}</Td>
+                        <Td>{order.order_id}</Td>
                     <Td>{order.user_name}</Td>
-
-                    {/* Product name line-break */}
-                    <Td fontSize="13px"><Text width="250px" whiteSpace="break-spaces">{order.product_names}</Text></Td>
-
+                    <Td>{order.product_names}</Td>
                     <Td>{order.subtotal}</Td>
-                    <Td>{order.delivery_fee}</Td>
                     <Td>{order.total_amount}</Td>
                     <Td>{order.payment_method}</Td>
-                    <Td>{order.payment_status}</Td>
                     <Td>{order.order_status}</Td>
-                    <Td>{order.created_at}</Td>
+                    <Td>{formatData(order.created_at)}</Td>
+
+                    <Td>
+                      <Button
+                        size="sm"
+                        colorScheme="green"
+                        onClick={() => {
+                          setSelectedOrderID(order.order_id);
+                          setSelectedItems(order.items);
+                          onViewOpen();
+                        }}
+                      >
+                        View
+                      </Button>
+                    </Td>
+
+                    <Td>
+                      <Button
+                        size="sm"
+                        colorScheme="blue"
+                        onClick={() => {
+                          setSelectedOrderID(order.order_id);
+                          onUpdateOrdersModalOpen();
+                        }}
+                      >
+                        Update
+                      </Button>
+                    </Td>
                   </Tr>
                 ))}
               </Tbody>
-            </Table></Box></Box>
+            </Table>
+          </Box>
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 
