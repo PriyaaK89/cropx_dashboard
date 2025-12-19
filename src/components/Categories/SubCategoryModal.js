@@ -18,67 +18,75 @@ import axios from "axios";
 import { Config } from "../../utils/Config";
 
 const SubCategory = ({ isOpen, onClose }) => {
-  const [categories, setCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState([]);
   const [categoryId, setCategoryId] = useState("");
   const [subName, setSubName] = useState("");
   const toast = useToast();
 
-  // 🔹 FETCH CATEGORY LIST
+  // 🔹 GET CATEGORY LIST
   const fetchCategories = async () => {
     try {
-      const res = await axios.get(Config?.get_sub_category;
-      console.log("add category", res);
-      setCategories(res.data.categories);
+      const res = await axios.get(Config?.get_categories);
+      setSubCategories(res?.data?.categories || []);
     } catch (error) {
       toast({
         title: "Failed to load categories",
         status: "error",
         duration: 1500,
+        isClosable: true,
       });
     }
   };
 
   useEffect(() => {
-    if (isOpen) {
-      fetchCategories();
-    }
-  }, [isOpen]);
+    fetchCategories();
+  }, []);
 
-  // 🔹 SUBMIT
+  // 🔹 ADD SUB CATEGORY
   const handleSubmit = async () => {
-    if (!categoryId || !subName) {
-      toast({
-        title: "All fields are required",
-        status: "warning",
-        duration: 1500,
-      });
-      return;
-    }
+  if (!categoryId || !subName) {
+    toast({
+      title: "All fields are required",
+      status: "warning",
+      duration: 1500,
+      isClosable: true,
+    });
+    return;
+  }
 
-    try {
-      await axios.post(Config?.get_sub_category{
-        
-        categoryId,
-        name: subName,
-      });
+  try {
+    const payload = {
+      category_id: Number(categoryId), // 🔥 IMPORTANT
+      name: subName,
+    };
 
-      toast({
-        title: "Sub Category Added",
-        status: "success",
-        duration: 1500,
-      });
+    console.log("ADD PAYLOAD", payload);
 
-      setSubName("");
-      setCategoryId("");
-      onClose();
-    } catch (error) {
-      toast({
-        title: "Something went wrong",
-        status: "error",
-        duration: 1500,
-      });
-    }
-  };
+    const res = await axios.post(Config?.add_sub_category, payload);
+    console.log("ADD RESPONSE ", res.data);
+
+    toast({
+      title: "Sub Category Added Successfully",
+      status: "success",
+      duration: 1500,
+      isClosable: true,
+    });
+
+    setSubName("");
+    setCategoryId("");
+    onClose();
+  } catch (error) {
+    console.error("ADD ERROR ", error);
+
+    toast({
+      title: error?.response?.data?.message || "Something went wrong",
+      status: "error",
+      duration: 1500,
+      isClosable: true,
+    });
+  }
+};
+
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
@@ -96,7 +104,7 @@ const SubCategory = ({ isOpen, onClose }) => {
               value={categoryId}
               onChange={(e) => setCategoryId(e.target.value)}
             >
-              {categories.map((cat) => (
+              {subCategories.map((cat) => (
                 <option key={cat.id} value={cat.id}>
                   {cat.cate_name}
                 </option>
@@ -104,7 +112,15 @@ const SubCategory = ({ isOpen, onClose }) => {
             </Select>
           </FormControl>
 
-         
+          {/* SUB CATEGORY INPUT ✅ */}
+          <FormControl mb={4}>
+            <FormLabel>Sub Category Name</FormLabel>
+            <Input
+              placeholder="Enter sub category name"
+              value={subName}
+              onChange={(e) => setSubName(e.target.value)}
+            />
+          </FormControl>
         </ModalBody>
 
         <ModalFooter>
