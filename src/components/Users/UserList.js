@@ -36,7 +36,8 @@ const UserList = () => {
       <Box width="77.5%" minH="100vh" pl="1rem" mr="1rem">
       <TopBar />
       
-      <Box p={5} bg="white" my="1rem" borderRadius="0.75rem">
+      <Box p={5} bg="white" my="1rem" borderRadius="0.75rem" boxShadow="xl" 
+>
         <Flex justify="center">
           <Spinner size="xl" />
         </Flex>

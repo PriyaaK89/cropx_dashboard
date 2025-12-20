@@ -73,10 +73,10 @@ const CategoryList = () => {
     <SubCategory isOpen={isSubOpen} onClose={onSubClose} />
     <ChildCategory isOpen={isChildOpen} onClose={onChildClose} />
     <DeleteCategory isOpen={isOpen} onClose={onClose} categoryId={categoryId} fetchCategories={fetchCategories}/>
-    <Box width="77.5%"  minH="100vh" pl="1rem" mr="1rem">
+    <Box width="77.5%"  minH="100vh" pl="1rem" mr="1rem" mb={6} >
       {/* HEADER */}
       <TopBar />
-      <Box mt={4}  p={4} borderRadius="0.75rem"  backgroundColor="white" rounded="lg" >
+      <Box mt={4}  p={4} borderRadius="0.75rem"  backgroundColor="white" rounded="lg"  >
         <Flex justifyContent="space-between" gap={4} align="center" mb="25px">
           <Text fontSize="2xl" fontWeight="bold" color="#333">
             Categories

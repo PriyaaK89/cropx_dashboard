@@ -1,16 +1,25 @@
 import React from "react";
-import TopBar from "../TopBar/TopBar";
 import { Box } from "@chakra-ui/react";
+import ResponsiveNavbar from "../TopBar/ResponsiveNavbar"
+import TopBar from "../TopBar/TopBar";
 
 const Home = () => {
   return (
-
-
     <Box
-      width="77.5%" minH="100vh" pl="1rem" mr="1rem"
+       width={{base:"100%",md:"77.5%"}} minH="100vh" pl={{base:"0",md:"1rem"}} mr={{base:"0",md:"1rem"}}
     >
-      <TopBar />
-      <Box mt={4} bg='white' p={4} borderRadius="0.75rem" boxShadow="lg">
+      <Box  display={{base:"flex",md:"none"}} >
+             <ResponsiveNavbar/>
+
+      </Box>
+      <Box>
+
+      </Box>
+      <Box display={{base:"none", sm: "none", md:"flex"}} w="100%">
+              <TopBar/>
+
+      </Box>
+      <Box  bg='white' mt={5} p="1rem" mr="1rem" ml="1rem"  borderRadius="0.75rem" boxShadow="lg">
         Hello world
       </Box>
 

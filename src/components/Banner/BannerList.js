@@ -82,17 +82,22 @@ const BannerList = () => {
       />
 
       <Box
-        width="77.5%" minH="100vh" pl ="1rem" mr ="1rem"
+        width="77.5%" pl ="1rem" mr ="1rem" 
+
+          // borderRadius="0.75rem"
+        //  boxShadow="xl" 
       >
-        <TopBar />
+        <TopBar /> 
 
         {/* OUTER CARD */}
         <Box
          p={4}
           mt={4}
+          mb={6}
           boxShadow="xl"
           bg="white"
           borderRadius="0.75rem"
+
         >
           {/* HEADER SECTION */}
           <Flex
@@ -111,6 +116,7 @@ const BannerList = () => {
               borderRadius="lg"
               px={6}
               onClick={handleBannerModal}
+              mb={4}
             >
               Add Banner
             </Button>

@@ -171,7 +171,7 @@ const AddProduct2 = () => {
         <Box w="77.5%" minH="100vh" pl="1rem">
           <TopBar />
 
-          <Box bg="white" mt={4} p={4} borderRadius="lg">
+          <Box bg="white"mb={6}  mt={4} p={4} borderRadius="lg">
             <Heading fontSize="sm" mb={4}>
               Add New Product
             </Heading>

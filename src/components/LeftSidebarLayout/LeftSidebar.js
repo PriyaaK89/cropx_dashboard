@@ -9,6 +9,10 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
+import { Image } from "@chakra-ui/react";
+import logo from "../../assets/logo.jpeg"
+import { FaBoxOpen, FaTags } from "react-icons/fa";
+ import { MdCategory, MdOutlineProductionQuantityLimits } from "react-icons/md";
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Context/AuthContext";
@@ -67,9 +71,8 @@ const LeftSidebar = () => {
     >
       {/* Logo */}
       <Box p="1rem 2rem">
-        <Text fontSize="2xl" fontWeight="bold">
-          CropX
-        </Text>
+  <Image src={logo} alt="logo" h="40px" />
+
       </Box>
 
       <VStack align="stretch" spacing={0}>
@@ -113,6 +116,8 @@ const LeftSidebar = () => {
                 _hover={{ bg: "#434444ff", color: "#fff" }}
                 fontSize="14px"
               >
+               <Icon as={FaBoxOpen} mr={3}/>
+                
                 Products List
               </Text>
             </Link>
@@ -126,6 +131,8 @@ const LeftSidebar = () => {
                 _hover={{ bg: "#434444ff", color: "#fff" }}
                 fontSize="14px"
               >
+                <Icon as={MdOutlineProductionQuantityLimits} mr={3}/>
+
                 Product
               </Text>
             </Link>
@@ -139,6 +146,8 @@ const LeftSidebar = () => {
                 _hover={{ bg: "#434444ff", color: "#fff" }}
                 fontSize="14px"
               >
+                               <Icon as={MdCategory} mr={3}/>
+
                 Categories List
               </Text>
             </Link>
@@ -152,6 +161,8 @@ const LeftSidebar = () => {
                 _hover={{ bg: "#434444ff", color: "#fff" }}
                 fontSize="14px"
               >
+                               <Icon as={FaTags} mr={3}/>
+
                 Category
               </Text>
             </Link>

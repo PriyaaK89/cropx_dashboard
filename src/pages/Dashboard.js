@@ -5,27 +5,10 @@ import LeftSidebar from "../components/LeftSidebarLayout/LeftSidebar";
 
 const Dashboard = () => {
   return (
-    <Box w="100%" minH="100vh" bg="#f8f8fb">
-      <Flex>
-        {/* Sidebar → Desktop only */}
-        <Box
-          display={{ base: "none", md: "block" }}
-          w="260px"
-          position="fixed"
-          left="0"
-          top="0"
-          h="100vh"
-        >
-          <LeftSidebar />
-        </Box>
-
-        {/* Main Content */}
-        <Box
-          ml={{ base: 0, md: "260px" }}
-          w="100%"
-          p={4}
-        >
-          <Home />
+    <Box backgroundColor="#f8f8fb">
+        <Box display="flex" justifyContent="space-between">
+            <Box display={{base:"none", sm:"none",md:"flex"}}> <LeftSidebar/></Box>
+            <Home/>
         </Box>
     </Box>
   );

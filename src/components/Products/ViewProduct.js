@@ -181,10 +181,10 @@ const ViewProduct = () => {
                                                </Flex>
 
                       <Text color="gray.600">
-                        Actual Price: ₹{v.total_actual_price}
+                        Actual Price: ₹{v.actual_price}
                       </Text>
 
-                      <Text>Discount Price: ₹{v.total_discounted_price}</Text>
+                      <Text>Discount Price: ₹{v.discounted_price}</Text>
 
                       <Badge mt="5px" colorScheme="purple" width="fit-content">
                         {v.discount_percent}% OFF
@@ -243,11 +243,11 @@ const ViewProduct = () => {
                       </Text>
 
                       <Text color="gray.600">
-                        Total Qty: {m.total_quantity_value}
+                        Total Qty: {m.quantity_value}
                       </Text>
 
-                      <Text>Actual Price: ₹{m.total_actual_price}</Text>
-                      <Text>Discount Price: ₹{m.total_discounted_price}</Text>
+                      <Text>Actual Price: ₹{m.actual_price}</Text>
+                      <Text>Discount Price: ₹{m.discounted_price}</Text>
 
                       <Badge mt="5px" colorScheme="pink" width="fit-content">
                         {m.discount_percentage}% OFF
