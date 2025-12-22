@@ -13,6 +13,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { DeleteIcon, AddIcon } from "@chakra-ui/icons";
+import ResponsiveNavbar from "../TopBar/ResponsiveNavbar"
 import TopBar from "../TopBar/TopBar";
 import AddBannerModal from "./AddBannerModal";
 import DeleteBannerModal from "./DeleteBanner";
@@ -82,12 +83,15 @@ const BannerList = () => {
       />
 
       <Box
-        width="77.5%" pl ="1rem" mr ="1rem" 
+        width={{base:"100%",md:"77.5%"}} minH="100vh" pl ={{base:"0",md:"1rem"}} mr ={{base:"0",md:"1rem"}} 
 
-          // borderRadius="0.75rem"
-        //  boxShadow="xl" 
       >
-        <TopBar /> 
+        <Box display={{base:"flex",md:"none"}}>
+         <ResponsiveNavbar/>
+        </Box>
+        <Box display={{base:"none",md:"flex"}}>
+            <TopBar /> 
+        </Box>
 
         {/* OUTER CARD */}
         <Box

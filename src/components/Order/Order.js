@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import TopBar from "../TopBar/TopBar";
+import ResponsiveNavbar from "../TopBar/ResponsiveNavbar";
 import { AuthContext } from "../Context/AuthContext";
 import {
   Box,
@@ -23,11 +24,9 @@ import { useDisclosure } from "@chakra-ui/react";
 const Order = () => {
   const { auth } = useContext(AuthContext);
   const apiToken = auth?.token;
-   console.log("Auth:", auth);
-  console.log("Token:", apiToken);
 
   const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const [selectedOrderID, setSelectedOrderID] = useState(null);
@@ -45,16 +44,17 @@ const Order = () => {
     isOpen: isUpdateOrdersModalOpen,
     onOpen: onUpdateOrdersModalOpen,
     onClose: onUpdateOrdersModalClose,
-    orderId: order_id
   } = useDisclosure();
 
-  const formatData = (dateString) => {
+  const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleString("en-IN");
   };
 
   // Fetch Orders
   const getOrders = async () => {
+    setLoading(true);
+    setError("");
     try {
       const res = await axios.get(Config?.Order_List, {
         headers: {
@@ -65,7 +65,7 @@ const Order = () => {
       if (Array.isArray(res.data.orders)) {
         setOrders(res.data.orders);
       } else {
-        setError("Invalid API format");
+        setError("Invalid API response format");
       }
     } catch (err) {
       setError("Failed to fetch orders");
@@ -75,27 +75,10 @@ const Order = () => {
   };
 
   useEffect(() => {
-    getOrders();
-  }, []);
-
-  if (loading) {
-    return (
-      <Box width="77.5%" minH="100vh" pl="1rem" mr="1rem">
-        <TopBar />
-        <Flex justify="center" mt={10}>
-          <Spinner size="xl" />
-        </Flex>
-      </Box>
-    );
-  }
-
-  if (error) {
-    return (
-      <Flex justify="center" mt={10}>
-        <Text color="red.500">{error}</Text>
-      </Flex>
-    );
-  }
+    if (apiToken) {
+      getOrders();
+    }
+  }, [apiToken]);
 
   return (
     <>
@@ -115,8 +98,16 @@ const Order = () => {
         refreshOrders={getOrders}
       />
 
-      <Box width="77.5%" minH="100vh" pl="1rem" mr="1rem">
-        <TopBar />
+      <Box width={{base:"100%",md:"77.5%"}} minH="100vh" pl={{base:"none",md:"1rem"}} mr={{base:"0",md:"1rem"}}>
+        {/* Mobile Navbar */}
+        <Box display={{base: "flex", md: "none" }}>
+          <ResponsiveNavbar />
+        </Box>
+
+        {/* Desktop TopBar */}
+        <Box display={{base: "none", md:"flex" }}>
+          <TopBar />
+        </Box>
 
         <Box p={4} bg="white" mt={4} borderRadius="0.75rem" boxShadow="lg">
           <Box overflowX="auto">
@@ -124,7 +115,7 @@ const Order = () => {
               <Thead bg="gray.100">
                 <Tr>
                   <Th>#</Th>
-                    <Th>Order ID</Th>
+                  <Th>Order ID</Th>
                   <Th>User</Th>
                   <Th>Products</Th>
                   <Th>Subtotal</Th>
@@ -138,46 +129,70 @@ const Order = () => {
               </Thead>
 
               <Tbody>
-                {orders.map((order, index) => (
-                  <Tr key={order.order_id}>
-                    <Td>{index + 1}</Td>
-                        <Td>{order.order_id}</Td>
-                    <Td>{order.user_name}</Td>
-                    <Td>{order.product_names}</Td>
-                    <Td>{order.subtotal}</Td>
-                    <Td>{order.total_amount}</Td>
-                    <Td>{order.payment_method}</Td>
-                    <Td>{order.order_status}</Td>
-                    <Td>{formatData(order.created_at)}</Td>
-
-                    <Td>
-                      <Button
-                        size="sm"
-                        colorScheme="green"
-                        onClick={() => {
-                          setSelectedOrderID(order.order_id);
-                          setSelectedItems(order.items);
-                          onViewOpen();
-                        }}
-                      >
-                        View
-                      </Button>
-                    </Td>
-
-                    <Td>
-                      <Button
-                        size="sm"
-                        colorScheme="blue"
-                        onClick={() => {
-                          setSelectedOrderID(order.order_id);
-                          onUpdateOrdersModalOpen();
-                        }}
-                      >
-                        Update
-                      </Button>
+                {loading ? (
+                  <Tr>
+                    <Td colSpan={6}>
+                      <Flex justify="center">
+                        <Spinner size="xl" />
+                      </Flex>
                     </Td>
                   </Tr>
-                ))}
+                ) : error ? (
+                  <Tr>
+                    <Td colSpan={11}>
+                      <Text textAlign="center" color="red.500">
+                        {error}
+                      </Text>
+                    </Td>
+                  </Tr>
+                ) : orders.length === 0 ? (
+                  <Tr>
+                    <Td colSpan={11}>
+                      <Text textAlign="center">No orders found</Text>
+                    </Td>
+                  </Tr>
+                ) : (
+                  orders.map((order, index) => (
+                    <Tr key={order.order_id}>
+                      <Td>{index + 1}</Td>
+                      <Td>{order.order_id}</Td>
+                      <Td>{order.user_name}</Td>
+                      <Td>{order.product_names}</Td>
+                      <Td>{order.subtotal}</Td>
+                      <Td>{order.total_amount}</Td>
+                      <Td>{order.payment_method}</Td>
+                      <Td>{order.order_status}</Td>
+                      <Td>{formatDate(order.created_at)}</Td>
+
+                      <Td>
+                        <Button
+                          size="sm"
+                          colorScheme="green"
+                          onClick={() => {
+                            setSelectedOrderID(order.order_id);
+                            setSelectedItems(order.items);
+                            onViewOpen();
+                          }}
+                        >
+                          View
+                        </Button>
+                      </Td>
+
+                      <Td>
+                        <Button
+                          size="sm"
+                          colorScheme="blue"
+                          onClick={() => {
+                            setSelectedOrderID(order.order_id);
+                            onUpdateOrdersModalOpen();
+                          }}
+                        >
+                          Update
+                        </Button>
+                      </Td>
+                    </Tr>
+                  ))
+                )}
               </Tbody>
             </Table>
           </Box>

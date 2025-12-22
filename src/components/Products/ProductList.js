@@ -20,6 +20,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import TopBar from "../TopBar/TopBar";
+import ResponsiveNavbar from "../TopBar/ResponsiveNavbar"
 import { Config } from "../../utils/Config";
 import { useNavigate } from "react-router-dom";
 import DeleteProductModal from "./DeleteProductModal";
@@ -89,8 +90,13 @@ const ProductList = () => {
         productId={productId}
         getProducts={getProducts}
       />
-      <Box width="77.5%" minH="100vh" pl="1rem" mr="1rem">
-        <TopBar />
+      <Box width={{base:"100%",md:"77.5%"}} minH="100vh" pl={{base:"0",md:"1rem"}} mr={{base:"0",md:"1rem"}}>
+        <Box display={{base:"flex",md:"none"}}>
+           <ResponsiveNavbar/>
+        </Box>
+        <Box display={{base:"none",md:"flex"}}>
+            <TopBar />
+        </Box>
         <Box
           mt={4}
           bg="white"

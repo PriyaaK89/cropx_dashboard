@@ -6,7 +6,7 @@ import TopBar from "../TopBar/TopBar";
 const Home = () => {
   return (
     <Box
-       width={{base:"100%",md:"77.5%"}} minH="100vh" pl={{base:"0",md:"1rem"}} mr={{base:"0",md:"1rem"}}
+       width={{base:"100%",md:"77.5%"}} minH="100vh" pl={{base:"0",md:"1rem"}} mr={{base:"0",mb:"1rem"}}
     >
       <Box  display={{base:"flex",md:"none"}} >
              <ResponsiveNavbar/>
@@ -15,7 +15,7 @@ const Home = () => {
       <Box>
 
       </Box>
-      <Box display={{base:"none", sm: "none", md:"flex"}} w="100%">
+      <Box display={{base:"none", sm: "none", md:"flex"}} >
               <TopBar/>
 
       </Box>

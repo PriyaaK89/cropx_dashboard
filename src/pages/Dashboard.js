@@ -7,7 +7,7 @@ const Dashboard = () => {
   return (
     <Box backgroundColor="#f8f8fb">
         <Box display="flex" justifyContent="space-between">
-            <Box display={{base:"none", sm:"none",md:"flex"}}> <LeftSidebar/></Box>
+            <Box display={{base:"none",md:"flex"}}><LeftSidebar/></Box>
             <Home/>
         </Box>
     </Box>

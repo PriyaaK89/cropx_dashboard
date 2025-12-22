@@ -24,6 +24,7 @@ import { FiUploadCloud } from "react-icons/fi";
 import { GoHomeFill } from "react-icons/go";
 import LeftSidebar from "../LeftSidebarLayout/LeftSidebar";
 import TopBar from "../TopBar/TopBar";
+import ResponsiveNavbar from "../TopBar/ResponsiveNavbar"
 import { Link } from "react-router-dom";
 import { Config } from "../../utils/Config";
 
@@ -94,14 +95,19 @@ const AddCategory = () => {
       {/* LEFT SIDEBAR */}
       <Flex justifyContent="space-between">
 
-        <Box>
+        <Box display={{base:"none", md:"flex"}}>
           <LeftSidebar />
         </Box>
 
         {/* MAIN CONTENT */}
 
-        <Box width="77.5%" minH="100vh" pl="1rem" mr="1rem">
-          <TopBar />
+        <Box width={{base:"100%",md:"77.5%"}} minH="100vh" pl={{base:"0",md:"1rem"}} mr={{base:"0",md:"1rem"}}>
+          <Box display={{base:"flex",md:"none"}}>
+            <ResponsiveNavbar/>
+          </Box>
+          <Box display={{base:"none",md:"flex"}}>
+           <TopBar/>
+          </Box>
 
           <Box width="100%" backgroundColor="#fff" mt={4} p={4} borderRadius="0.75rem" boxShadow="lg">
 
