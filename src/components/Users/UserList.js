@@ -1,20 +1,32 @@
 import React, { useEffect, useState } from "react";
-import { Box, Flex, Text, Table, Thead, Tbody, Tr, Th, Td, Spinner } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Text,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  Spinner,
+} from "@chakra-ui/react";
 import axios from "axios";
 import "../../../src/App.css";
+import ResponsiveNavbar from "../TopBar/ResponsiveNavbar";
 import TopBar from "../TopBar/TopBar";
 import { Config } from "../../utils/Config";
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Fetch Users
   const getUsers = async () => {
+    setLoading(true);
+    setError("");
     try {
-      const res = await axios.get(`${Config?.get_users}`);
-       console.log(res);
+      const res = await axios.get(Config?.get_users);
       if (Array.isArray(res.data.users)) {
         setUsers(res.data.users);
       } else {
@@ -31,67 +43,75 @@ const UserList = () => {
     getUsers();
   }, []);
 
-  if (loading) {
-    return (
-      <Box width="77.5%" minH="100vh" pl="1rem" mr="1rem">
-      <TopBar />
-      
-      <Box p={5} bg="white" my="1rem" borderRadius="0.75rem">
-        <Flex justify="center">
-          <Spinner size="xl" />
-        </Flex>
-      </Box>
-    </Box>
-    )
-  }
-
-  if (error) {
-    return (
-      <Flex justify="center" mt={10}>
-        <Text color="red.500">{error}</Text>
-      </Flex>
-    );
-  }
-
   return (
-    <>
-  <Box width="77.5%" minH="100vh" pl="1rem" mr="1rem">
-           <TopBar/>
-                 <Box p={5} bg='white' my='1rem' borderRadius="0.75rem">
-      <Flex justify="space-between" alignItems="center" px={5} mt={5}>
-       <Text fontSize="2xl" fontWeight="600">
-        User List
-      </Text>
-       <Text>
-        Total Users : {users.length}
-       </Text>
-              </Flex>
-      <Box bg = "f8f9fa" overflowX="auto" px={4} maxW="100vw">
+    <Box width={{base:"100%", md:"77.5%" ,}} minH="100vh" pl={{base:"0",md:"1rem"}} mr={{base:"0",md:"1rem"}}>
+      {/* Mobile Navbar */}
+      <Box display={{ base: "flex", md: "none" }}>
+        <ResponsiveNavbar />
+      </Box>
+
+      {/* Desktop TopBar */}
+      <Box display={{ base: "none", md: "flex" }}>
+        <TopBar />
+      </Box>
+
+      <Box p={5} bg="white" my="1rem" borderRadius="0.75rem">
+        <Flex justify="space-between" align="center" px={5} mt={5}>
+          <Text fontSize="2xl" fontWeight="600">
+            User List
+          </Text>
+          <Text>Total Users : {users.length}</Text>
+        </Flex>
+
+        <Box overflowX="auto" px={4}>
           <Table className="productsTable">
-            <Thead bg = "gray.100">
+            <Thead bg="gray.100">
               <Tr>
-                 <Th>Name</Th>
+                <Th>Name</Th>
                 <Th>Email</Th>
                 <Th>Password</Th>
                 <Th>Role</Th>
               </Tr>
             </Thead>
 
-            <Tbody className="productsTable tbody">
-              {users.map((user) => (
-                <Tr key={user.id}>
-                  <Td>{user.name}</Td>
-                  <Td>{user.email}</Td>
-                  <Td>{user.password}</Td>
-                  <Td>{user.role}</Td>
+            <Tbody>
+              {loading ? (
+                <Tr>
+                  <Td colSpan={4}>
+                    <Flex justify="center" py={6}>
+                      <Spinner size="xl" />
+                    </Flex>
+                  </Td>
                 </Tr>
-              ))}
+              ) : error ? (
+                <Tr>
+                  <Td colSpan={4}>
+                    <Text textAlign="center" color="red.500">
+                      {error}
+                    </Text>
+                  </Td>
+                </Tr>
+              ) : users.length === 0 ? (
+                <Tr>
+                  <Td colSpan={4}>
+                    <Text textAlign="center">No users found</Text>
+                  </Td>
+                </Tr>
+              ) : (
+                users.map((user) => (
+                  <Tr key={user.id}>
+                    <Td>{user.name}</Td>
+                    <Td>{user.email}</Td>
+                    <Td>{user.password}</Td>
+                    <Td>{user.role}</Td>
+                  </Tr>
+                ))
+              )}
             </Tbody>
           </Table>
         </Box>
       </Box>
-        </Box>
-          </>
+    </Box>
   );
 };
 

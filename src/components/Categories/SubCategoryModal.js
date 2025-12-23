@@ -21,6 +21,8 @@ const SubCategory = ({ isOpen, onClose }) => {
   const [subCategories, setSubCategories] = useState([]);
   const [categoryId, setCategoryId] = useState("");
   const [subName, setSubName] = useState("");
+  const [subSlug,setSubSlug] = useState("");
+  const [menuOrder, setMenuOrder] = useState("")
   const toast = useToast();
 
   // 🔹 GET CATEGORY LIST
@@ -44,7 +46,7 @@ const SubCategory = ({ isOpen, onClose }) => {
 
   // 🔹 ADD SUB CATEGORY
   const handleSubmit = async () => {
-  if (!categoryId || !subName) {
+  if (!categoryId ==="" || !subName  ===""||! subSlug === "" ||!menuOrder === "") {
     toast({
       title: "All fields are required",
       status: "warning",
@@ -56,8 +58,11 @@ const SubCategory = ({ isOpen, onClose }) => {
 
   try {
     const payload = {
-      category_id: Number(categoryId), // 🔥 IMPORTANT
+      category_id: Number(categoryId), 
       name: subName,
+      slug: subSlug,
+      menu_order: 1,
+
     };
 
     console.log("ADD PAYLOAD", payload);
@@ -112,7 +117,7 @@ const SubCategory = ({ isOpen, onClose }) => {
             </Select>
           </FormControl>
 
-          {/* SUB CATEGORY INPUT ✅ */}
+          {/* SUB CATEGORY INPUT  */}
           <FormControl mb={4}>
             <FormLabel>Sub Category Name</FormLabel>
             <Input
@@ -120,6 +125,20 @@ const SubCategory = ({ isOpen, onClose }) => {
               value={subName}
               onChange={(e) => setSubName(e.target.value)}
             />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Sub Category Slug</FormLabel>
+             <Input placeholder="sub-category-slug"
+               value={subSlug}
+               onChange={(e)=> setSubSlug(e.target.value)}
+              />
+          </FormControl>
+           <FormControl>
+            <FormLabel> Sub Order Menu</FormLabel>
+             <Input placeholder="sub-order-menu"
+               value={menuOrder}
+               onChange={(e)=> setMenuOrder(e.target.value)}
+              />
           </FormControl>
         </ModalBody>
 

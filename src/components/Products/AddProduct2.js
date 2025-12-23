@@ -17,6 +17,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import LeftSidebar from "../LeftSidebarLayout/LeftSidebar";
 import TopBar from "../TopBar/TopBar";
+import ResponsiveNavbar from "../TopBar/ResponsiveNavbar" 
 import { Config } from "../../utils/Config";
 
 const AddProduct2 = () => {
@@ -164,14 +165,20 @@ const AddProduct2 = () => {
   return (
     <Box width="100%" bg="#f8f8fb">
       <Flex justifyContent="space-between">
-        <Box>
+        <Box display={{base:"none",md:"flex"}} >
              <LeftSidebar />
         </Box>
-
+        
+         
         <Box w="77.5%" minH="100vh" pl="1rem">
-          <TopBar />
+          <Box display={{base:"flex",md:"none"}}>
+            <ResponsiveNavbar/>
+          </Box>
+          <Box display={{base:"none",md:"flex"}}>
+            <TopBar />
+        </Box>
 
-          <Box bg="white" mt={4} p={4} borderRadius="lg">
+          <Box bg="white"mb={6}  mt={4} p={4} borderRadius="lg">
             <Heading fontSize="sm" mb={4}>
               Add New Product
             </Heading>
@@ -225,7 +232,7 @@ const AddProduct2 = () => {
                     isDisabled={!formData.sub_category_id}
                   >
                     {childCategories.map((child) => (
-                     <option key={child.sub_category_id} value={child.sub_category_id}>
+                     <option key={child.id} value={child.id}>
                         {child.name}
                       </option>
                     ))}

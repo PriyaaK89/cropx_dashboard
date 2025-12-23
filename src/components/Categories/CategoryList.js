@@ -16,10 +16,12 @@ import { FiEdit, FiTrash2, FiSearch } from "react-icons/fi";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import TopBar from "../TopBar/TopBar";
+import ResponsiveNavbar from "../TopBar/ResponsiveNavbar";
 import { Config } from "../../utils/Config";
 import DeleteCategory from "./DeleteCategory";
 import SubCategory from "./SubCategoryModal";
 import ChildCategory from "./ChildCategoryModal";
+
 
 const CategoryList = () => {
   const [categories, setCategories] = useState([]);
@@ -73,10 +75,15 @@ const CategoryList = () => {
     <SubCategory isOpen={isSubOpen} onClose={onSubClose} />
     <ChildCategory isOpen={isChildOpen} onClose={onChildClose} />
     <DeleteCategory isOpen={isOpen} onClose={onClose} categoryId={categoryId} fetchCategories={fetchCategories}/>
-    <Box width="77.5%"  minH="100vh" pl="1rem" mr="1rem">
-      {/* HEADER */}
-      <TopBar />
-      <Box mt={4}  p={4} borderRadius="0.75rem"  backgroundColor="white" rounded="lg" >
+    <Box width={{base:"100%",md:"77.5%"}}  minH="100vh" pl={{base:"0",md:"1rem"}} mr={{base:"0",md:"1rem"}} mb={6} >
+       {/* HEADER */}
+      <Box display={{base:"flex",md:"none"}}>
+        <ResponsiveNavbar/>
+      </Box>
+      <Box display={{base:"none",md:"flex"}}>
+                <TopBar />
+      </Box>
+      <Box mt={4}  p={4} borderRadius="0.75rem"  backgroundColor="white" rounded="lg"  >
         <Flex justifyContent="space-between" gap={4} align="center" mb="25px">
           <Text fontSize="2xl" fontWeight="bold" color="#333">
             Categories

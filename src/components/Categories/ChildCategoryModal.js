@@ -20,14 +20,17 @@ import { Config } from "../../utils/Config";
 const ChildCategory = ({ isOpen, onClose }) => {
   const toast = useToast();
 
+  // STATES
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
 
   const [categoryId, setCategoryId] = useState("");
   const [subCategoryId, setSubCategoryId] = useState("");
-  const [childName, setChildName] = useState("");
 
-  // 🔹 GET CATEGORY
+  const [childName, setChildName] = useState("");
+  const [childSlug, setChildSlug] = useState("");
+
+  //  GET CATEGORIES
   const fetchCategories = async () => {
     try {
       const res = await axios.get(Config.get_categories);
@@ -41,7 +44,7 @@ const ChildCategory = ({ isOpen, onClose }) => {
     }
   };
 
-  // 🔹 GET SUB CATEGORY (BASED ON CATEGORY ID)
+  //  GET SUB CATEGORIES (BY CATEGORY)
   const fetchSubCategories = async (catId) => {
     try {
       const res = await axios.get(
@@ -57,23 +60,30 @@ const ChildCategory = ({ isOpen, onClose }) => {
     }
   };
 
+  //  LOAD CATEGORIES WHEN MODAL OPENS
   useEffect(() => {
     if (isOpen) fetchCategories();
   }, [isOpen]);
 
-  // 🔹 CATEGORY CHANGE → LOAD SUB CATEGORY
+  //  CATEGORY CHANGE
   const handleCategoryChange = (e) => {
     const id = e.target.value;
     setCategoryId(id);
     setSubCategoryId("");
-    setSubCategories([]);
+    setChildName("");
+    setChildSlug("");
 
     if (id) fetchSubCategories(id);
   };
 
-  // 🔹 ADD CHILD CATEGORY
+  //  SUBMIT CHILD CATEGORY
   const handleSubmit = async () => {
-    if (!categoryId || !subCategoryId || !childName) {
+    if (
+      categoryId === "" ||
+      subCategoryId === "" ||
+      childName === "" ||
+      childSlug === ""
+    ) {
       toast({
         title: "All fields are required",
         status: "warning",
@@ -84,9 +94,9 @@ const ChildCategory = ({ isOpen, onClose }) => {
 
     try {
       await axios.post(Config.add_child_category, {
-        category_id: Number(categoryId),
         sub_category_id: Number(subCategoryId),
         name: childName,
+        slug: childSlug,
       });
 
       toast({
@@ -95,9 +105,11 @@ const ChildCategory = ({ isOpen, onClose }) => {
         duration: 1500,
       });
 
+      // RESET FORM
       setCategoryId("");
       setSubCategoryId("");
       setChildName("");
+      setChildSlug("");
       onClose();
     } catch {
       toast({
@@ -149,13 +161,23 @@ const ChildCategory = ({ isOpen, onClose }) => {
             </Select>
           </FormControl>
 
-          {/* CHILD CATEGORY INPUT */}
-          <FormControl>
+          {/* CHILD NAME */}
+          <FormControl mb={3}>
             <FormLabel>Child Category Name</FormLabel>
             <Input
               placeholder="Enter child category name"
               value={childName}
               onChange={(e) => setChildName(e.target.value)}
+            />
+          </FormControl>
+
+          {/* CHILD SLUG */}
+          <FormControl>
+            <FormLabel>Child Slug</FormLabel>
+            <Input
+              placeholder="Enter Your Slug"
+              value={childSlug}
+              onChange={(e) => setChildSlug(e.target.value)}
             />
           </FormControl>
         </ModalBody>

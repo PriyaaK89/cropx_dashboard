@@ -24,6 +24,7 @@ import { FiUploadCloud } from "react-icons/fi";
 import { GoHomeFill } from "react-icons/go";
 import LeftSidebar from "../LeftSidebarLayout/LeftSidebar";
 import TopBar from "../TopBar/TopBar";
+import ResponsiveNavbar from "../TopBar/ResponsiveNavbar"
 import { Link } from "react-router-dom";
 import { Config } from "../../utils/Config";
 
@@ -33,7 +34,12 @@ const AddCategory = () => {
   const [preview, setPreview] = useState(null);
   const [form, setForm] = useState({
     cate_name: "",
-    cate_des: "",
+    slug: "",
+    description: "",
+    show_in_menu: "",
+    show_on_home: "",
+    menu_order: "",
+    home_order: "",
     image: null,
   });
 
@@ -49,7 +55,14 @@ const AddCategory = () => {
   };
 
   const handleSubmit = async () => {
-    if (!form.cate_name || !form.cate_des || !form.image) {
+    if (!form.cate_name === ""
+      || !form.slug === ""
+       || !form.show_in_menu === ""
+       || ! form.show_on_home === ""
+       || ! form.menu_order === ""
+       || ! form.home_order === ""
+        || !form.image 
+      ) {
       return toast({
         title: "All fields required",
         status: "warning",
@@ -59,7 +72,12 @@ const AddCategory = () => {
 
     const fd = new FormData();
     fd.append("cate_name", form.cate_name);
-    fd.append("cate_des", form.cate_des);
+    fd.append("slug", form.slug);
+    fd.append("description", form.description);
+    fd.append("show_in_menu", form.show_in_menu);
+    fd.append("show_on_home",form.show_on_home);
+    fd.append("menu_order", (form.menu_order));
+    fd.append("home_order",(form.home_order));
     fd.append("image", form.image);
 
     try {
@@ -74,7 +92,13 @@ const AddCategory = () => {
           duration: 2000,
         });
 
-        setForm({ cate_name: "", cate_des: "", image: null });
+        setForm({ cate_name: "", slug:"",
+           description: "",
+            show_in_menu: "",
+            show_on_home: "",
+            menu_order: "",
+            home_order: "",
+            image: null });
         setPreview(null);
       }
     } catch (error) {
@@ -94,14 +118,19 @@ const AddCategory = () => {
       {/* LEFT SIDEBAR */}
       <Flex justifyContent="space-between">
 
-        <Box>
+        <Box display={{base:"none", md:"flex"}}>
           <LeftSidebar />
         </Box>
 
         {/* MAIN CONTENT */}
 
-        <Box width="77.5%" minH="100vh" pl="1rem" mr="1rem">
-          <TopBar />
+        <Box width={{base:"100%",md:"77.5%"}} minH="100vh" pl={{base:"0",md:"1rem"}} mr={{base:"0",md:"1rem"}}>
+          <Box display={{base:"flex",md:"none"}}>
+            <ResponsiveNavbar/>
+          </Box>
+          <Box display={{base:"none",md:"flex"}}>
+           <TopBar/>
+          </Box>
 
           <Box width="100%" backgroundColor="#fff" mt={4} p={4} borderRadius="0.75rem" boxShadow="lg">
 
@@ -170,20 +199,61 @@ const AddCategory = () => {
                       rounded="lg"
                     />
                   </FormControl>
-
+                  <FormControl>
+                    <FormLabel fontWeight="600">Slug</FormLabel>
+                    <Input name="slug"
+                     value={form.slug}
+                     onChange={handleChange}
+                     placeholder="category-slug"
+                     bg="white"
+                     p={3}
+                    />
+                  </FormControl>
                   {/* INPUT: DESCRIPTION */}
                   <FormControl>
                     <FormLabel fontWeight="600" color="#2d3748">
                       Description
                     </FormLabel>
                     <Textarea
-                      name="cate_des"
-                      value={form.cate_des}
+                      name="description"
+                      value={form.description}
                       onChange={handleChange}
                       placeholder="Write a short description..."
                       bg="white"
                       p={3}
                       rounded="lg"
+                    />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Show in Menu</FormLabel>
+                     <Input name="show_in_menu" value={form.show_in_menu}
+                      onChange={handleChange}
+                      placeholder="Enter 0 Or 1"
+                     />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Show on Home </FormLabel>
+                    <Input 
+                      name="show_on_home"
+                      value={form.show_on_home}
+                      onChange={handleChange}
+                      placeholder="Enter 0 Or 1"
+                    />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Menu Order</FormLabel>
+                    <Input type="number" name="menu_order"
+                    value={form.menu_order}
+                    onChange={handleChange}
+                    placeholder="Enter menu order"
+                    />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Home Order</FormLabel>
+                    <Input type="number" name="home_order"
+                    value={form.home_order}
+                    onChange={handleChange}
+                    placeholder="Enter home order"
                     />
                   </FormControl>
 

@@ -9,6 +9,10 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
+import { Image } from "@chakra-ui/react";
+import logo from "../../assets/logo.jpeg"
+import { FaBoxOpen, FaTags } from "react-icons/fa";
+ import { MdCategory, MdOutlineProductionQuantityLimits } from "react-icons/md";
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Context/AuthContext";
@@ -18,6 +22,8 @@ import { MdArrowDropDown, MdArrowLeft } from "react-icons/md";
 
 import { FaUser, FaThList } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
+// import { FiLayers } from "react-icons/fi";
+
 
 const LeftSidebar = () => {
   const navigate = useNavigate();
@@ -33,6 +39,7 @@ const LeftSidebar = () => {
     "/add-product",
     "/categories-list",
     "/add-category",
+    // "/collection"
   ];
 
   const shouldCatalogBeOpen = catalogRoutes.includes(location.pathname);
@@ -67,9 +74,8 @@ const LeftSidebar = () => {
     >
       {/* Logo */}
       <Box p="1rem 2rem">
-        <Text fontSize="2xl" fontWeight="bold">
-          CropX
-        </Text>
+  <Image src={logo} alt="logo" h="40px" />
+
       </Box>
 
       <VStack align="stretch" spacing={0}>
@@ -113,6 +119,8 @@ const LeftSidebar = () => {
                 _hover={{ bg: "#434444ff", color: "#fff" }}
                 fontSize="14px"
               >
+               <Icon as={FaBoxOpen} mr={3}/>
+                
                 Products List
               </Text>
             </Link>
@@ -126,6 +134,8 @@ const LeftSidebar = () => {
                 _hover={{ bg: "#434444ff", color: "#fff" }}
                 fontSize="14px"
               >
+                <Icon as={MdOutlineProductionQuantityLimits} mr={3}/>
+
                 Product
               </Text>
             </Link>
@@ -139,6 +149,8 @@ const LeftSidebar = () => {
                 _hover={{ bg: "#434444ff", color: "#fff" }}
                 fontSize="14px"
               >
+                               <Icon as={MdCategory} mr={3}/>
+
                 Categories List
               </Text>
             </Link>
@@ -152,6 +164,8 @@ const LeftSidebar = () => {
                 _hover={{ bg: "#434444ff", color: "#fff" }}
                 fontSize="14px"
               >
+                               <Icon as={FaTags} mr={3}/>
+
                 Category
               </Text>
             </Link>
@@ -199,6 +213,18 @@ const LeftSidebar = () => {
             <Text fontSize="14px">Order</Text>
           </Flex>
         </Link>
+         {/* <Link to="/collection">
+          <Flex
+            align="center"
+            p="8px 14px"
+            bg={isActive("/collection") ? "#e9ecee" : "transparent"}
+            color={isActive("/collection") ? "#4d4d4d" : "#black"}
+            _hover={{ bg: "#434444ff", color: "#fff" }}
+          >
+            <Icon as={FiFolder} mr={4} />
+            <Text fontSize="14px">Collection</Text>
+          </Flex>
+        </Link> */}
       </VStack>
 
       {/* Logout */}

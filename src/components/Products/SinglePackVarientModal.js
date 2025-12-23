@@ -117,7 +117,7 @@ const SinglePackVarientModal = ({ isOpen, onClose, productId, productType, fetch
               <FormLabel fontWeight="600" color="gray.700">Actual Price</FormLabel>
               <Input
                 type="number"
-                name="actual_price"
+                name=""
                 placeholder="Enter price"
                 value={formData.actual_price}
                 onChange={handleChange}
