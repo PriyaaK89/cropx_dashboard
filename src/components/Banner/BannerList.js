@@ -13,8 +13,8 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { DeleteIcon, AddIcon } from "@chakra-ui/icons";
+import ResponsiveNavbar from "../TopBar/ResponsiveNavbar"
 import TopBar from "../TopBar/TopBar";
-import { useNavigate } from "react-router-dom";
 import AddBannerModal from "./AddBannerModal";
 import DeleteBannerModal from "./DeleteBanner";
 import { AuthContext } from "../Context/AuthContext";
@@ -33,21 +33,19 @@ const BannerList = () => {
   } = useDisclosure();
   const { auth } = useContext(AuthContext);
   const apiToken = auth?.token;
-  console.log(apiToken, "authToken")
 
   const fetchBanner = async () => {
     setLoading(true);
     try {
       const response = await axios.get(`${Config?.get_banners}`, {
         headers: {
-          Authorization: `Bearer ${apiToken}`
-        }
+          Authorization: `Bearer ${apiToken}`,
+        },
       });
       if (response?.status === 200) {
         setBanner(response?.data?.banners || []);
       }
     } catch (error) {
-      console.log(error);
       toast({
         title: "Failed to load banners",
         status: "error",
@@ -61,92 +59,123 @@ const BannerList = () => {
     fetchBanner();
   }, []);
 
-  // DELETE Banner API
-
-  const handleBannerModal = () => {
-    onOpen();
-  };
+  const handleBannerModal = () => onOpen();
   const handleDeleteModal = (id) => {
-    onDeleteModalOpen();
     setSelectedBannerId(id);
+    onDeleteModalOpen();
   };
 
   return (
     <>
+      {/* ADD BANNER MODAL */}
       <AddBannerModal
         isOpen={isOpen}
         onClose={onClose}
         fetchBanner={fetchBanner}
       />
+
+      {/* DELETE CONFIRM MODAL */}
       <DeleteBannerModal
         isDeleteModalOpen={isDeleteModalOpen}
         onDeleteModalClose={onDeleteModalClose}
         fetchBanner={fetchBanner}
         selectedBannerId={selectedBannerId}
       />
-      <Box width="80.3%" bg="#f8f9fa" minH="100vh">
-        <TopBar />
 
-        {/* TOP BAR ACTIONS */}
-        <Flex justify="space-between" align="center" p={5}>
-          <Text fontSize="2xl" fontWeight="bold">
-            Banners
-          </Text>
+      <Box
+        width={{base:"100%",md:"77.5%"}} minH="100vh" pl ={{base:"0",md:"1rem"}} mr ={{base:"0",md:"1rem"}} 
 
-          <Button
-            leftIcon={<AddIcon />}
-            colorScheme="blue"
-            borderRadius="lg"
-            px={6}
-            onClick={handleBannerModal}>
-            Add Banner
-          </Button>
-        </Flex>
+      >
+        <Box display={{base:"flex",md:"none"}}>
+         <ResponsiveNavbar/>
+        </Box>
+        <Box display={{base:"none",md:"flex"}}>
+            <TopBar /> 
+        </Box>
 
-        {/* BANNER LIST */}
-        <Box px={5}>
-          {loading ? (
-            <Flex justify="center" mt={10}>
-              <Spinner size="xl" />
-            </Flex>
-          ) : banner?.length === 0 ? (
-            <Text textAlign="center" mt={10} fontSize="lg" color="gray.600">
-              No banners found
+        {/* OUTER CARD */}
+        <Box
+         p={4}
+          mt={4}
+          mb={6}
+          boxShadow="xl"
+          bg="white"
+          borderRadius="0.75rem"
+
+        >
+          {/* HEADER SECTION */}
+          <Flex
+            justify="space-between"
+            align="center"
+            gap={4}
+          >
+            <Text fontSize="2xl" fontWeight="bold" p={1}>
+              Banners
             </Text>
-          ) : (
-            banner?.map((data) => (
-              <Flex
-                key={data?.banner_id}
-                p={4}
-                bg="white"
-                borderRadius="lg"
-                boxShadow="md"
-                mb={4}
-                align="center"
-                justify="space-between"
-                _hover={{ boxShadow: "lg", transform: "scale(1.01)" }}
-                transition="0.2s">
-                <Box width="40%">
-                  <Image
-                    src={data?.banner_img}
-                    borderRadius="md"
-                    width="100%"
-                    height="auto"
-                    objectFit="cover"
-                  />
-                </Box>
 
-                <IconButton
-                  icon={<DeleteIcon />}
-                  colorScheme="red"
-                  variant="outline"
-                  borderRadius="full"
-                  size="lg"
-                  onClick={() => handleDeleteModal(data?.id)}
-                />
+            <Button
+            m={1}
+              leftIcon={<AddIcon />}
+              colorScheme="blue"
+              borderRadius="lg"
+              px={6}
+              onClick={handleBannerModal}
+              mb={4}
+            >
+              Add Banner
+            </Button>
+          </Flex>
+
+          {/* BANNER LIST */}
+          <Box px={5}>
+            {loading ? (
+              <Flex justify="center" mt={10}>
+                <Spinner size="xl" />
               </Flex>
-            ))
-          )}
+            ) : banner?.length === 0 ? (
+              <Text textAlign="center" mt={10} fontSize="lg" color="gray.600">
+                No banners found
+              </Text>
+            ) : (
+              banner?.map((data) => (
+                <Flex
+                  key={data?.banner_id}
+                  p={4}
+                  bg="#f8f8fb"
+                  borderRadius="lg"
+                  boxShadow="md"
+                  mb={4}
+                  align="center"
+                  justify="space-between"
+                  direction={{ base: "column", md: "row" }}
+                  gap={4}
+                  _hover={{ boxShadow: "lg", transform: "scale(1.01)" }}
+                  transition="0.2s"
+                >
+                  {/* IMAGE */}
+                  <Box width="44.4%">
+                    <Image
+                      src={data?.banner_img}
+                      borderRadius="md"
+                      width="100%"
+                      height="auto"
+                      objectFit="cover"
+                    />
+                  </Box>
+
+                  {/* DELETE BUTTON */}
+                  <IconButton
+                    icon={<DeleteIcon />}
+                    colorScheme="red"
+                    variant="outline"
+                    borderRadius="full"
+                    size="lg"
+                    onClick={() => handleDeleteModal(data?.id)}
+                  />
+                </Flex>
+              ))
+            )}
+          </Box>
         </Box>
       </Box>
     </>

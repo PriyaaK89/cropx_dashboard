@@ -1,19 +1,5 @@
-import {
-  Box,
-  Button,
-  Flex,
-  FormControl,
-  FormLabel,
-  Input,
-  Select,
-  Textarea,
-  Heading,
-  VStack,
-  useToast,
-  SimpleGrid,
-  Image,
-} from "@chakra-ui/react";
-import React, { useState } from "react";
+import { Box, Button, Flex, FormControl, FormLabel, Input, Select, Textarea, Heading, VStack, useToast, SimpleGrid, Image,} from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import LeftSidebar from "../LeftSidebarLayout/LeftSidebar";
 import TopBar from "../TopBar/TopBar";
@@ -21,15 +7,30 @@ import { Config } from "../../utils/Config";
 
 const AddProduct = () => {
   const toast = useToast();
+  const [categories, setCategories] = useState([]);
+  const [categoryLoading, setCategoryLoading] = useState(false);
+
+   const fetchCategories = async () => {
+  setCategoryLoading(true);
+  try {
+      const res = await axios.get(`${Config?.get_categories}`);
+    console.log(res,"res");
+    setCategories(res.data.categories || res.data); 
+  } catch (error) {
+    console.log("Category fetch error", error);
+  }
+  setCategoryLoading(false);
+};
+
 
   const [formData, setFormData] = useState({
     product_name: "",
     product_category: "",
+    sub_category: "",
+    child_category: "",
+    brand : "",
     product_description: "",
     product_type: "",
-    quantity_type: "",
-    quantity_value: "",
-    stock_qty: "",
     mfg_date: "",
     exp_date: "",
   });
@@ -79,36 +80,36 @@ const AddProduct = () => {
       });
     }
   };
+  useEffect (()=>{
+      fetchCategories()  
+  },[])
 
   return (
+        <Box width="100%" backgroundColor="#f8f8fb" >
+    
     <Flex justifyContent="space-between">
     <Box>  <LeftSidebar /></Box>
 
-      <Box w="80.3%" bg="#f3f6fb" minH="100vh">
+      <Box w="77.5%" minH="100vh" pl="1rem" mr="1rem">
         <TopBar />
 
         {/* Page Header */}
-        <Box p={6}>
+          <Box bgColor="white" mt={4} p={4} borderRadius="0.75rem" boxShadow="lg">
           <Heading fontSize="sm" mb={3}>
             Add New Product
           </Heading>
-        </Box>
 
         {/* Form Card */}
         <Box
-          mx="auto"
-          w="92%"
-          bg="white"
-          p={8}
-          borderRadius="xl"
-          boxShadow="0 4px 20px rgba(0,0,0,0.08)"
+         
         >
           <SimpleGrid columns={[1, 1, 2]} spacing={8}>
             {/* Left Section */}
             <VStack spacing={5} align="stretch">
               <FormControl>
-                <FormLabel fontWeight="600">Product Name</FormLabel>
+                <FormLabel fontWeight="600" fontSize="14px">Product Name</FormLabel>
                 <Input
+                  fontSize="14px"
                   name="product_name"
                   value={formData.product_name}
                   onChange={handleChange}
@@ -118,99 +119,94 @@ const AddProduct = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel fontWeight="600">Product Category</FormLabel>
-                <Input
-                  name="product_category"
-                  value={formData.product_category}
-                  onChange={handleChange}
-                  placeholder="e.g. Organic Fertilizer"
-                  bg="#f1f4f9"
-                />
+                <FormLabel fontSize="14px" fontWeight="600">Product Category</FormLabel>
+                <Select name="product_category"
+                 value={formData.product_category}
+                 onChange={handleChange}
+                 bg="#f1f4f9"
+                 fontSize = "14px"
+                 placeholder={categoryLoading ? "Loading..." :"Select Category"}
+                >
+                {categories?.map((cat)=>{
+                   return <option key={cat.id} value={cat.id}>
+                      {cat.cate_name
+}
+                  </option>
+                })}
+                </Select>
+              </FormControl>
+              <FormControl>
+                <FormLabel fontSize="14px" fontWeight="600"> Sub Category</FormLabel>
+                  <Input 
+                    fontSize="14px"
+                     name="sub_category"
+                     value={formData.sub_category}
+                     onChange={handleChange}
+                     placeholder="enter your sub category"
+                     bg="#f1f4f9"
+                  />
+              </FormControl>
+               <FormControl>
+                <FormLabel fontSize="14px" fontWeight="600"> Child Category</FormLabel>
+                  <Input 
+                     fontSize="14px"
+                     name="child_category"
+                     value={formData.child_category}
+                     onChange={handleChange}
+                     placeholder="enter your category category"
+                     bg="#f1f4f9"
+                  />
+              </FormControl>
+              <FormControl>
+                <FormLabel fontSize="14px" fontWeight="600">
+                  Brand
+                  <Input fontSize="14px" name="brand" value={formData.brand} 
+                    onChange={handleChange}
+                    placeholder="Enter brand name"
+                    bg="#f1f4f9"
+                   />
+                </FormLabel>
               </FormControl>
 
               <FormControl>
-                <FormLabel fontWeight="600">Description</FormLabel>
+                <FormLabel fontSize="14px" fontWeight="600">Description</FormLabel>
                 <Textarea
                   name="product_description"
                   value={formData.product_description}
                   onChange={handleChange}
                   placeholder="Write product description"
                   bg="#f1f4f9"
+                  fontSize="14px"
                 />
               </FormControl>
 
               <FormControl>
-                <FormLabel fontWeight="600">Product Type</FormLabel>
+                <FormLabel fontSize="14px" fontWeight="600">Product Type</FormLabel>
                 <Select
                   name="product_type"
                   value={formData.product_type}
                   onChange={handleProductType}
                   bg="#f1f4f9"
+                  fontSize="14px"
                 >
                   <option value="">Select Type</option>
                   <option value="solid">Solid</option>
                   <option value="liquid">Liquid</option>
                 </Select>
               </FormControl>
-
-              {formData.product_type && (
-                <FormControl>
-                  <FormLabel fontWeight="600">Quantity Type</FormLabel>
-                  <Select
-                    bg="#f1f4f9"
-                    name="quantity_type"
-                    value={formData.quantity_type}
-                    onChange={handleChange}
-                  >
-                    <option value="">Select Quantity Type</option>
-                    {formData.product_type === "solid" && (
-                      <>
-                        <option value="gram">Gram</option>
-                        <option value="kg">Kg</option>
-                      </>
-                    )}
-                    {formData.product_type === "liquid" && (
-                      <>
-                        <option value="ml">ml</option>
-                        <option value="liter">Liter</option>
-                      </>
-                    )}
-                  </Select>
-                </FormControl>
-              )}
-
-              {formData.quantity_type && (
-                <FormControl>
-                  <FormLabel fontWeight="600">Quantity Value</FormLabel>
-                  <Input
-                    name="quantity_value"
-                    value={formData.quantity_value}
-                    onChange={handleChange}
-                    placeholder="e.g. 500"
-                    bg="#f1f4f9"
-                  />
-                </FormControl>
-              )}
+  
             </VStack>
 
             {/* Right Section */}
             <VStack spacing={5} align="stretch">
-              <FormControl>
-                <FormLabel fontWeight="600">Stock Quantity</FormLabel>
-                <Input
-                  type="number"
-                  name="stock_qty"
-                  value={formData.stock_qty}
-                  onChange={handleChange}
-                  bg="#f1f4f9"
-                />
-              </FormControl>
+              
 
               <FormControl>
-                <FormLabel fontWeight="600">Mfg Date</FormLabel>
+                <FormLabel fontSize="14px" fontWeight="600">Mfg Date</FormLabel>
                 <Input
                   type="date"
                   name="mfg_date"
+                  fontSize="14px"
                   value={formData.mfg_date}
                   onChange={handleChange}
                   bg="#f1f4f9"
@@ -218,24 +214,26 @@ const AddProduct = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel fontWeight="600">Expiry Date</FormLabel>
+                <FormLabel fontSize="14px" fontWeight="600">Expiry Date</FormLabel>
                 <Input
                   type="date"
                   name="exp_date"
                   value={formData.exp_date}
                   onChange={handleChange}
                   bg="#f1f4f9"
+                  fontSize="14px"
                 />
               </FormControl>
 
               <FormControl>
-                <FormLabel fontWeight="600">Upload Product Image</FormLabel>
+                <FormLabel fontSize="14px" fontWeight="600">Upload Product Image</FormLabel>
                 <Input
                   type="file"
                   accept="image/*"
                   onChange={handleImage}
                   bg="#f1f4f9"
                   py={1}
+                  fontSize="14px"
                 />
               </FormControl>
 
@@ -269,7 +267,10 @@ const AddProduct = () => {
           </Flex>
         </Box>
       </Box>
+                  </Box>
     </Flex>
+
+    </Box>
   );
 };
 

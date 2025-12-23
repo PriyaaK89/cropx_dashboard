@@ -35,6 +35,7 @@ const UpdateSingleVariantModal = ({
     quantity_value: "",
     actual_price: "",
     discount_percent: "",
+    stock_qty: ""
   });
 
   // Prefill using your variantID data
@@ -57,6 +58,7 @@ const UpdateSingleVariantModal = ({
           quantity_value: selectedVariant.base_quantity_value,
           actual_price: selectedVariant.total_actual_price,
           discount_percent: selectedVariant.discount_percent,
+            stock_qty: selectedVariant.stock_qty //  Backend value
         });
       }
     }
@@ -129,6 +131,17 @@ const UpdateSingleVariantModal = ({
               <option value="liquid">Liquid</option>
             </Select>
           </FormControl>
+          {/* STOCK QUANTITY */}
+           <FormControl mb="3">
+  <FormLabel>Stock Quantity</FormLabel>
+  <Input
+    type="number"
+    name="stock_qty"
+    value={formData.stock_qty}
+    onChange={handleChange}
+  />
+</FormControl>
+
 
           {/* QUANTITY TYPE */}
           <FormControl mb="3">

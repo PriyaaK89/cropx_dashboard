@@ -6,10 +6,13 @@ import UserList from "../components/Users/UserList";
 const Users = ()=>{
     return(
         <>
+      <Box width="100%" backgroundColor="#f8f8fb" >
         <Box display="flex" justifyContent="space-between">
-           <Box> <LeftSidebar/> </Box>
+           <Box display={{base:"none",md:"flex"}}> <LeftSidebar/> </Box>
            <UserList/>
         </Box>
+        </Box>
+       
         </>
     )
 }

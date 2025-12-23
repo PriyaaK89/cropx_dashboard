@@ -1,14 +1,21 @@
 import { Box, Flex, InputGroup, InputLeftElement, Input, Avatar, Text, Badge, IconButton } from "@chakra-ui/react";
 import { SearchIcon, BellIcon } from "@chakra-ui/icons";
-
+import { useContext } from "react";
+import { AuthContext } from "../Context/AuthContext";
 const TopBar = () => {
+  const {auth} = useContext(AuthContext);
+  const mail = auth?.email;
   return (
-    <Box  >
+    // <Box  >
     <Flex
+
+      display={{base:"none", md:"flex"}}
       w="100%" h="70px" bg="white"
       align="center" px={6} justify="space-between"
       boxShadow="sm" borderBottom="1px solid #e2e8f0"
-      position="sticky" top="0" zIndex={10} >
+      position="sticky" top="0" zIndex={10} mt={5} borderRadius="0.75rem">
+       
+
       {/* LEFT AREA → Search */}
       <InputGroup w="350px">
         <InputLeftElement pointerEvents="none">
@@ -48,7 +55,7 @@ const TopBar = () => {
             px={1}
           >
             3
-          </Badge>
+          </Badge> 
         </Box>
 
         {/* User Info */}
@@ -59,18 +66,15 @@ const TopBar = () => {
             src="https://i.pravatar.cc/150?img=5"
           />
           <Box lineHeight="1.1">
-            <Text fontWeight="600" fontSize="sm">
-              Priya Kumawat
-            </Text>
+            
             <Text fontSize="xs" color="gray.500">
-              priya@example.com
+              {mail}
             </Text>
           </Box>
         </Flex>
       </Flex>
     </Flex>
-    </Box>
+    // </Box>
   );
 };
-
 export default TopBar;

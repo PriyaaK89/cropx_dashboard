@@ -1,19 +1,19 @@
 import React from "react";
-
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import LeftSidebar from "../components/LeftSidebarLayout/LeftSidebar";
 import ProductList from "../components/Products/ProductList";
 
 const Products = () => {
   return (
     <>
-      <Box display="flex" justifyContent="space-between">
-      <Box>  <LeftSidebar/></Box>
-        <ProductList />
-        {/* <ProductList/> */}
+      <Box width="100%" backgroundColor="#f8f8fb"  >
+        <Box display="flex" justifyContent="space-between">
+          <Box display={{base:"none", md:"flex"}}> <LeftSidebar /></Box>
+          <ProductList />
+        </Box>
       </Box>
     </>
   );
 };
 
-export default Products
+export default Products;

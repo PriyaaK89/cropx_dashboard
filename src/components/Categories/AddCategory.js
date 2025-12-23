@@ -17,12 +17,14 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
 } from "@chakra-ui/react";
+
 import { useState } from "react";
 import axios from "axios";
 import { FiUploadCloud } from "react-icons/fi";
 import { GoHomeFill } from "react-icons/go";
 import LeftSidebar from "../LeftSidebarLayout/LeftSidebar";
 import TopBar from "../TopBar/TopBar";
+import ResponsiveNavbar from "../TopBar/ResponsiveNavbar"
 import { Link } from "react-router-dom";
 import { Config } from "../../utils/Config";
 
@@ -32,7 +34,12 @@ const AddCategory = () => {
   const [preview, setPreview] = useState(null);
   const [form, setForm] = useState({
     cate_name: "",
-    cate_des: "",
+    slug: "",
+    description: "",
+    show_in_menu: "",
+    show_on_home: "",
+    menu_order: "",
+    home_order: "",
     image: null,
   });
 
@@ -48,7 +55,14 @@ const AddCategory = () => {
   };
 
   const handleSubmit = async () => {
-    if (!form.cate_name || !form.cate_des || !form.image) {
+    if (!form.cate_name === ""
+      || !form.slug === ""
+       || !form.show_in_menu === ""
+       || ! form.show_on_home === ""
+       || ! form.menu_order === ""
+       || ! form.home_order === ""
+        || !form.image 
+      ) {
       return toast({
         title: "All fields required",
         status: "warning",
@@ -58,13 +72,19 @@ const AddCategory = () => {
 
     const fd = new FormData();
     fd.append("cate_name", form.cate_name);
-    fd.append("cate_des", form.cate_des);
+    fd.append("slug", form.slug);
+    fd.append("description", form.description);
+    fd.append("show_in_menu", form.show_in_menu);
+    fd.append("show_on_home",form.show_on_home);
+    fd.append("menu_order", (form.menu_order));
+    fd.append("home_order",(form.home_order));
     fd.append("image", form.image);
 
     try {
-      const res = await axios.post(`${Config?.add_categories}`, fd,
-        { headers: { "Content-Type": "multipart/form-data" }, }
-      );
+      const res = await axios.post(`${Config?.add_categories}`, fd, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
       if (res.data.success) {
         toast({
           title: "Category Added",
@@ -72,7 +92,13 @@ const AddCategory = () => {
           duration: 2000,
         });
 
-        setForm({ cate_name: "", cate_des: "", image: null });
+        setForm({ cate_name: "", slug:"",
+           description: "",
+            show_in_menu: "",
+            show_on_home: "",
+            menu_order: "",
+            home_order: "",
+            image: null });
         setPreview(null);
       }
     } catch (error) {
@@ -85,142 +111,220 @@ const AddCategory = () => {
   };
 
   return (
-    <Box width="100%">
-      <HStack justifyContent="space-between">
-        <Box>
+
+    <Box width="100%" backgroundColor="#f8f8fb">
+
+
+      {/* LEFT SIDEBAR */}
+      <Flex justifyContent="space-between">
+
+        <Box display={{base:"none", md:"flex"}}>
           <LeftSidebar />
         </Box>
+
         {/* MAIN CONTENT */}
-        <Box width="80.3%" bg="#f8f9fa">
-          <TopBar />
-          <HStack justifyContent="space-between" alignItems="flex-start">
-            <Breadcrumb color="#8B8D97" mt="1rem" ml="10px" height="20px">
-              <BreadcrumbItem><BreadcrumbLink as={Link} to="/">  <GoHomeFill color="#5570F1" /> </BreadcrumbLink></BreadcrumbItem>
-              <BreadcrumbItem>
-                <BreadcrumbLink
-                  as={Link}
-                  to="/categories-list"
-                  color="#8B8D97"
-                  fontSize="13px">
-                  Category List
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbItem>
-                <BreadcrumbLink to="" as={Link} color="#8B8D97" fontSize="13px">
-                  Add Categories
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-            </Breadcrumb>
-          </HStack>
-          <Heading size="sm" ml="10px" mb={8} fontWeight="600" color="#2b2d42">
-            Add Category
-          </Heading>
 
-          <Flex justify="center">
-            <Box
-              bg="whiteAlpha.700"
-              backdropFilter="blur(10px)"
-              w="500px"
-              p={8}
-              rounded="2xl"
-              boxShadow="0 8px 30px rgba(0,0,0,0.08)"
-              border="1px solid #e2e8f0">
-              <VStack>
-                {/* INPUT: NAME */}
-                <FormControl>
-                  <FormLabel fontWeight="600" color="#2d3748">
-                    Category Name
-                  </FormLabel>
-                  <Input
-                    name="cate_name"
-                    value={form.cate_name}
-                    onChange={handleChange}
-                    placeholder="Enter category name"
-                    bg="white"
-                    p={3}
-                    rounded="lg"
-                  />
-                </FormControl>
+        <Box width={{base:"100%",md:"77.5%"}} minH="100vh" pl={{base:"0",md:"1rem"}} mr={{base:"0",md:"1rem"}}>
+          <Box display={{base:"flex",md:"none"}}>
+            <ResponsiveNavbar/>
+          </Box>
+          <Box display={{base:"none",md:"flex"}}>
+           <TopBar/>
+          </Box>
 
-                {/* INPUT: DESCRIPTION */}
-                <FormControl>
-                  <FormLabel fontWeight="600" color="#2d3748">
-                    Description
-                  </FormLabel>
-                  <Textarea
-                    name="cate_des"
-                    value={form.cate_des}
-                    onChange={handleChange}
-                    placeholder="Write a short description..."
-                    bg="white"
-                    p={3}
-                    rounded="lg"
-                  />
-                </FormControl>
+          <Box width="100%" backgroundColor="#fff" mt={4} p={4} borderRadius="0.75rem" boxShadow="lg">
 
-                {/* IMAGE UPLOAD BOX */}
-                <FormControl>
-                  <FormLabel fontWeight="600" color="#2d3748">
-                    Upload Image
-                  </FormLabel>
+            <HStack justifyContent="space-between" alignItems="flex-start">
+              <Breadcrumb color="#8B8D97" mt="1rem" ml="10px" height="20px">
+                <BreadcrumbItem>
+                  <BreadcrumbLink as={Link} to="/">
+                    <GoHomeFill color="#5570F1" />
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
 
-                  <Box
-                    border="2px dashed #a0aec0"
-                    rounded="xl"
-                    p={6}
-                    textAlign="center"
-                    cursor="pointer"
-                    _hover={{ bg: "#f1f5f9" }}
-                    position="relative">
+                <BreadcrumbItem>
+                  <BreadcrumbLink
+                    as={Link}
+                    to="/categories-list"
+                    color="#8B8D97"
+                    fontSize="13px"
+                  >
+                    Category List
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+
+                <BreadcrumbItem>
+                  <BreadcrumbLink color="#8B8D97" fontSize="13px">
+                    Add Categories
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+              </Breadcrumb>
+
+              <Heading
+                size="sm"
+                ml="10px"
+                mb={8}
+                fontWeight="600"
+                color="#2b2d42"
+              >
+                Add Category
+              </Heading>
+            </HStack>
+
+            {/* FORM CARD */}
+            <Flex justify="center">
+              <Box
+                bg="white"
+                backdropFilter="blur(10px)"
+                w="500px"
+                p={8}
+                rounded="2xl"
+                boxShadow="0 8px 30px rgba(0,0,0,0.08)"
+                border="1px solid #e2e8f0"
+              >
+                <VStack spacing={4}>
+
+                  {/* INPUT: NAME */}
+                  <FormControl>
+                    <FormLabel fontWeight="600" color="#2d3748">
+                      Category Name
+                    </FormLabel>
                     <Input
-                      type="file"
-                      name="image"
-                      opacity="0"
-                      position="absolute"
-                      top="0"
-                      left="0"
-                      width="100%"
-                      height="100%"
-                      cursor="pointer"
+                      name="cate_name"
+                      value={form.cate_name}
                       onChange={handleChange}
+                      placeholder="Enter category name"
+                      bg="white"
+                      p={3}
+                      rounded="lg"
                     />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel fontWeight="600">Slug</FormLabel>
+                    <Input name="slug"
+                     value={form.slug}
+                     onChange={handleChange}
+                     placeholder="category-slug"
+                     bg="white"
+                     p={3}
+                    />
+                  </FormControl>
+                  {/* INPUT: DESCRIPTION */}
+                  <FormControl>
+                    <FormLabel fontWeight="600" color="#2d3748">
+                      Description
+                    </FormLabel>
+                    <Textarea
+                      name="description"
+                      value={form.description}
+                      onChange={handleChange}
+                      placeholder="Write a short description..."
+                      bg="white"
+                      p={3}
+                      rounded="lg"
+                    />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Show in Menu</FormLabel>
+                     <Input name="show_in_menu" value={form.show_in_menu}
+                      onChange={handleChange}
+                      placeholder="Enter 0 Or 1"
+                     />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Show on Home </FormLabel>
+                    <Input 
+                      name="show_on_home"
+                      value={form.show_on_home}
+                      onChange={handleChange}
+                      placeholder="Enter 0 Or 1"
+                    />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Menu Order</FormLabel>
+                    <Input type="number" name="menu_order"
+                    value={form.menu_order}
+                    onChange={handleChange}
+                    placeholder="Enter menu order"
+                    />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Home Order</FormLabel>
+                    <Input type="number" name="home_order"
+                    value={form.home_order}
+                    onChange={handleChange}
+                    placeholder="Enter home order"
+                    />
+                  </FormControl>
 
-                    <Icon as={FiUploadCloud} boxSize={10} color="gray.500" />
-                    <Text mt={2} color="gray.600">
-                      Click to upload category image
-                    </Text>
-                  </Box>
-                </FormControl>
+                  {/* IMAGE UPLOAD */}
+                  <FormControl>
+                    <FormLabel fontWeight="600" color="#2d3748">
+                      Upload Image
+                    </FormLabel>
 
-                {/* IMAGE PREVIEW */}
-                {preview && (
-                  <Image
-                    src={preview}
-                    alt="Preview"
+                    <Box
+                      border="2px dashed #a0aec0"
+                      rounded="xl"
+                      p={6}
+                      textAlign="center"
+                      cursor="pointer"
+                      _hover={{ bg: "#f1f5f9" }}
+                      position="relative"
+                    >
+                      <Input
+                        type="file"
+                        name="image"
+                        opacity="0"
+                        position="absolute"
+                        top="0"
+                        left="0"
+                        width="100%"
+                        height="100%"
+                        cursor="pointer"
+                        onChange={handleChange}
+                      />
+
+                      <Icon as={FiUploadCloud} boxSize={10} color="gray.500" />
+                      <Text mt={2} color="gray.600">
+                        Click to upload category image
+                      </Text>
+                    </Box>
+                  </FormControl>
+
+                  {/* IMAGE PREVIEW */}
+                  {preview && (
+                    <Image
+                      src={preview}
+                      alt="Preview"
+                      w="100%"
+                      h="220px"
+                      objectFit="cover"
+                      rounded="xl"
+                      border="1px solid #e2e8f0"
+                    />
+                  )}
+
+                  {/* BUTTON */}
+                  <Button
+                    colorScheme="blue"
+                    size="lg"
                     w="100%"
-                    h="220px"
-                    objectFit="cover"
+                    mt={3}
                     rounded="xl"
-                    border="1px solid #e2e8f0"
-                  />
-                )}
-
-                <Button
-                  colorScheme="blue"
-                  size="lg"
-                  w="100%"
-                  mt={3}
-                  rounded="xl"
-                  fontWeight="600"
-                  onClick={handleSubmit}
-                  boxShadow="0 4px 10px rgba(66,153,225,0.3)">
-                  Add Category
-                </Button>
-              </VStack>
-            </Box>
-          </Flex>
+                    fontWeight="600"
+                    onClick={handleSubmit}
+                    boxShadow="0 4px 10px rgba(66,153,225,0.3)"
+                  >
+                    Add Category
+                  </Button>
+                </VStack>
+              </Box>
+            </Flex>
+          </Box>
         </Box>
-      </HStack>
+      </Flex>
+      {/* </HStack> */}
     </Box>
   );
 };
