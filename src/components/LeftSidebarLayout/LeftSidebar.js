@@ -22,6 +22,8 @@ import { MdArrowDropDown, MdArrowLeft } from "react-icons/md";
 
 import { FaUser, FaThList } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
+// import { FiLayers } from "react-icons/fi";
+
 
 const LeftSidebar = () => {
   const navigate = useNavigate();
@@ -37,6 +39,7 @@ const LeftSidebar = () => {
     "/add-product",
     "/categories-list",
     "/add-category",
+    // "/collection"
   ];
 
   const shouldCatalogBeOpen = catalogRoutes.includes(location.pathname);
@@ -210,6 +213,18 @@ const LeftSidebar = () => {
             <Text fontSize="14px">Order</Text>
           </Flex>
         </Link>
+         {/* <Link to="/collection">
+          <Flex
+            align="center"
+            p="8px 14px"
+            bg={isActive("/collection") ? "#e9ecee" : "transparent"}
+            color={isActive("/collection") ? "#4d4d4d" : "#black"}
+            _hover={{ bg: "#434444ff", color: "#fff" }}
+          >
+            <Icon as={FiFolder} mr={4} />
+            <Text fontSize="14px">Collection</Text>
+          </Flex>
+        </Link> */}
       </VStack>
 
       {/* Logout */}

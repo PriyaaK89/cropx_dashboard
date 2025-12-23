@@ -232,7 +232,7 @@ const AddProduct2 = () => {
                     isDisabled={!formData.sub_category_id}
                   >
                     {childCategories.map((child) => (
-                     <option key={child.sub_category_id} value={child.sub_category_id}>
+                     <option key={child.id} value={child.id}>
                         {child.name}
                       </option>
                     ))}
