@@ -185,13 +185,13 @@ const AddProduct2 = () => {
 
             <SimpleGrid columns={[1, 1, 2]} spacing={6}>
               <VStack spacing={4} align="stretch">
-                <FormControl>
-                  <FormLabel>Product Name</FormLabel>
+                <FormControl mb="4px">
+                  <FormLabel fontSize="14px" fontWeight="bold">Product Name</FormLabel>
                   <Input name="product_name" onChange={handleChange}/>
                 </FormControl>
 
-                <FormControl>
-                  <FormLabel> Product Category</FormLabel>
+                <FormControl mb="4px">
+                  <FormLabel fontSize="14px" fontWeight="bold"> Product Category</FormLabel>
                   <Select
                     placeholder="Select Category"
                     value={formData.category_id}
@@ -205,8 +205,8 @@ const AddProduct2 = () => {
                   </Select>
                 </FormControl>
 
-                <FormControl>
-                  <FormLabel>Sub Category</FormLabel>
+                <FormControl mb="4px">
+                  <FormLabel fontSize="14px" fontWeight="bold">Sub Category</FormLabel>
                   <Select
                    name="sub_category_id"
                     placeholder="Select Sub Category"
@@ -222,8 +222,8 @@ const AddProduct2 = () => {
                   </Select>
                 </FormControl>
 
-                <FormControl>
-                  <FormLabel>Child Category</FormLabel>
+                <FormControl mb="4px">
+                  <FormLabel fontSize="14px" fontWeight="bold">Child Category</FormLabel>
                   <Select
                     placeholder="Select Child Category"
                     value={formData.child_category_id}
@@ -239,17 +239,17 @@ const AddProduct2 = () => {
                   </Select>
                 </FormControl>
 
-                <FormControl>
-                  <FormLabel>Brand</FormLabel>
+                <FormControl mb="4px">
+                  <FormLabel fontSize="14px" fontWeight="bold">Brand</FormLabel>
                   <Input name="brand" onChange={handleChange} />
                 </FormControl>
 
-                <FormControl>
-                  <FormLabel> Product Description</FormLabel>
+                <FormControl mb="4px">
+                  <FormLabel fontSize="14px" fontWeight="bold"> Product Description</FormLabel>
                   <Textarea name="product_description" onChange={handleChange} />
                 </FormControl>
-                  <FormControl>
-                                  <FormLabel fontSize="14px" fontWeight="600">Product Type</FormLabel>
+                  <FormControl mb="4px">
+                                  <FormLabel fontSize="14px" fontWeight="bold">Product Type</FormLabel>
                                   <Select
                                     name="product_type"
                                     value={formData.product_type}
@@ -266,18 +266,18 @@ const AddProduct2 = () => {
               </VStack>
 
               <VStack spacing={4} align="stretch">
-                <FormControl>
-                  <FormLabel>Mfg Date</FormLabel>
+                <FormControl mb="4px">
+                  <FormLabel fontSize="14px" fontWeight="bold">Mfg Date</FormLabel>
                   <Input type="date" name="mfg_date" onChange={handleChange} />
                 </FormControl>
 
-                <FormControl>
-                  <FormLabel>Expiry Date</FormLabel>
+                <FormControl mb="4px">
+                  <FormLabel fontSize="14px" fontWeight="bold">Expiry Date</FormLabel>
                   <Input type="date" name="exp_date" onChange={handleChange} />
                 </FormControl>
 
-                <FormControl>
-                  <FormLabel>Upload Image</FormLabel>
+                <FormControl mb="4px">
+                  <FormLabel fontSize="14px" fontWeight="bold">Upload Image</FormLabel>
                   <Input type="file" onChange={handleImage} />
                 </FormControl>
 

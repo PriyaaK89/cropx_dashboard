@@ -22,7 +22,7 @@ const SubCategory = ({ isOpen, onClose }) => {
   const [categoryId, setCategoryId] = useState("");
   const [subName, setSubName] = useState("");
   const [subSlug,setSubSlug] = useState("");
-  const [menuOrder, setMenuOrder] = useState("")
+  const [menuOrder, setMenuOrder] = useState();
   const toast = useToast();
 
   // 🔹 GET CATEGORY LIST
@@ -61,7 +61,7 @@ const SubCategory = ({ isOpen, onClose }) => {
       category_id: Number(categoryId), 
       name: subName,
       slug: subSlug,
-      menu_order: 1,
+      menu_order: menuOrder,
 
     };
 

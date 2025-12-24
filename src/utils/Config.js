@@ -28,5 +28,7 @@ export const Config = {
     add_sub_category: `${BASE_URL}create-subCategory`,
     get_sub_category: `${BASE_URL}get-subcategories`,
     add_child_category: `${BASE_URL}create-child-category`,
-    get_child_category: `${BASE_URL}get-child-categories`
+    get_child_category: `${BASE_URL}get-child-categories`,
+    get_all_collections: `${BASE_URL}all-collections`,
+    create_collections:  `${BASE_URL}create-collection`
 }
