@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -20,7 +20,7 @@ import {
 import axios from "axios";
 import { Config } from "../../utils/Config";
 
-const CollectionFormModal = ({ isOpen, onClose }) => {
+const UpdateCollectionModal = ({ isOpen, onClose, editData, fetchCollections }) => {
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
   const [description, setDescription] = useState("");
@@ -30,19 +30,23 @@ const CollectionFormModal = ({ isOpen, onClose }) => {
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
-
+console.log(editData?.id, "SelectedData")
   const toast = useToast();
 
-  const handleSubmit = async () => {
-    if (!title || !slug || !image) {
-      toast({
-        title: "Title, Slug and Image are required",
-        status: "warning",
-        duration: 2000,
-      });
-      return;
+  // prefill data
+  useEffect(() => {
+    if (editData) {
+      setTitle(editData.title);
+      setSlug(editData.slug);
+      setDescription(editData.description);
+      setShowInMenu(Number(editData.show_in_menu));
+      setHomeOrder(editData.home_order);
+      setShowOnHome(Number(editData.show_on_home));
+      setPreview(editData.image);
     }
+  }, [editData]);
 
+  const handleUpdate = async () => {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("slug", slug);
@@ -50,37 +54,31 @@ const CollectionFormModal = ({ isOpen, onClose }) => {
     formData.append("show_in_menu", showInMenu);
     formData.append("home_order", homeOrder);
     formData.append("show_on_home", showOnHome);
-    formData.append("image", image);
+    if (image) {
+      formData.append("image", image);
+    }
 
     try {
       setLoading(true);
-      const res = await axios.post(
-        Config?.create_collections,
+      const res = await axios.put(
+
+        `${Config?.update_collections}/${editData?.id}`,
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
 
       if (res.data.success) {
         toast({
-          title: "Collection Created Successfully",
+          title: "Collection Updated Successfully",
           status: "success",
           duration: 2000,
         });
-
-        // reset form
-        setTitle("");
-        setSlug("");
-        setDescription("");
-        setShowInMenu("");
-        setHomeOrder("");
-        setShowOnHome("");
-        setImage(null);
-        setPreview(null);
+        fetchCollections();
         onClose();
       }
     } catch (error) {
       toast({
-        title: "Something went wrong",
+        title: "Update Failed",
         status: "error",
         duration: 2000,
       });
@@ -93,65 +91,46 @@ const CollectionFormModal = ({ isOpen, onClose }) => {
     <Modal isOpen={isOpen} onClose={onClose} size="lg" isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Create Collection</ModalHeader>
+        <ModalHeader>Update Collection</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
-          <SimpleGrid columns={2} spacing={4}>
-
-            <FormControl>
+          <SimpleGrid columns={2} spacing={4} width="100%">
+            <FormControl mb="4px">
               <FormLabel fontSize="14px" fontWeight="bold">Title</FormLabel>
-              <Input
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Enter title"
-              />
+              <Input value={title} onChange={(e) => setTitle(e.target.value)} />
             </FormControl>
 
-            <FormControl>
+            <FormControl mb="4px">
               <FormLabel fontSize="14px" fontWeight="bold">Slug</FormLabel>
-              <Input
-                value={slug}
-                onChange={(e) => setSlug(e.target.value)}
-                placeholder="Enter slug"
-              />
+              <Input value={slug} onChange={(e) => setSlug(e.target.value)} />
             </FormControl>
 
-            <FormControl>
+            <FormControl mb="4px">
               <FormLabel fontSize="14px" fontWeight="bold">Show In Menu</FormLabel>
-              <Select
-                placeholder="Select option"
-                value={showInMenu}
-                onChange={(e) => setShowInMenu(Number(e.target.value))}
+              <Select  value={showInMenu} 
+               onChange={(e)=> setShowInMenu(Number(e.target.value))}
               >
                 <option value={1}>Yes</option>
                 <option value={0}>No</option>
               </Select>
             </FormControl>
 
-            <FormControl>
+            <FormControl mb="4px">
               <FormLabel fontSize="14px" fontWeight="bold">Home Order</FormLabel>
-              <Input
-                type="number"
-                value={homeOrder}
-                onChange={(e) => setHomeOrder(e.target.value)}
-                placeholder="Enter display order (1,2,3...)"
-              />
+              <Input type="number" value={homeOrder} onChange={(e) => setHomeOrder(e.target.value)} />
             </FormControl>
 
-            <FormControl>
+            <FormControl mb="4px">
               <FormLabel fontSize="14px" fontWeight="bold">Show On Home</FormLabel>
-              <Select
-                placeholder="Select option"
-                value={showOnHome}
-                onChange={(e) => setShowOnHome(Number(e.target.value))}
-              >
-                <option value={1}>Yes</option>
+             <Select  value={showOnHome} onChange={(e)=> setShowOnHome(Number(e.target.value))}
+             >
+               <option value={1}>Yes</option>
                 <option value={0}>No</option>
-              </Select>
+             </Select>
             </FormControl>
 
-            <FormControl>
+            <FormControl mb="4px">
               <FormLabel fontSize="14px" fontWeight="bold">Image</FormLabel>
               <Input
                 type="file"
@@ -167,28 +146,17 @@ const CollectionFormModal = ({ isOpen, onClose }) => {
               <Image src={preview} boxSize="120px" rounded="md" />
             )}
 
-            <FormControl gridColumn="span 2">
+            <FormControl mb="4px">
               <FormLabel fontSize="14px" fontWeight="bold">Description</FormLabel>
-              <Textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Enter description"
-              />
+              <Textarea value={description} onChange={(e) => setDescription(e.target.value)} />
             </FormControl>
-
           </SimpleGrid>
         </ModalBody>
 
         <ModalFooter>
-          <Button variant="ghost" mr={3} onClick={onClose}>
-            Cancel
-          </Button>
-          <Button
-            colorScheme="blue"
-            onClick={handleSubmit}
-            isLoading={loading}
-          >
-            Create
+          <Button variant="ghost" mr={3} onClick={onClose}>Cancel</Button>
+          <Button colorScheme="blue" onClick={handleUpdate} isLoading={loading}>
+            Update
           </Button>
         </ModalFooter>
       </ModalContent>
@@ -196,4 +164,4 @@ const CollectionFormModal = ({ isOpen, onClose }) => {
   );
 };
 
-export default CollectionFormModal;
+export default UpdateCollectionModal;
