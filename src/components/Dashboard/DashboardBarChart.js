@@ -38,6 +38,18 @@ const barOptions = {
   plugins: {
     legend: { position: "top" },
   },
+  scales: {
+    x: {
+      grid:{
+        display: false
+      },
+    },
+    y: {
+      grid:{
+        display: false
+      }
+    }
+  }
 };
 
  const DashboardBarChart = () => (

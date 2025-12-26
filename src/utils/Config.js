@@ -32,4 +32,5 @@ export const Config = {
   get_all_collections: `${BASE_URL}all-collections`,
   create_collections: `${BASE_URL}create-collection`,
   update_collections: `${BASE_URL}collections`,
+  delete_collections: `${BASE_URL}collection`
 };

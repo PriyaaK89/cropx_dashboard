@@ -41,6 +41,18 @@ const lineOptions = {
   plugins: {
     legend: { position: "top" },
   },
+     scales: {
+    x: {
+      grid: {
+        display: false, //  column lines remove
+      },
+    },
+    y: {
+      grid: {
+        display: false, // ❌ row lines remove
+      },
+    }, 
+},
 };
 
  const DashboardLineChart = () => (

@@ -16,11 +16,12 @@ import {
   Button,
   HStack,
   Spinner,
+  SimpleGrid,
   useDisclosure,
 } from "@chakra-ui/react";
 import axios from "axios";
 import TopBar from "../TopBar/TopBar";
-import ResponsiveNavbar from "../TopBar/ResponsiveNavbar"
+import ResponsiveNavbar from "../TopBar/ResponsiveNavbar";
 import { Config } from "../../utils/Config";
 import { useNavigate } from "react-router-dom";
 import DeleteProductModal from "./DeleteProductModal";
@@ -30,24 +31,16 @@ const ProductList = () => {
   const [filtered, setFiltered] = useState([]);
   const [loading, setLoading] = useState(true);
   const [productId, setProductId] = useState("");
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(50);
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("");
-  const [status, setStatus] = useState("");
-  const navigate = useNavigate();
-
   const [categoryFilter, setCategoryFilter] = useState("");
+
+  const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  // Fetch Products
   const getProducts = async () => {
     try {
-      const res = await axios.get(
-        `${Config?.get_products}?page=${page}&limit=${limit}&search=${search}&category=${category}&expiry_status=${status}`
-      );
+      const res = await axios.get(Config?.get_products);
       if (res.data.success) {
-        console.log("resdata", res);
         setProducts(res.data.data);
         setFiltered(res.data.data);
       }
@@ -64,23 +57,25 @@ const ProductList = () => {
   useEffect(() => {
     let result = products;
 
-    if (search.trim() !== "") {
+    if (search) {
       result = result.filter((p) =>
         p.product_name.toLowerCase().includes(search.toLowerCase())
       );
     }
 
-    if (categoryFilter !== "") {
-      result = result.filter((p) => p.product_category === categoryFilter);
+    if (categoryFilter) {
+      result = result.filter(
+        (p) => p.product_category === categoryFilter
+      );
     }
+
     setFiltered(result);
   }, [search, categoryFilter, products]);
 
   const handleDeleteModal = (id) => {
-    onOpen();
     setProductId(id);
+    onOpen();
   };
-  console.log(productId, "ProductIDilist");
 
   return (
     <>
@@ -90,203 +85,168 @@ const ProductList = () => {
         productId={productId}
         getProducts={getProducts}
       />
-      <Box width={{base:"100%",md:"77.5%"}} minH="100vh" pl={{base:"0",md:"1rem"}} mr={{base:"0",md:"1rem"}}>
-        <Box display={{base:"flex",md:"none"}}>
-           <ResponsiveNavbar/>
+
+      <Box
+        width={{ base: "100%", md: "calc(100% - 260px)" }}
+        ml={{ base: 0, md: "260px" }}
+        px={{ base:3, md:6}}
+        bg="gray.50"
+        mb={5}
+      >
+        {/* NAVBARS */}
+        <Box display={{ base: "flex", md: "none" }}>
+          <ResponsiveNavbar />
         </Box>
-        <Box display={{base:"none",md:"flex"}}>
-            <TopBar />
+        <Box display={{ base: "none", md: "flex" }}>
+          <TopBar />
         </Box>
-        <Box
-          mt={4}
-          bg="white"
-          p={4}
-          borderRadius="0.75rem"
-          boxShadow="lg"
-          mb={6}
-        >
-          <Text fontSize="2xl" fontWeight="600" mb={4}>
-            {" "}
-            Product List{" "}
+
+        {/* CONTENT */}
+        <Box bg="white" p={4} mt={6} borderRadius="0.75rem" boxShadow="lg">
+          <Text fontSize="2xl" fontWeight="600" mb={5}>
+            Product List
           </Text>
 
-          <Flex mb={4} gap={4} flexWrap="wrap">
+          {/* FILTERS */}
+          <Flex
+            gap={4}
+            mb={4}
+            direction={{ base: "column", md: "row" }}
+          >
             <Input
               placeholder="Search product..."
-              width="250px"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              maxW="300px"
             />
 
             <Select
-              width="250px"
               placeholder="Filter by category"
+              maxW="300px"
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
             >
-              {[...new Set(products.map((p) => p.product_category))].map(
-                (c) => (
-                  <option key={c} value={c}>
-                    {" "}
-                    {c}{" "}
-                  </option>
-                )
-              )}
+              {[...new Set(products.map(p => p.product_category))].map(cat => (
+                <option key={cat}>{cat}</option>
+              ))}
             </Select>
           </Flex>
 
-          {/* LOADING */}
+          {/* LOADER */}
           {loading ? (
             <Flex justify="center" mt={10}>
-              {" "}
-              <Spinner size="xl" />{" "}
+              <Spinner size="xl" />
             </Flex>
           ) : (
-            <Box overflowX="auto" px={4} maxW="100vw">
+            <>
+              {/* MOBILE CARD VIEW */}
+              <SimpleGrid
+                columns={1}
+                spacing={4}
+                display={{ base: "grid", md: "none" }}
+              >
+                {filtered.map(item => (
+                  <Box
+                    key={item.id}
+                    p={4}
+                    borderWidth="1px"
+                    borderRadius="lg"
+                  >
+                    <HStack spacing={3}>
+                      <Image
+                        src={item.product_img}
+                        boxSize="60px"
+                        objectFit="cover"
+                        borderRadius="md"
+                      />
+                      <Box>
+                        <Text fontWeight="600">{item.product_name}</Text>
+                        <Badge
+                          mt={1}
+                          colorScheme={item.stock_qty > 0 ? "green" : "#f5eded"}
+                        >
+                          {item.stock_qty > 0 ? "In Stock" : "Out of Stock"}
+                        </Badge>
+                      </Box>
+                    </HStack>
+
+                    <Button
+                      mt={3}
+                      size="sm"
+                      colorScheme="red"
+                      onClick={() => handleDeleteModal(item.id)}
+                    >
+                      Delete
+                    </Button>
+                  </Box>
+                ))}
+              </SimpleGrid>
+
+              {/* DESKTOP TABLE */}
               <Box
+                display={{ base: "none", md: "block" }}
                 overflowX="auto"
-                whiteSpace="nowrap"
-                sx={{
-                  "&::-webkit-scrollbar": { width:"8px", height: "8px" },
-                  "&::-webkit-scrollbar-thumb": {
-                    width: "8px",
-                    backgroundColor: "#7A7A7A",
-                    borderRadius: "4px",
-                  },
-                  "&::-webkit-scrollbar-track": {
-                    background: "#E8E8E8",
-                    borderRadius: "4px",
-                  },
-                }}
               >
                 <Table
-                  variant="simple"
-                  colorScheme="gray"
-                  minW="1650px"
-                  className="productsTable"
-                >
+                  minW={{ md: "700px", lg: "900px", xl: "1000px", "2xl":"1200px"}}
+                    className="prouctsTable"
+               >
                   <Thead bg="gray.100">
                     <Tr>
-                      <Th width="29%">Product</Th>
-                      <Th width="20%">Category</Th>
-                      <Th width="10%"> Sub Category</Th>
-                      <Th width="10%"> Child Category</Th>
-                      <Th width="8%">Brand</Th>
-                      <Th width="8%">Type</Th>
-                      <Th width="8%">Variants</Th>
-                      <Th width="15%">Stock</Th>
-                      <Th width="15%">Expiry</Th>
-                      <Th width="25%">Action</Th>
+                      <Th >Product</Th>
+                      <Th width="20%">Category Name</Th>
+                      <Th>Product Description</Th>
+                      <Th>Stock</Th>
+                      <Th>Action</Th>
                     </Tr>
                   </Thead>
 
                   <Tbody>
-                    {filtered.map((item) => (
+                    {filtered.map(item => (
                       <Tr key={item.id}>
                         <Td>
-                          <HStack spacing={3}>
+                          <HStack>
                             <Image
                               src={item.product_img}
-                              alt={item.product_name}
-                              boxSize="50px"
+                              boxSize="45px"
                               objectFit="cover"
-                              rounded="md"
                             />
-                            <Box>
-                              <Text fontWeight="600">{item.product_name}</Text>
-                              <Text fontSize="sm" color="gray.500">
-                                {" "}
-                                {item.product_description}{" "}
-                              </Text>
-                            </Box>
+                            <Text>{item.product_name}</Text>
                           </HStack>
                         </Td>
 
                         <Td>{item.category_name}</Td>
-
-                        <Td>{item.sub_category}</Td>
-                        <Td>{item.child_category}</Td>
-                        <Td>{item.brand}</Td>
-                        <Td>{item.product_type}</Td>
-                        <Td>
-                          {item.single_packs.length + item.multi_packs.length}
-                        </Td>
+                         <Td>{item.product_description}</Td>
                         <Td>
                           <Badge
+                          px={4}
+                          py={2}
+                          borderRadius="4px"
                             colorScheme={item.stock_qty > 0 ? "green" : "red"}
-                            px={2}
-                            py={1}
-                            rounded="lg"
                           >
                             {item.stock_qty > 0
-                              ? `${item.stock_qty}`
-                              : "Out of Stock"}
-                          </Badge>
-                        </Td>
-                        <Td>
-                          <Badge
-                            colorScheme={
-                              item.expiry_status === "Near Expiry"
-                                ? "orange"
-                                : "gray"
-                            }
-                            px={2}
-                            py={1}
-                            rounded="lg"
-                          >
-                            {" "}
-                            {item.expiry_status}{" "}
+                              ? item.stock_qty
+                              : "Out Of Stock"}
                           </Badge>
                         </Td>
 
                         <Td>
-                          <HStack spacing={2}>
-                            <Button
-                              size="sm"
-                              colorScheme="blue"
-                              onClick={() => navigate(`/product/${item.id}`)}
-                            >
-                              {" "}
-                              View{" "}
-                            </Button>
-                            <Button
-                              size="sm"
-                              colorScheme="green"
-                              onClick={() =>
-                                navigate(`/product-details/${item.id}`)
-                              }
-                            >
-                              {" "}
-                              Details{" "}
-                            </Button>
-                            <Button
-                              size="sm"
-                              colorScheme="yellow"
-                              onClick={() =>
-                                navigate(`/update-product/${item?.id}`)
-                              }
-                            >
-                              {" "}
-                              Edit{" "}
-                            </Button>
-                            <Button
-                              size="sm"
-                              colorScheme="red"
-                              onClick={() => {
-                                handleDeleteModal(item?.id);
-                              }}
-                            >
-                              {" "}
-                              Delete{" "}
-                            </Button>
-                          </HStack>
+                          <Button
+                            size="sm"
+                            colorScheme="red"
+                            onClick={() =>
+                              handleDeleteModal(item.id)
+                            }
+                          >
+                            Delete
+                          </Button>
                         </Td>
                       </Tr>
                     ))}
                   </Tbody>
                 </Table>
               </Box>
-            </Box>
+            </>
           )}
         </Box>
       </Box>

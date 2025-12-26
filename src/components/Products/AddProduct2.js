@@ -170,7 +170,7 @@ const AddProduct2 = () => {
         </Box>
         
          
-        <Box w="77.5%" minH="100vh" pl="1rem">
+        <Box width={{base:"100%", md:"calc(100% -260px)"}} mb={5}  ml={{base:0,md:"260px"}}  px={{base:3, md:6,}}>
           <Box display={{base:"flex",md:"none"}}>
             <ResponsiveNavbar/>
           </Box>
@@ -178,7 +178,7 @@ const AddProduct2 = () => {
             <TopBar />
         </Box>
 
-          <Box bg="white"mb={6}  mt={4} p={4} borderRadius="lg">
+          <Box bg="white" px={4}  py={2} mt={6}  boxShadow="lg" borderRadius="lg">
             <Heading fontSize="sm" mb={4}>
               Add New Product
             </Heading>

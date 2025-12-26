@@ -2,17 +2,18 @@ import React from "react";
 import { Box, SimpleGrid } from "@chakra-ui/react";
 import ResponsiveNavbar from "../TopBar/ResponsiveNavbar";
 import TopBar from "../TopBar/TopBar";
+import StateCards from "./StateCards";
 import DashboardLineChart from "./DashboardLineChart";
 import DashboardBarChart from "./DashboardBarChart";
-
 
 const Home = () => {
   return (
     <Box
-      width={{ base: "100%", md: "77.5%" }}
-      minH="100vh"
-      pl={{ base: "0", md: "1rem" }}
-      mr={{ base: "0", md: "1rem" }}
+      width={{ base: "100%", md: "calc(100% - 260px)" }}
+      ml={{ base: 0, md: "260px" }}
+      px={{ base: 3, md: 6 }}
+      bg="gray.50"
+      md={5}
     >
       {/* Mobile Navbar */}
       <Box display={{ base: "flex", md: "none" }}>
@@ -24,13 +25,13 @@ const Home = () => {
         <TopBar />
       </Box>
 
-      {/* Charts Section */}
-      <SimpleGrid
-        columns={{ base: 1, md: 2 }}
-        spacing={5}
-        mt={5}
-        px={{ base: 0, md: 4 }}
-      >
+      {/*  FIRST ROW → State Cards */}
+      <Box mt={6}>
+        <StateCards />
+      </Box>
+
+      {/*  SECOND ROW → Charts */}
+      <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6} mt={6}>
         <DashboardLineChart />
         <DashboardBarChart />
       </SimpleGrid>
