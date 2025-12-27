@@ -1,4 +1,15 @@
-import { Box, Image, Heading, Text, Flex, Button, SimpleGrid, Divider, Badge, Stack, useDisclosure,
+import {
+  Box,
+  Image,
+  Heading,
+  Text,
+  Flex,
+  Button,
+  SimpleGrid,
+  Divider,
+  Badge,
+  Stack,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -35,14 +46,17 @@ const ViewProduct = () => {
     onClose: onUpdateMultiVariantClose,
   } = useDisclosure();
 
-  const {isOpen: isSinglePackVariantModalOpen, onOpen: onSinglePackVariantModalOpen, onClose: onSinglePackVariantModalClose} = useDisclosure();
- 
-  const handleSinglePackDeleteClick = (id) =>{
-   console.log("clicked varient id", id);
-   setVariantID(id);
-   onSinglePackVariantModalOpen(); 
-}
- 
+  const {
+    isOpen: isSinglePackVariantModalOpen,
+    onOpen: onSinglePackVariantModalOpen,
+    onClose: onSinglePackVariantModalClose,
+  } = useDisclosure();
+
+  const handleSinglePackDeleteClick = (id) => {
+    console.log("clicked varient id", id);
+    setVariantID(id);
+    onSinglePackVariantModalOpen();
+  };
 
   const fetchDetails = async () => {
     try {
@@ -62,13 +76,18 @@ const ViewProduct = () => {
   if (!productData) return <p>Loading...</p>;
   const { product, variants } = productData;
 
-  const handleDeleteModal = ()=>{
-    onSinglePackVariantModalOpen()
-  }
+  const handleDeleteModal = () => {
+    onSinglePackVariantModalOpen();
+  };
 
   return (
     <>
-    <DeleteSingleVariantModal isSinglePackVariantModalOpen={isSinglePackVariantModalOpen} onSinglePackVariantModalClose={onSinglePackVariantModalClose} variantID={variantID} fetchDetails={fetchDetails}/>
+      <DeleteSingleVariantModal
+        isSinglePackVariantModalOpen={isSinglePackVariantModalOpen}
+        onSinglePackVariantModalClose={onSinglePackVariantModalClose}
+        variantID={variantID}
+        fetchDetails={fetchDetails}
+      />
       <SinglePackVarientModal
         isOpen={isOpen}
         onClose={onClose}
@@ -106,22 +125,36 @@ const ViewProduct = () => {
       />
 
       {/* ===================== LAYOUT FIXED HERE ===================== */}
-      <Box display="flex"  gap={5} bg="#f8f8fb" minH="100vh" pl="1rem" mr="1rem" mt={2}>
+      <Box
+        display="flex"
+        gap={5}
+        bg="#f8f8fb"
+        minH="100vh"
+        pl="1rem"
+        mr="1rem"
+        mt={2}
+      >
         {/* LEFT SIDEBAR */}
         <Box width="17.5%">
           <LeftSidebar />
         </Box>
 
         {/* RIGHT MAIN AREA */}
-        <Box 
-          width="77.5%"         
+        <Box
+          width="77.5%"
           minH="100vh"
           pl="1.5rem" // Same spacing left
           mr="0.5rem"
         >
           <TopBar />
 
-          <Box mt="30px" backgroundColor="white" rounded="lg" boxShadow="lg" p={5}>
+          <Box
+            mt="30px"
+            backgroundColor="white"
+            rounded="lg"
+            boxShadow="lg"
+            p={5}
+          >
             {/* PRODUCT HEADER */}
             <Flex gap="30px" align="flex-start">
               <Image
@@ -148,7 +181,6 @@ const ViewProduct = () => {
               </Box>
             </Flex>
 
-
             {/* ====================== SINGLE PACKS ====================== */}
             <Flex justify="space-between" align="center" mb="15px">
               <Heading size="md">Single Pack Variants</Heading>
@@ -173,12 +205,20 @@ const ViewProduct = () => {
                   >
                     <Stack spacing="6px">
                       <Flex justifyContent="space-between" mr={2}>
-                      <Text fontSize="17px" fontWeight="bold">
-                        {v.base_quantity_value} {v.base_quantity_type}
-                      </Text>
-                      <Box border="1px solid red" borderRadius="4px" p={2} onClick={()=> handleSinglePackDeleteClick(v.variant_id)}>
-                         <RiDeleteBin6Line color="red"  /></Box>
-                                               </Flex>
+                        <Text fontSize="17px" fontWeight="bold">
+                          {v.base_quantity_value} {v.base_quantity_type}
+                        </Text>
+                        <Box
+                          border="1px solid red"
+                          borderRadius="4px"
+                          p={2}
+                          onClick={() =>
+                            handleSinglePackDeleteClick(v.variant_id)
+                          }
+                        >
+                          <RiDeleteBin6Line color="red" />
+                        </Box>
+                      </Flex>
 
                       <Text color="gray.600">
                         Actual Price: ₹{v.actual_price}
@@ -205,7 +245,10 @@ const ViewProduct = () => {
                       <Button
                         colorScheme="blue"
                         size="sm"
-                        onClick={() => onMultiVariantOpen(v.variant_id)}
+                        onClick={() => {
+                          setVariantID(v.variantID);
+                          onMultiVariantOpen();
+                        }}
                       >
                         + Add Multi Pack
                       </Button>
