@@ -16,7 +16,7 @@ import ProductDetails from './components/Products/ProductDetails';
 import Users from './pages/Users';
 import OrderList from './pages/OrderList';
 import AddProduct2 from './components/Products/AddProduct2';
-
+import Collection from './pages/Collection';
 function App() {
   return (
     <>
@@ -36,6 +36,7 @@ function App() {
           <Route path='/update-product/:id' element={<UpdateProduct/>}/>
           <Route path='/users' element={<Users/>}/>
           <Route path='/order' element={<OrderList/>}/>
+          <Route path='/collection' element={<Collection/>}/>
 
         </Routes>
       </Router>

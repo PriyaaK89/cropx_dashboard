@@ -1,18 +1,24 @@
 import React, { useEffect, useState } from "react";
 import {
   Box,
-  Flex,
-  Image,
   Text,
-  SimpleGrid,
-  Spinner,
+  Image,
+  Badge,
+  Flex,
   Input,
-  IconButton,
-  useToast,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
   Button,
+  HStack,
+  Spinner,
+  SimpleGrid,
   useDisclosure,
 } from "@chakra-ui/react";
-import { FiEdit, FiTrash2, FiSearch } from "react-icons/fi";
+import { FiSearch } from "react-icons/fi";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import TopBar from "../TopBar/TopBar";
@@ -22,180 +28,212 @@ import DeleteCategory from "./DeleteCategory";
 import SubCategory from "./SubCategoryModal";
 import ChildCategory from "./ChildCategoryModal";
 
-
 const CategoryList = () => {
   const [categories, setCategories] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const {isOpen, onOpen, onClose} = useDisclosure();
-  const [categoryId, setCategoryId] = useState();
-  const {isOpen:isSubOpen, onOpen:onSubOpen, onClose:onSubClose} = useDisclosure();
-  const {isOpen:isChildOpen, onOpen:onChildOpen , onClose: onChildClose} = useDisclosure();
-  const toast = useToast();
+  const [categoryId, setCategoryId] = useState("");
 
-  const fetchCategories = async () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isSubOpen, onOpen: onSubOpen, onClose: onSubClose } = useDisclosure();
+  const { isOpen: isChildOpen, onOpen: onChildOpen, onClose: onChildClose } = useDisclosure();
+
+  const getCategories = async () => {
     try {
-      const res = await axios.get(`${Config?.get_categories}`);
+      const res = await axios.get(Config?.get_categories);
       setCategories(res.data.categories);
       setFiltered(res.data.categories);
-      setLoading(false);
     } catch (err) {
-      toast({
-        title: "Failed to load categories",
-        status: "error",
-        duration: 1500,
-      });
-      setLoading(false);
+      console.log(err);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
-    fetchCategories();
+    getCategories();
   }, []);
 
-  // SEARCH FUNCTION
-  const handleSearch = (e) => {
-    const value = e.target.value;
-    setSearch(value);
+  useEffect(() => {
+    if (!search) {
+      setFiltered(categories);
+    } else {
+      setFiltered(
+        categories.filter((c) =>
+          c.cate_name.toLowerCase().includes(search.toLowerCase())
+        )
+      );
+    }
+  }, [search, categories]);
 
-    const filteredList = categories.filter((item) =>
-      item.cate_name.toLowerCase().includes(value.toLowerCase())
-    );
-    setFiltered(filteredList);
-  };
-
-  const handleDeleteModal = (id)=>{
+  const handleDelete = (id) => {
+    setCategoryId(id);
     onOpen();
-    setCategoryId(id)
-  }
+  };
 
   return (
     <>
-    <SubCategory isOpen={isSubOpen} onClose={onSubClose} />
-    <ChildCategory isOpen={isChildOpen} onClose={onChildClose} />
-    <DeleteCategory isOpen={isOpen} onClose={onClose} categoryId={categoryId} fetchCategories={fetchCategories}/>
-    <Box width={{base:"100%",md:"77.5%"}}  minH="100vh" pl={{base:"0",md:"1rem"}} mr={{base:"0",md:"1rem"}} mb={6} >
-       {/* HEADER */}
-      <Box display={{base:"flex",md:"none"}}>
-        <ResponsiveNavbar/>
-      </Box>
-      <Box display={{base:"none",md:"flex"}}>
-                <TopBar />
-      </Box>
-      <Box mt={4}  p={4} borderRadius="0.75rem"  backgroundColor="white" rounded="lg"  >
-        <Flex justifyContent="space-between" gap={4} align="center" mb="25px">
-          <Text fontSize="2xl" fontWeight="bold" color="#333">
-            Categories
-          </Text>
-          <Box>
-           <Button colorScheme="blue" px="6" mr={4} onClick={onSubOpen}>
-                + Sub Category
-            </Button>
-             <Button colorScheme="blue" px="6" mr={4} onClick={onChildOpen} >
-               + Child Category
-            </Button>
+      <DeleteCategory
+        isOpen={isOpen}
+        onClose={onClose}
+        categoryId={categoryId}
+        fetchCategories={getCategories}
+      />
+      <SubCategory isOpen={isSubOpen} onClose={onSubClose} />
+      <ChildCategory isOpen={isChildOpen} onClose={onChildClose} />
 
-          <Link to="/add-category">
-            <Button colorScheme="blue" px="6"mr={4} >
-              {" "}
-              + Add Category
-            </Button>
+      <Box
+        width={{ base: "100%", md: "calc(100% - 260px)" }}
+        ml={{ base: 0, md: "260px" }}
+        px={{ base: 3, md: 6}}
+        bg="gray.50"
+        minH="100vh"
+      >
+        {/* NAVBAR */}
+        <Box display={{ base: "flex", md: "none" }}>
+          <ResponsiveNavbar />
+        </Box>
+        <Box display={{ base: "none", md: "flex" }}>
+          <TopBar />
+        </Box>
 
-          </Link>
-                    </Box>
-
-        </Flex>
-
-        {/* SEARCH BAR */}
-        <Flex
-          bg="white"
-          p="10px"
-          borderRadius="md"
-          align="center"
-          boxShadow="sm"
-          mb="25px"
-          w="350px">
-          <FiSearch size={18} color="#888" />
-          <Input
-            ml="10px"
-            variant="unstyled"
-            placeholder="Search category..."
-            value={search}
-            onChange={handleSearch}
-          />
-        </Flex>
-
-        {/* LOADING STATE */}
-        {loading && (
-          <Flex justify="center" align="center" h="200px">
-            <Spinner size="lg" />
-          </Flex>
-        )}
-
-        {/* EMPTY STATE */}
-        {!loading && filtered.length === 0 && (
-          <Flex justify="center" align="center" mt="50px">
-            <Text fontSize="lg" color="gray.500">
-              No categories found.
+        {/* CONTENT */}
+        <Box bg="white" p={4} mt={6} borderRadius="lg" boxShadow="lg">
+          <Flex
+            justify="space-between"
+            align={{ base: "flex-start", md: "center" }}
+            direction={{ base: "column", md: "row" }}
+            gap={4}
+            mb={5}
+          >
+            <Text fontSize="2xl" fontWeight="600">
+              Category List
             </Text>
+
+            <Flex gap={3} flexWrap="wrap">
+              <Button colorScheme="blue" onClick={onSubOpen}>
+                + Sub Category
+              </Button>
+              <Button colorScheme="blue" onClick={onChildOpen}>
+                + Child Category
+              </Button>
+              <Link to="/add-category">
+                <Button colorScheme="blue">+ Add Category</Button>
+              </Link>
+            </Flex>
           </Flex>
-        )}
 
-        {/* CATEGORY GRID */}
-        {!loading && filtered.length > 0 && (
-          <SimpleGrid columns={[1, 2, 3]} spacing="25px">
-            {filtered.map((cat) => (
-              <Box
-                key={cat.id}
-                bg="#f8f8fb"
-                borderRadius="lg"
-                p="18px"
-                boxShadow="md"
-                transition="0.2s"
-                _hover={{ transform: "translateY(-5px)", boxShadow: "xl" }}>
-                <Image
-                  src={cat.image}
-                  alt={cat.cate_name}
-                  height="160px"
-                  width="100%"
-                  objectFit="cover"
-                  borderRadius="md"
-                  mb="12px"
-                />
+          {/* SEARCH */}
+          <Flex
+            mb={4}
+            p={2}
+            align="center"
+            borderRadius="md"
+            boxShadow="sm"
+            maxW="300px"
+          >
+            <FiSearch />
+            <Input
+              ml={2}
+              variant="unstyled"
+              placeholder="Search category..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </Flex>
 
-                <Text fontSize="lg" fontWeight="bold" color="#222">
-                  {cat.cate_name}
-                </Text>
+          {/* LOADING */}
+          {loading ? (
+            <Flex justify="center" mt={10}>
+              <Spinner size="xl" />
+            </Flex>
+          ) : (
+            <>
+              {/* 🔹 MOBILE VIEW → CARD */}
+              <SimpleGrid
+                columns={1}
+                spacing={4}
+                display={{ base: "grid", md: "none" }}
+              >
+                {filtered.map((item) => (
+                  <Box key={item.id} p={4} borderWidth="1px" borderRadius="lg">
+                    <HStack spacing={3}>
+                      <Image
+                        src={item.image}
+                        boxSize="60px"
+                        objectFit="cover"
+                        borderRadius="md"
+                      />
+                      <Box>
+                        <Text fontWeight="600">{item.cate_name}</Text>
+                        <Badge mt={1} colorScheme="blue">
+                          Category
+                        </Badge>
+                      </Box>
+                    </HStack>
 
-                <Text fontSize="sm" color="gray.600" mt="4px">
-                  {cat.description}
-                </Text>
+                    <Button
+                      mt={3}
+                      size="sm"
+                      colorScheme="red"
+                      onClick={() => handleDelete(item.id)}
+                    >
+                      Delete
+                    </Button>
+                  </Box>
+                ))}
+              </SimpleGrid>
 
-                <Text fontSize="xs" color="gray.500" mt="8px">
-                  Created: {new Date(cat.created_at).toLocaleDateString()}
-                </Text>
+              {/* 🔹 DESKTOP VIEW → TABLE (SAME AS PRODUCT LIST) */}
+              <Box display={{ base: "none", md: "block" }} overflowX="auto">
+                <Table
+                  minW={{ md: "700px", lg: "1000px", xl: "1200px", "2xl": "1400px" }}
+                >
+                  <Thead bg="gray.100">
+                    <Tr>
+                      <Th>Category Name</Th>
+                      <Th>Description</Th>
+                      <Th>Created</Th>
+                      <Th>Show In Menu</Th>
+                      <Th>Show On Home</Th>
+                      <Th>Action</Th>
+                    </Tr>
+                  </Thead>
 
-                <Flex justify="flex-end" mt="12px" gap="10px">
-                  <IconButton
-                    icon={<FiEdit />}
-                    size="sm"
-                    colorScheme="blue"
-                    variant="outline"
-                  />
-                  <IconButton
-                    icon={<FiTrash2 />} onClick={()=>{handleDeleteModal(cat?.id)}}
-                    size="sm"
-                    colorScheme="red"
-                    variant="outline"
-                  />
-                </Flex>
+                  <Tbody>
+                    {filtered.map((item) => (
+                      <Tr key={item.id}>
+                        <Td>
+                            <Text>{item.cate_name}</Text>
+                        </Td>
+
+                        <Td>{item.description}</Td>
+
+                        <Td>
+                          {new Date(item.created_at).toLocaleDateString()}
+                        </Td>
+                        <Td>{item.show_in_menu ===1 ? "Yes" : "No"}</Td>
+                           <Td>{item.show_on_menu ===1 ? "Yes" : "No"}</Td>
+
+                          <Td>
+                          <Button
+                            size="sm"
+                            colorScheme="red"
+                            onClick={() => handleDelete(item.id)}
+                          >
+                            Delete
+                          </Button>
+
+                        </Td>
+                      </Tr>
+                    ))}
+                  </Tbody>
+                </Table>
               </Box>
-            ))}
-          </SimpleGrid>
-        )}
+            </>
+          )}
+        </Box>
       </Box>
-    </Box>
     </>
   );
 };

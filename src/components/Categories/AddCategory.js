@@ -33,13 +33,13 @@ const AddCategory = () => {
 
   const [preview, setPreview] = useState(null);
   const [form, setForm] = useState({
-    cate_name: "",
+    title: "",
     slug: "",
     description: "",
     show_in_menu: "",
-    show_on_home: "",
-    menu_order: "",
     home_order: "",
+    menu_order: "",
+    show_on_home: "",
     image: null,
   });
 
@@ -61,7 +61,6 @@ const AddCategory = () => {
        || ! form.show_on_home === ""
        || ! form.menu_order === ""
        || ! form.home_order === ""
-        || !form.image 
       ) {
       return toast({
         title: "All fields required",

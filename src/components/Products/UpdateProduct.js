@@ -48,7 +48,7 @@ const [loading, setLoading] = useState(false);
   // 🔹 Fetch product
   const fetchProduct = async () => {
     try {
-      const res = await axios.get(
+      const res = await axios.put(
         `${Config.get_product_by_id}/${id}`
       );
       const p = res.data.product;

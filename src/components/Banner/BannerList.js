@@ -84,7 +84,6 @@ const BannerList = () => {
 
       <Box
         width={{base:"100%",md:"77.5%"}} minH="100vh" pl ={{base:"0",md:"1rem"}} mr ={{base:"0",md:"1rem"}} 
-
       >
         <Box display={{base:"flex",md:"none"}}>
          <ResponsiveNavbar/>
