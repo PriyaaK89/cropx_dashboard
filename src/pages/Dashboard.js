@@ -1,15 +1,20 @@
 import React from "react";
-import { Box, Flex } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";   
 import Home from "../components/Dashboard/Home";
-import LeftSidebar from "../components/LeftSidebarLayout/LeftSidebar";
+import LeftSidebar from "../components/LeftSidebarLayout/LeftSidebar"; 
 
 const Dashboard = () => {
   return (
-    <Box backgroundColor="#f8f8fb">
-        <Box display="flex" justifyContent="space-between">
-            <Box display={{base:"none",md:"flex"}}><LeftSidebar/></Box>
-            <Home/>
+    <Box bg="#f8f8fb" minH="100vh">
+      <Box display="flex">
+        {/* Sidebar → only LG and above */}
+        <Box display={{ base: "none", lg: "flex" }}>
+          <LeftSidebar />
         </Box>
+
+        {/* Main Content */}
+        <Home />
+      </Box>
     </Box>
   );
 };

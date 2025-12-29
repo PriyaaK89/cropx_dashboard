@@ -126,14 +126,7 @@ const ProductDetails = () => {
                 <Stack spacing={3}>
                   <Heading size="md">{data?.product_name}</Heading>
 
-                  <Badge
-                    width="fit-content"
-                    colorScheme="blue"
-                    px={2}
-                    py={1}
-                    borderRadius="md">
-                    {data?.product_category}
-                  </Badge>
+                  
 
                   <Text color="gray.600">{data?.product_description}</Text>
 
@@ -170,13 +163,13 @@ const ProductDetails = () => {
 
                     <Flex gap={3} align="center">
                       <Text fontSize="xl" fontWeight="bold" color="green.600">
-                        ₹{item?.total_discounted_price}
+                        ₹{item?.discounted_price}
                       </Text>
                       <Text
                         textDecoration="line-through"
                         color="gray.500"
                         fontSize="sm">
-                        ₹{item?.total_actual_price}
+                        ₹{item?.actual_price}
                       </Text>
                     </Flex>
 
@@ -216,13 +209,13 @@ const ProductDetails = () => {
 
                     <Flex gap={3} align="center">
                       <Text fontSize="xl" fontWeight="bold" color="purple.600">
-                        ₹{mp?.total_discounted_price}
+                        ₹{mp?.discounted_price}
                       </Text>
                       <Text
                         textDecoration="line-through"
                         color="gray.500"
                         fontSize="sm">
-                        ₹{mp?.total_actual_price}
+                        ₹{mp?.actual_price}
                       </Text>
                     </Flex>
 

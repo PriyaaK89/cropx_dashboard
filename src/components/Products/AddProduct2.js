@@ -165,12 +165,12 @@ const AddProduct2 = () => {
   return (
     <Box width="100%" bg="#f8f8fb">
       <Flex justifyContent="space-between">
-        <Box display={{base:"none",md:"flex"}} >
+        <Box display={{base:"none",lg:"flex"}} >
              <LeftSidebar />
         </Box>
         
          
-        <Box width={{base:"100%", md:"calc(100% -260px)"}} mb={5}  ml={{base:0,md:"260px"}}  px={{base:3, md:6,}}>
+        <Box width={{base:"100%", md:"calc(100% -260px)"}}  mb={5}  ml={{base:0,lg:"260px"}}  px={{base:3, md:6,}}>
           <Box display={{base:"flex",md:"none"}}>
             <ResponsiveNavbar/>
           </Box>

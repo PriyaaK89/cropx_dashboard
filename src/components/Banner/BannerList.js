@@ -13,7 +13,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { DeleteIcon, AddIcon } from "@chakra-ui/icons";
-import ResponsiveNavbar from "../TopBar/ResponsiveNavbar"
+import ResponsiveNavbar from "../TopBar/ResponsiveNavbar";
 import TopBar from "../TopBar/TopBar";
 import AddBannerModal from "./AddBannerModal";
 import DeleteBannerModal from "./DeleteBanner";
@@ -83,37 +83,33 @@ const BannerList = () => {
       />
 
       <Box
-        width={{base:"100%",md:"77.5%"}} minH="100vh" pl ={{base:"0",md:"1rem"}} mr ={{base:"0",md:"1rem"}} 
+        width={{ base: "100%", lg: "calc(100% - 260px)" }}
+        px={{ base: 3, lg: 6 }}
+        ml={{ base: "0", md: "260px" }}
+        mb={5}
       >
-        <Box display={{base:"flex",md:"none"}}>
-         <ResponsiveNavbar/>
+        <Box display={{ base: "flex", md: "none" }}>
+          <ResponsiveNavbar />
         </Box>
-        <Box display={{base:"none",md:"flex"}}>
-            <TopBar /> 
+        <Box display={{ base: "none", md: "flex" }}>
+          <TopBar />
         </Box>
 
         {/* OUTER CARD */}
-        <Box
-         p={4}
-          mt={4}
-          mb={6}
-          boxShadow="xl"
-          bg="white"
-          borderRadius="0.75rem"
-
-        >
+        <Box p={4} mt={4} boxShadow="sm" bg="white" borderRadius="0.75rem">
           {/* HEADER SECTION */}
           <Flex
             justify="space-between"
-            align="center"
+            align={{ base: "flex-start", md: "center" }}
             gap={4}
+            direction={{ base: "column", md: "row" }}
           >
             <Text fontSize="2xl" fontWeight="bold" p={1}>
               Banners
             </Text>
 
             <Button
-            m={1}
+              m={1}
               leftIcon={<AddIcon />}
               colorScheme="blue"
               borderRadius="lg"
@@ -147,30 +143,31 @@ const BannerList = () => {
                   align="center"
                   justify="space-between"
                   direction={{ base: "column", md: "row" }}
-                  gap={4}
-                  _hover={{ boxShadow: "lg", transform: "scale(1.01)" }}
+                  gap={{ base: 4, md: 6 }}
+                  hover={{ boxShadow: "lg", transform: "scale(1.01)" }}
                   transition="0.2s"
                 >
                   {/* IMAGE */}
-                  <Box width="44.4%">
+                  <Box w={{ base: "100%", md: "70%", lg: "75%" }}>
                     <Image
                       src={data?.banner_img}
                       borderRadius="md"
-                      width="100%"
-                      height="auto"
+                      w="100%"
+                      maxH={{ base: "180px", md: "220px", lg: "260px" }}
                       objectFit="cover"
                     />
                   </Box>
-
-                  {/* DELETE BUTTON */}
-                  <IconButton
-                    icon={<DeleteIcon />}
-                    colorScheme="red"
-                    variant="outline"
-                    borderRadius="full"
-                    size="lg"
-                    onClick={() => handleDeleteModal(data?.id)}
-                  />
+                  <Flex w={{base:"100%",md:"auto"}} justifyContent={{base:"flex-end",md:"center"}}>
+                    {/* DELETE BUTTON */}
+                    <IconButton
+                      icon={<DeleteIcon />}
+                      colorScheme="red"
+                      variant="outline"
+                      borderRadius="full"
+                      size="lg"
+                      onClick={() => handleDeleteModal(data?.id)}
+                    />
+                  </Flex>
                 </Flex>
               ))
             )}

@@ -9,11 +9,11 @@ import DashboardBarChart from "./DashboardBarChart";
 const Home = () => {
   return (
     <Box
-      width={{ base: "100%", md: "calc(100% - 260px)" }}
-      ml={{ base: 0, md: "260px" }}
-      px={{ base: 3, md: 6 }}
-      bg="gray.50"
-      md={5}
+    minH="100vh"
+      width={{ base: "100%", lg: "calc(100% -260px)" }}
+      ml={{ base: 0, lg: "260px" }}
+       px={{ base: 3, md: 4, lg: 6 }}
+       mb={1}
     >
       {/* Mobile Navbar */}
       <Box display={{ base: "flex", md: "none" }}>
@@ -31,7 +31,7 @@ const Home = () => {
       </Box>
 
       {/*  SECOND ROW → Charts */}
-      <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6} mt={6}>
+      <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6} mt={3} mb={5}>
         <DashboardLineChart />
         <DashboardBarChart />
       </SimpleGrid>

@@ -20,7 +20,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import TopBar from "../TopBar/TopBar";
-import ResponsiveNavbar from "../TopBar/ResponsiveNavbar"
+import ResponsiveNavbar from "../TopBar/ResponsiveNavbar";
 import { Config } from "../../utils/Config";
 import { useNavigate } from "react-router-dom";
 import DeleteProductModal from "./DeleteProductModal";
@@ -29,27 +29,37 @@ const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [loading, setLoading] = useState(true);
+
   const [productId, setProductId] = useState("");
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(50);
-  const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("");
-  const [status, setStatus] = useState("");
-  const navigate = useNavigate();
+  const [limit, setLimit] = useState(5);
+  const [totalPages, setTotalPages] = useState(1);
 
+  const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
+  const [expiryFilter, setExpiryFilter] = useState("");
+
+  const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  // Fetch Products
+  /* ================= FETCH PRODUCTS ================= */
   const getProducts = async () => {
+    setLoading(true);
     try {
-      const res = await axios.get(
-        `${Config?.get_products}?page=${page}&limit=${limit}&search=${search}&category=${category}&expiry_status=${status}`
-      );
+      const res = await axios.get(Config.get_products, {
+        params: {
+          page,
+          limit,
+          search,
+          category: categoryFilter,
+          expiry_status: expiryFilter,
+        },
+      });
+
       if (res.data.success) {
-        console.log("resdata", res);
         setProducts(res.data.data);
         setFiltered(res.data.data);
+        setTotalPages(res?.data?.totalPages);
       }
     } catch (error) {
       console.log(error);
@@ -59,28 +69,13 @@ const ProductList = () => {
 
   useEffect(() => {
     getProducts();
-  }, []);
+  }, [page, limit, expiryFilter]);
 
-  useEffect(() => {
-    let result = products;
-
-    if (search.trim() !== "") {
-      result = result.filter((p) =>
-        p.product_name.toLowerCase().includes(search.toLowerCase())
-      );
-    }
-
-    if (categoryFilter !== "") {
-      result = result.filter((p) => p.product_category === categoryFilter);
-    }
-    setFiltered(result);
-  }, [search, categoryFilter, products]);
-
+  /* ================= DELETE MODAL ================= */
   const handleDeleteModal = (id) => {
-    onOpen();
     setProductId(id);
+    onOpen();
   };
-  console.log(productId, "ProductIDilist");
 
   return (
     <>
@@ -90,96 +85,83 @@ const ProductList = () => {
         productId={productId}
         getProducts={getProducts}
       />
-      <Box width={{base:"100%",md:"77.5%"}} minH="100vh" pl={{base:"0",md:"1rem"}} mr={{base:"0",md:"1rem"}}>
-        <Box display={{base:"flex",md:"none"}}>
-           <ResponsiveNavbar/>
+
+      <Box
+        width={{ base: "100%", lg: "calc(100% - 260px)" }}
+        ml={{ base: "0", lg: "260px" }}
+        mb={5}
+        px={{base:3, lg: 6 }}
+      >
+        <Box display={{ base: "flex", md: "none" }}>
+          <ResponsiveNavbar />
         </Box>
-        <Box display={{base:"none",md:"flex"}}>
-            <TopBar />
+
+        <Box display={{ base: "none", md: "flex" }}>
+          <TopBar />
         </Box>
-        <Box
-          mt={4}
-          bg="white"
-          p={4}
-          borderRadius="0.75rem"
-          boxShadow="lg"
-          mb={6}
-        >
+
+        <Box mt={4} bg="white" p={4} borderRadius="0.75rem" boxShadow="lg">
           <Text fontSize="2xl" fontWeight="600" mb={4}>
-            {" "}
-            Product List{" "}
+            Product List
           </Text>
 
-          <Flex mb={4} gap={4} flexWrap="wrap">
+          {/* ================= FILTERS ================= */}
+          <Flex
+            mb={4}
+            gap={4}
+            flexWrap="wrap"
+            direction={{ base: "column", md: "row" }}
+          >
             <Input
               placeholder="Search product..."
-              width="250px"
+              w={{ base: "100%", sm: "100%", md: "250px" }}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
 
             <Select
-              width="250px"
-              placeholder="Filter by category"
-              value={categoryFilter}
-              onChange={(e) => setCategoryFilter(e.target.value)}
+              w={{ base: "100%", sm: "100%", md: "180px" }}
+              value={expiryFilter}
+              onChange={(e) => {
+                setExpiryFilter(e.target.value);
+                setPage(1);
+              }}
             >
-              {[...new Set(products.map((p) => p.product_category))].map(
-                (c) => (
-                  <option key={c} value={c}>
-                    {" "}
-                    {c}{" "}
-                  </option>
-                )
-              )}
+              <option value="">All Expiry</option>
+              <option value="expired">Expired</option>
+              <option value="near_expiry">Near Expiry</option>
+              <option value="up_to_date">Up To Date</option>
             </Select>
           </Flex>
 
-          {/* LOADING */}
+          {/* ================= TABLE ================= */}
           {loading ? (
             <Flex justify="center" mt={10}>
-              {" "}
-              <Spinner size="xl" />{" "}
+              <Spinner size="xl" />
             </Flex>
           ) : (
-            <Box overflowX="auto" px={4} maxW="100vw">
-              <Box
-                overflowX="auto"
-                whiteSpace="nowrap"
-                sx={{
-                  "&::-webkit-scrollbar": { width:"8px", height: "8px" },
-                  "&::-webkit-scrollbar-thumb": {
-                    width: "8px",
-                    backgroundColor: "#7A7A7A",
-                    borderRadius: "4px",
-                  },
-                  "&::-webkit-scrollbar-track": {
-                    background: "#E8E8E8",
-                    borderRadius: "4px",
-                  },
-                }}
-              >
+            <>
+              <Box overflowX="auto" w="100%">
                 <Table
                   variant="simple"
-                  colorScheme="gray"
-                  minW="1650px"
-                  className="productsTable"
+            minW={{ base: "1200px", md: "1500px", xl: "1750px" }}
+
+                   className="productsTable"
                 >
                   <Thead bg="gray.100">
                     <Tr>
-                      <Th width="29%">Product</Th>
-                      <Th width="20%">Category</Th>
-                      <Th width="10%"> Sub Category</Th>
-                      <Th width="10%"> Child Category</Th>
-                      <Th width="8%">Brand</Th>
-                      <Th width="8%">Type</Th>
-                      <Th width="8%">Variants</Th>
-                      <Th width="15%">Stock</Th>
-                      <Th width="15%">Expiry</Th>
-                      <Th width="25%">Action</Th>
+                      <Th minW="275px">Product</Th>
+                      <Th minW="200px">Category</Th>
+                      <Th minW="160px">Sub Category</Th>
+                      <Th minW="170px">Child Category</Th>
+                      <Th minW="140px">Brand</Th>
+                      <Th minW="120px">Type</Th>
+                      <Th minW="100px">Variants</Th>
+                      <Th minW="120px">Stock</Th>
+                      <Th minW="120px">Expiry</Th>
+                      <Th minW="260px">Action</Th>
                     </Tr>
                   </Thead>
-
                   <Tbody>
                     {filtered.map((item) => (
                       <Tr key={item.id}>
@@ -189,19 +171,31 @@ const ProductList = () => {
                               src={item.product_img}
                               alt={item.product_name}
                               boxSize="50px"
-                              objectFit="cover"
                               rounded="md"
+                              objectFit="cover"
                             />
                             <Box>
-                              <Text fontWeight="600">{item.product_name}</Text>
-                              <Text fontSize="sm" color="gray.500">
+                              <Text
+                                overflow="hidden"
+                                textOverflow="ellipsis"
+                                whiteSpace="nowrap"
+                                fontWeight="600"
+                              >
+                                {item.product_name}
+                              </Text>
+                              <Text
+                                overflow="hidden"
+                                textOverflow="ellipsis"
+                                whiteSpace="nowrap"
+                                fontSize="sm"
+                                color="gray.500"
+                              >
                                 {" "}
                                 {item.product_description}{" "}
                               </Text>
                             </Box>
                           </HStack>
                         </Td>
-
                         <Td>{item.category_name}</Td>
 
                         <Td>{item.sub_category}</Td>
@@ -211,18 +205,50 @@ const ProductList = () => {
                         <Td>
                           {item.single_packs.length + item.multi_packs.length}
                         </Td>
+
                         <Td>
                           <Badge
-                            colorScheme={item.stock_qty > 0 ? "green" : "red"}
-                            px={2}
+                            colorScheme={
+                              item.single_packs.reduce(
+                                (a, b) => a + b.stock_qty,
+                                0
+                              ) +
+                                item.multi_packs.reduce(
+                                  (a, b) => a + b.stock_qty,
+                                  0
+                                ) >
+                              0
+                                ? "green"
+                                : "red"
+                            }
+                            px={3}
                             py={1}
                             rounded="lg"
+                            textAlign="center"
+                            display="inline-block"
+                            minW="70px"
                           >
-                            {item.stock_qty > 0
-                              ? `${item.stock_qty}`
+                            {item.single_packs.reduce(
+                              (a, b) => a + b.stock_qty,
+                              0
+                            ) +
+                              item.multi_packs.reduce(
+                                (a, b) => a + b.stock_qty,
+                                0
+                              ) >
+                            0
+                              ? item.single_packs.reduce(
+                                  (a, b) => a + b.stock_qty,
+                                  0
+                                ) +
+                                item.multi_packs.reduce(
+                                  (a, b) => a + b.stock_qty,
+                                  0
+                                )
                               : "Out of Stock"}
                           </Badge>
                         </Td>
+
                         <Td>
                           <Badge
                             colorScheme={
@@ -234,8 +260,7 @@ const ProductList = () => {
                             py={1}
                             rounded="lg"
                           >
-                            {" "}
-                            {item.expiry_status}{" "}
+                            {item.expiry_status}
                           </Badge>
                         </Td>
 
@@ -263,21 +288,17 @@ const ProductList = () => {
                               size="sm"
                               colorScheme="yellow"
                               onClick={() =>
-                                navigate(`/update-product/${item?.id}`)
+                                navigate(`/update-product/${item.id}`)
                               }
                             >
-                              {" "}
-                              Edit{" "}
+                              Edit
                             </Button>
                             <Button
                               size="sm"
                               colorScheme="red"
-                              onClick={() => {
-                                handleDeleteModal(item?.id);
-                              }}
+                              onClick={() => handleDeleteModal(item.id)}
                             >
-                              {" "}
-                              Delete{" "}
+                              Delete
                             </Button>
                           </HStack>
                         </Td>
@@ -286,7 +307,62 @@ const ProductList = () => {
                   </Tbody>
                 </Table>
               </Box>
-            </Box>
+
+              {/* ================= PAGINATION ================= */}
+              <Flex
+                mt={6}
+                justifyContent="space-between"
+                align="center"
+                flexWrap="wrap"
+                w={"100%"}
+              >
+                <Flex gap={10} align="center">
+                  <Text fontSize="md">
+                    Page {page} Of {totalPages}
+                  </Text>
+                  <Select
+                    width="120px"
+                    value={limit}
+                    onChange={(e) => {
+                      setLimit(Number(e.target.value));
+                      setPage(1);
+                    }}
+                  >
+                    <option value={10}>10</option>
+                    <option value={20}>20</option>
+                    <option value={30}>30</option>
+                  </Select>
+                </Flex>
+
+                <HStack>
+                  <Button
+                    isDisabled={page === 1}
+                    onClick={() => setPage(page - 1)}
+                    mr={4}
+                  >
+                    Prev
+                  </Button>
+
+                  {Array.from({ length: totalPages }).map((_, i) => (
+                    <Button
+                      key={i}
+                      size="sm"
+                      onClick={() => setPage(i + 1)}
+                      colorScheme={page === i + 1 ? "blue" : "gray"}
+                    >
+                      {i + 1}
+                    </Button>
+                  ))}
+
+                  <Button
+                    isDisabled={page === totalPages}
+                    onClick={() => setPage(page + 1)}
+                  >
+                    Next
+                  </Button>
+                </HStack>
+              </Flex>
+            </>
           )}
         </Box>
       </Box>

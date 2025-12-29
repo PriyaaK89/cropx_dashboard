@@ -44,7 +44,12 @@ const UserList = () => {
   }, []);
 
   return (
-    <Box width={{base:"100%", md:"77.5%" ,}} minH="100vh" pl={{base:"0",md:"1rem"}} mr={{base:"0",md:"1rem"}}>
+    <Box
+      width={{ base: "100%", lg: "calc(100% - 260px)" }}
+      mb={5}
+      px={{ base: 3, lg: 6 }}
+      ml={{ base: "0", lg: "260px" }}
+    >
       {/* Mobile Navbar */}
       <Box display={{ base: "flex", md: "none" }}>
         <ResponsiveNavbar />
@@ -55,7 +60,7 @@ const UserList = () => {
         <TopBar />
       </Box>
 
-      <Box p={5} bg="white" my="1rem" borderRadius="0.75rem">
+      <Box p={4} bg="white" mt={4} borderRadius="0.75rem" boxShadow="lg">
         <Flex justify="space-between" align="center" px={5} mt={5}>
           <Text fontSize="2xl" fontWeight="600">
             User List
@@ -63,14 +68,18 @@ const UserList = () => {
           <Text>Total Users : {users.length}</Text>
         </Flex>
 
-        <Box overflowX="auto" px={4}>
-          <Table className="productsTable">
+        <Box overflowX="auto" px={4} w="100%">
+          <Table
+            variant="simple"
+            minW={{ base: "800px", md: "1000px", xl: "1200px" }}
+            className="productsTable"
+          >
             <Thead bg="gray.100">
               <Tr>
-                <Th>Name</Th>
-                <Th>Email</Th>
-                <Th>Password</Th>
-                <Th>Role</Th>
+                <Th minW="220px">Name</Th>
+                <Th minW="300px">Email</Th>
+                <Th minH="220px">Password</Th>
+                <Th minW="160px">Role</Th>
               </Tr>
             </Thead>
 

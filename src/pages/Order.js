@@ -1,17 +1,17 @@
 import React from 'react'
 import LeftSidebar from '../components/LeftSidebarLayout/LeftSidebar';
 import { Box } from "@chakra-ui/react";
-import Order from '../components/Order/Order';
+import OrderList from '../components/Order/OrderList';
 
 
 
-const OrderList = () => {
+const Order = () => {
   return (
     <>
        <Box width="100%" backgroundColor="#f8f8fb" >
         <Box display="flex" justifyContent="space-between">
-           <Box display={{base:"none",md:"flex"}}> <LeftSidebar/></Box>
-            <Order/>
+           <Box display={{base:"none",lg:"flex"}}> <LeftSidebar/></Box>
+            <OrderList/>
         </Box>
         </Box>
     </>
@@ -19,4 +19,4 @@ const OrderList = () => {
   )
 }
 
-export default OrderList
+export default Order

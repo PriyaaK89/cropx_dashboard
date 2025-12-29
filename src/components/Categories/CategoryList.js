@@ -86,7 +86,6 @@ const CategoryList = () => {
         width={{ base: "100%", md: "calc(100% - 260px)" }}
         ml={{ base: 0, md: "260px" }}
         px={{ base: 3, md: 6}}
-        bg="gray.50"
         minH="100vh"
       >
         {/* NAVBAR */}

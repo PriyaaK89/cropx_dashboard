@@ -14,7 +14,7 @@ import Banner from './pages/Banners';
 import UpdateProduct from './components/Products/UpdateProduct';
 import ProductDetails from './components/Products/ProductDetails';
 import Users from './pages/Users';
-import OrderList from './pages/OrderList';
+import Order from './pages/Order';
 import AddProduct2 from './components/Products/AddProduct2';
 import Collection from './pages/Collection';
 function App() {
@@ -35,7 +35,7 @@ function App() {
           <Route path='/banner' element={<Banner/>}/>
           <Route path='/update-product/:id' element={<UpdateProduct/>}/>
           <Route path='/users' element={<Users/>}/>
-          <Route path='/order' element={<OrderList/>}/>
+          <Route path='/order' element={<Order/>}/>
           <Route path='/collection' element={<Collection/>}/>
 
         </Routes>
