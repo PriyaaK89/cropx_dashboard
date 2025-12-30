@@ -84,20 +84,20 @@ const CategoryList = () => {
 
       <Box
         width={{ base: "100%", md: "calc(100% - 260px)" }}
-        ml={{ base: 0, md: "260px" }}
-        px={{ base: 3, md: 6}}
-        minH="100vh"
+        ml={{ base: 0, lg: "260px" }}
+        px={{ base: 0, lg: 6}}
+        mb={5}
       >
         {/* NAVBAR */}
-        <Box display={{ base: "flex", md: "none" }}>
+        <Box display={{ base: "flex", md:"flex", lg: "none" }}>
           <ResponsiveNavbar />
         </Box>
-        <Box display={{ base: "none", md: "flex" }}>
+        <Box display={{ base: "none", lg: "flex" }}>
           <TopBar />
         </Box>
 
         {/* CONTENT */}
-        <Box bg="white" p={4} mt={6} borderRadius="lg" boxShadow="lg">
+        <Box bg="white" p={4} mt={4} borderRadius="lg" boxShadow="lg">
           <Flex
             justify="space-between"
             align={{ base: "flex-start", md: "center" }}
@@ -146,47 +146,11 @@ const CategoryList = () => {
             <Flex justify="center" mt={10}>
               <Spinner size="xl" />
             </Flex>
-          ) : (
-            <>
-              {/* 🔹 MOBILE VIEW → CARD */}
-              <SimpleGrid
-                columns={1}
-                spacing={4}
-                display={{ base: "grid", md: "none" }}
-              >
-                {filtered.map((item) => (
-                  <Box key={item.id} p={4} borderWidth="1px" borderRadius="lg">
-                    <HStack spacing={3}>
-                      <Image
-                        src={item.image}
-                        boxSize="60px"
-                        objectFit="cover"
-                        borderRadius="md"
-                      />
-                      <Box>
-                        <Text fontWeight="600">{item.cate_name}</Text>
-                        <Badge mt={1} colorScheme="blue">
-                          Category
-                        </Badge>
-                      </Box>
-                    </HStack>
-
-                    <Button
-                      mt={3}
-                      size="sm"
-                      colorScheme="red"
-                      onClick={() => handleDelete(item.id)}
-                    >
-                      Delete
-                    </Button>
-                  </Box>
-                ))}
-              </SimpleGrid>
-
-              {/* 🔹 DESKTOP VIEW → TABLE (SAME AS PRODUCT LIST) */}
-              <Box display={{ base: "none", md: "block" }} overflowX="auto">
+          ) 
+           :
+              (<Box   overflowX="auto">
                 <Table
-                  minW={{ md: "700px", lg: "1000px", xl: "1200px", "2xl": "1400px" }}
+                  minW={{ md:"700px", lg: "1000px", xl: "1200px", "2xl": "1400px" }}
                 >
                   <Thead bg="gray.100">
                     <Tr>
@@ -229,12 +193,10 @@ const CategoryList = () => {
                   </Tbody>
                 </Table>
               </Box>
-            </>
-          )}
-        </Box>
+              )}
+      </Box>
       </Box>
     </>
-  );
-};
+)};
 
 export default CategoryList;

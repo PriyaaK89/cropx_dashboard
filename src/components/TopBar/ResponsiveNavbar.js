@@ -1,7 +1,4 @@
 import React, { useContext, useState } from "react";
-import { FaBoxOpen, FaTags } from "react-icons/fa";
-import { MdCategory, MdOutlineProductionQuantityLimits } from "react-icons/md";
-
 import {
   Box,
   Flex,
@@ -19,31 +16,51 @@ import {
   Icon,
   Collapse,
   DrawerHeader,
+    useToast,
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Context/AuthContext";
+
 // Icons
 import { FiHome, FiLayers, FiLogOut } from "react-icons/fi";
-import { FaUser, FaThList } from "react-icons/fa";
+import { FaBoxOpen, FaTags, FaUser, FaThList } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
-import { MdArrowDropDown, MdArrowLeft } from "react-icons/md";
+import {
+  MdCategory,
+  MdOutlineProductionQuantityLimits,
+  MdArrowDropDown,
+  MdArrowLeft,
+} from "react-icons/md";
+
 
 import logo from "../../assets/logo.jpeg";
 
 const MobileNavbar = () => {
-
-  const {auth} = useContext(AuthContext);
+  const { auth, setAuth } = useContext(AuthContext); // ✅ FIX
   const mail = auth?.email;
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [openCatalog, setOpenCatalog] = useState(false);
-  const location = useLocation();
 
+  const location = useLocation();
+  const navigate = useNavigate();
+    const toast = useToast();
+  
+ const {logout} = useContext(AuthContext)
   const isActive = (path) => location.pathname === path;
   const toggleCatalog = () => setOpenCatalog(!openCatalog);
 
   const handleLogout = () => {
-    console.log("Logout clicked");
+    logout();
+    toast({
+      title: "Logged out successfully",
+      status: "success",
+      duration: 1500,
+      isClosable: true,
+    });
+
+    setTimeout(() => navigate("/"), 1000);
   };
 
   return (
@@ -60,9 +77,15 @@ const MobileNavbar = () => {
         position="sticky"
         top="0"
         zIndex={20}
-        display={{ base: "flex", md: "none" }}
+        display={{ base: "flex", md: "flex", lg:"none" }}
       >
-        <Image src={logo} alt="logo" h="40px" />
+        <Image
+          src={logo}
+          alt="logo"
+          h="40px"
+          cursor="pointer"
+          onClick={() => navigate("/dashboard")}
+        />
 
         <IconButton
           icon={<HamburgerIcon />}
@@ -77,33 +100,25 @@ const MobileNavbar = () => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>
-             <Flex align="center" gap={2}>
-                <Avatar size="sm"
-                 name={mail}
-                //  src="https://i.pravatar.cc/150?img=5"
-                 />
-                <Box lineHeight="1.1">
-                  <Text fontSize="lg" color="gray.500">
-                    {mail}
-                  </Text>
-                </Box>
-              </Flex>
 
+          <DrawerHeader>
+            <Flex align="center" gap={2}>
+              <Avatar size="sm" name={mail} />
+              <Text fontSize="sm" color="gray.500">
+                {mail}
+              </Text>
+            </Flex>
           </DrawerHeader>
-          <DrawerBody mt={10}>
+
+          <DrawerBody mt={4}>
             <VStack align="start" spacing={4} w="100%">
-              {/* User Info */}
-             
               {/* Dashboard */}
-              <Link to="/dashboard" style={{width:"100%",display:"block"}}>
+              <Link to="/dashboard" style={{ width: "100%" }}>
                 <Flex
                   align="center"
                   p="8px 14px"
                   bg={isActive("/dashboard") ? "#e9ecee" : "transparent"}
-                  color={isActive("/dashboard") ? "#4d4d4d" : "black"}
-                  _hover={{ bg: "#d3e0e9ff", color: "black" }}
-                  w="100%"
+                  _hover={{ bg: "#d3e0e9ff" }}
                 >
                   <Icon as={FiHome} mr={4} />
                   <Text fontSize="14px">Dashboard</Text>
@@ -115,8 +130,8 @@ const MobileNavbar = () => {
                 align="center"
                 p="8px 14px"
                 cursor="pointer"
-                bg={{"#e9ecee" : "transparent"}}
-                _hover={{ bg: "#d3e0e9ff", color: "black" }}
+                bg={openCatalog ? "#e9ecee" : "transparent"} // ✅ FIX
+                _hover={{ bg: "#d3e0e9ff" }}
                 w="100%"
                 onClick={toggleCatalog}
               >
@@ -124,74 +139,66 @@ const MobileNavbar = () => {
                 <Text flex="1" fontSize="14px">
                   Catalog
                 </Text>
-                <Box>
-                  {openCatalog ? <MdArrowDropDown /> : <MdArrowLeft />}
-                </Box>
+                {openCatalog ? <MdArrowDropDown /> : <MdArrowLeft />}
               </Flex>
 
-              <Collapse in={openCatalog} animateOpacity style={{ width:"100%"}}>
-                <Box>
-                  {[
-                    { path: "/product-list", label: "Products List", icon:FaBoxOpen},
-                    { path: "/add-product", label: "Add Product" ,icon:MdOutlineProductionQuantityLimits },
-                    { path: "/categories-list", label: "Categories List",icon:MdCategory },
-                    { path: "/add-category", label: "Add Category",icon:FaTags },
-                  ].map((item) => (
-                    <Link to={item.path} key={item.path}>
-                      <Text
-                        p="6px"
-                        pl="3rem"
-                        fontSize="14px"
-                        bg={isActive(item.path) ? "#e9ecee" : "transparent"}
-                        color={isActive(item.path) ? "#4d4d4d" : "black"}
-                        _hover={{ bg: "#d3e0e9ff", color: "black" }}
-
-                      >
-                        <Icon as={item.icon} mr={3}/>
-                        {item.label}
-                      </Text>
-                    </Link>
-                  ))}
-                </Box>
+              <Collapse in={openCatalog} style={{ width: "100%" }}>
+                {[
+                  {
+                    path: "/product-list",
+                    label: "Products List",
+                    icon: FaBoxOpen,
+                  },
+                  {
+                    path: "/add-product",
+                    label: "Add Product",
+                    icon: MdOutlineProductionQuantityLimits,
+                  },
+                  {
+                    path: "/categories-list",
+                    label: "Categories List",
+                    icon: MdCategory,
+                  },
+                  {
+                    path: "/add-category",
+                    label: "Add Category",
+                    icon: FaTags,
+                  },
+                ].map((item) => (
+                  <Link key={item.path} to={item.path}>
+                    <Flex
+                      align="center"
+                      pl="3rem"
+                      p="6px"
+                      bg={isActive(item.path) ? "#e9ecee" : "transparent"}
+                      _hover={{ bg: "#d3e0e9ff" }}
+                    >
+                      <Icon as={item.icon} mr={3} />
+                      <Text fontSize="14px">{item.label}</Text>
+                    </Flex>
+                  </Link>
+                ))}
               </Collapse>
 
               {/* Users */}
-              <Link to="/users" style={{width:"100%", display:"block"}}>
-                <Flex
-                  align="center"
-                  p="8px 14px"
-                 _hover={{ bg: "#d3e0e9ff", color: "black" }}
-
-                  w="100%"
-                >
+              <Link to="/users" style={{ width: "100%" }}>
+                <Flex p="8px 14px" _hover={{ bg: "#d3e0e9ff" }}>
                   <Icon as={FaUser} mr={4} />
                   <Text fontSize="14px">Users</Text>
                 </Flex>
               </Link>
 
               {/* Banner */}
-              <Link to="/banner" style={{width:"100%", display:"block"}}>
-
-                <Flex
-                  align="center"
-                  p="8px 14px"
-                  _hover={{ bg: "#d3e0e9ff", color: "black" }}
-
-                  w="100%"
-                >
+              <Link to="/banner" style={{ width: "100%" }}>
+                <Flex p="8px 14px" _hover={{ bg: "#d3e0e9ff" }}>
                   <Icon as={FaThList} mr={4} />
                   <Text fontSize="14px">Banner</Text>
                 </Flex>
               </Link>
 
               {/* Orders */}
-              <Link to="/order" style={{width:"100%", display:"block"}}>
-                <Flex
-                  align="center"
-                  p="8px 14px"
-                  _hover={{ bg: "#d3e0e9ff", color: "black" }}
-                  w="100%"
-                >
+              <Link to="/order" style={{ width: "100%" }}>
+                <Flex p="8px 14px" _hover={{ bg: "#d3e0e9ff" }}>
                   <Icon as={FaCartShopping} mr={4} />
                   <Text fontSize="14px">Order</Text>
                 </Flex>

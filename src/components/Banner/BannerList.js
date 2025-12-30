@@ -84,14 +84,14 @@ const BannerList = () => {
 
       <Box
         width={{ base: "100%", lg: "calc(100% - 260px)" }}
-        px={{ base: 3, lg: 6 }}
-        ml={{ base: "0", md: "260px" }}
+        px={{ base:0, lg: 6}}
+        ml={{ base: "0", lg: "260px" }}
         mb={5}
       >
-        <Box display={{ base: "flex", md: "none" }}>
+        <Box display={{ base: "flex", md:"flex", lg: "none" }}>
           <ResponsiveNavbar />
         </Box>
-        <Box display={{ base: "none", md: "flex" }}>
+        <Box display={{ base: "none", lg: "flex" }}>
           <TopBar />
         </Box>
 
@@ -148,7 +148,7 @@ const BannerList = () => {
                   transition="0.2s"
                 >
                   {/* IMAGE */}
-                  <Box w={{ base: "100%", md: "70%", lg: "75%" }}>
+                  <Box w={{ base: "100%",  lg: "75%" }}>
                     <Image
                       src={data?.banner_img}
                       borderRadius="md"

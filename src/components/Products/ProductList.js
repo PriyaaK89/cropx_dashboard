@@ -32,7 +32,7 @@ const ProductList = () => {
 
   const [productId, setProductId] = useState("");
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(5);
+  const [limit, setLimit] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
 
   const [search, setSearch] = useState("");
@@ -87,16 +87,16 @@ const ProductList = () => {
       />
 
       <Box
-        width={{ base: "100%", lg: "calc(100% - 260px)" }}
+        width={{ base: "100%", lg:"calc(100% - 260px)" }}
         ml={{ base: "0", lg: "260px" }}
         mb={5}
-        px={{base:3, lg: 6 }}
+        px={{base:0, md:4, lg: 6 }}
       >
-        <Box display={{ base: "flex", md: "none" }}>
+        <Box display={{ base: "flex", md:"flex", lg: "none" }}>
           <ResponsiveNavbar />
         </Box>
 
-        <Box display={{ base: "none", md: "flex" }}>
+        <Box display={{ base: "none", lg: "flex" }}>
           <TopBar />
         </Box>
 

@@ -100,15 +100,15 @@ const CollectionList = () => {
 
       <Box
         width={{ base: "100%", lg: "calc(100% - 260px)" }}
-        px={{ base: 3, md: 6 }}
-        ml={{ base: "0", lg: "1rem" }}
+        px={{ base: 0, md:0, lg: 6 }}
+        ml={{ base: "0", md:0, lg:"260px" }}
         mb={5}
       >
         {/* Navbar */}
-        <Box display={{ base: "flex", md: "none" }}>
+        <Box display={{ base: "flex", md:"flex", lg: "none" }}>
           <ResponsiveNavbar />
         </Box>
-        <Box display={{ base: "none", md: "flex" }}>
+        <Box display={{ base: "none", lg: "flex" }}>
           <TopBar />
         </Box>
 

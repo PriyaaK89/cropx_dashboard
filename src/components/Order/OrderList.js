@@ -99,31 +99,35 @@ const OrderList = () => {
       />
       <Box
         width={{ base: "100%", lg: "calc(100% - 260px)" }}
-        ml={{ base: "0", lg: "260px" }}
+        ml={{ base: 0, md:0 , lg: "260px" }}
         mb={5}
-        px={{ base: 3, lg: 6 }}
+        px={{ base:0, md:0 ,lg: 6 }}
       >
         {/* Mobile Navbar */}
-        <Box display={{ base: "flex", md: "none" }}>
+        <Box display={{ base: "flex", md:"flex", lg: "none" }}>
           <ResponsiveNavbar />
         </Box>
 
         {/* Desktop TopBar */}
-        <Box display={{ base: "none", md: "flex" }}>
+        <Box display={{ base: "none", lg: "flex" }}>
           <TopBar />
         </Box>
 
         <Box p={4} bg="white" mt={4} borderRadius="0.75rem" boxShadow="lg">
           <Box overflowX="auto" w="100%">
+             <Text fontSize="2xl" fontWeight="600" mb={4}>
+                        Order List
+                      </Text>
+            
             <Table
               variant="simple"
-              minW={{ base: "1200px", md: "1400px", xl: "1600px" }}
+              minW={{ base: "900px", md: "1200px", xl: "1400px" }}
             >
               <Thead bg="gray.100">
                 <Tr>
                   <Th minW="60px">#</Th>
-                  <Th minW="160px">Order ID</Th>
-                  <Th minW="180px">User</Th>
+                  <Th minW="150px">Order ID</Th>
+                  <Th minW="150px">User</Th>
                   <Th minW="260px">Products</Th>
                   <Th minW="120px">Subtotal</Th>
                   <Th minW="120px">Total</Th>

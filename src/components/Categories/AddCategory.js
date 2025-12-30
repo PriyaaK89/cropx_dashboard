@@ -122,18 +122,18 @@ const AddCategory = () => {
         {/* MAIN CONTENT */}
         <Box
           width={{ base: "100%", md: "calc(100% - 260px)" }}
-          minH="100vh"
           ml={{ base: 0, lg: "260px" }}
-          px={{ base: 3, md: 6 }}
+          px={{ base: 0, lg: 6 }}
+          mb={5}
         >
-          <Box display={{ base: "flex", md: "none" }}>
+          <Box display={{ base: "flex", md:"flex", lg: "none" }}>
             <ResponsiveNavbar />
           </Box>
-          <Box display={{ base: "none", md: "flex" }}>
+          <Box display={{ base: "none", lg: "flex" }}>
             <TopBar />
           </Box>
 
-          <Box bg="white" px={4} py={4} mt={6} boxShadow="lg" borderRadius="lg">
+          <Box bg="white" px={4} py={2} mt={4} boxShadow="lg" borderRadius="lg">
             {/* BREADCRUMB */}
             <HStack justify="space-between" mb={4}>
               <Breadcrumb fontSize="13px">
@@ -169,37 +169,37 @@ const AddCategory = () => {
                 <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
                   <FormControl>
                     <FormLabel>Category Name</FormLabel>
-                    <Input name="cate_name" value={form.cate_name} onChange={handleChange} />
+                    <Input name="cate_name" value={form.cate_name} onChange={handleChange} placeholder="Enter your category name" />
                   </FormControl>
 
                   <FormControl>
                     <FormLabel>Slug</FormLabel>
-                    <Input name="slug" value={form.slug} onChange={handleChange} />
+                    <Input name="slug" value={form.slug} onChange={handleChange} placeholder="Enter your slug" />
                   </FormControl>
 
                   <FormControl gridColumn={{ md: "span 2" }}>
                     <FormLabel>Description</FormLabel>
-                    <Textarea name="description" value={form.description} onChange={handleChange} />
+                    <Textarea name="description" value={form.description} onChange={handleChange} placeholder="Enter your description" />
                   </FormControl>
 
                   <FormControl>
                     <FormLabel>Show In Menu (0 / 1)</FormLabel>
-                    <Input name="show_in_menu" value={form.show_in_menu} onChange={handleChange} />
+                    <Input name="show_in_menu" value={form.show_in_menu} onChange={handleChange} placeholder="Enter 0 or 1" />
                   </FormControl>
 
                   <FormControl>
                     <FormLabel>Show On Home (0 / 1)</FormLabel>
-                    <Input name="show_on_home" value={form.show_on_home} onChange={handleChange} />
+                    <Input name="show_on_home" value={form.show_on_home} onChange={handleChange} placeholder="Enter 0 Or 1" />
                   </FormControl>
 
                   <FormControl>
                     <FormLabel>Menu Order</FormLabel>
-                    <Input type="number" name="menu_order" value={form.menu_order} onChange={handleChange} />
+                    <Input type="number" name="menu_order" value={form.menu_order} onChange={handleChange} placeholder="Enter your menu order" />
                   </FormControl>
 
                   <FormControl>
                     <FormLabel>Home Order</FormLabel>
-                    <Input type="number" name="home_order" value={form.home_order} onChange={handleChange} />
+                    <Input type="number" name="home_order" value={form.home_order} onChange={handleChange} placeholder="Enter your home order" />
                   </FormControl>
 
                   {/* IMAGE */}
