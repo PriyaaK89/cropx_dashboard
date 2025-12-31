@@ -15,12 +15,20 @@ import {
   Button,
   HStack,
   useDisclosure,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
 } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { Config } from "../../utils/Config";
 import axios from "axios";
 import AddDetailsModal from "./DetailsPopup/AddDetailsModal";
 import UpdateDetailsModal from "./DetailsPopup/UpdateDetailsModal";
+import LeftSidebar from "../LeftSidebarLayout/LeftSidebar";
+import ResponsiveNavbar from "../TopBar/ResponsiveNavbar"
+import TopBar from "../TopBar/TopBar";
+import {GoHomeFill } from "react-icons/go";
+import { Link } from "react-router-dom";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -87,12 +95,45 @@ const ProductDetails = () => {
     <>
     <AddDetailsModal isOpen={isOpen} onClose={onClose} productId={productId} getProductDetails={getProductDetails}/>
     <UpdateDetailsModal isUpdateDetailsModalOpen={isUpdateDetailsModalOpen} onUpdateDetailsModalClose={onUpdateDetailsModalClose}  getProductDetails={getProductDetails} productId={productId} data={data}/>
-      <Box bg="#f5f6f8" minH="100vh" py={6}>
-        <Box maxW="1240px" mx="auto" p={4}>
+      <Box w="100%"  bg="#f8f8f8">
+        <Flex>
+        <Box display={{base:"none",lg:"flex"}}>
+            <LeftSidebar/>
+        </Box>
+        <Box w={{base:"100%",lg:"calc(100% - 260px)"}}
+          ml={{base:0,md:0,lg:"260px"}}
+          px={{base:0, md:0, lg:6 }}
+          mb={5}
+        >
+          <Box display={{base:"flex",md:"flex",lg:"none"}}>
+           <ResponsiveNavbar/>
+          </Box>
+          <Box display={{base:"none",md:"none",lg:"flex"}}>
+            <TopBar/>
+          </Box>
+          <Box bg="white" p={4} mt={4} boxShadow="lg" borderRadius="0.75rem" mx={{base:3, md:3, lg:0}} >
+
           {/* ------------------ PAGE TITLE ------------------ */}
-          <Heading size="lg" fontWeight="600" mb={6}>
+          <HStack justifyContent="space-between" mb={4}>
+            <Breadcrumb fontSize="13px">
+                         <BreadcrumbItem>
+                           <BreadcrumbLink as={Link} to="/">
+                           <GoHomeFill/>
+                           </BreadcrumbLink>
+                         </BreadcrumbItem>
+                         <BreadcrumbItem>
+                            <BreadcrumbLink as={Link} to="/product-list">
+                            Product List
+                            </BreadcrumbLink>
+                         </BreadcrumbItem>
+                         <BreadcrumbItem isCurrentPage>
+                         <BreadcrumbLink> Product Details</BreadcrumbLink>
+                         </BreadcrumbItem>
+                         </Breadcrumb>
+          <Heading size="md" fontWeight="600" mb={6}>
             Product Details
           </Heading>
+                  </HStack>
 
           <HStack>
             <Button onClick={()=>{handleUpdateDetailsModal(data?.id)}}>Edit Details</Button>
@@ -261,7 +302,10 @@ const ProductDetails = () => {
               <GridList data={data?.details?.additional_information} />
             </Section>
           </Box>
+                    </Box>
+
         </Box>
+        </Flex>
       </Box>
     </>
   );

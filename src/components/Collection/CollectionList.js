@@ -10,7 +10,7 @@ import { Config } from "../../utils/Config";
 
 import {
   Box,
-  Table,
+  Table, 
   Thead,
   Tbody,
   Tr,
@@ -99,8 +99,8 @@ const CollectionList = () => {
       />
 
       <Box
-        width={{ base: "100%", lg: "calc(100% - 260px)" }}
-        px={{ base: 0, md:0, lg: 6 }}
+        width={{ base: "100%",  lg:"calc(100% - 260px)" }}
+        px={{ base: 0, md:0, lg:6 }}
         ml={{ base: "0", md:0, lg:"260px" }}
         mb={5}
       >
@@ -113,7 +113,7 @@ const CollectionList = () => {
         </Box>
 
         {/* Collection Table */}
-        <Box mt={4} bg="white" p={4} borderRadius="0.75rem" boxShadow="lg">
+        <Box mt={4} bg="white" p={4} borderRadius="0.75rem" boxShadow="lg" mx={{base:3,md:3,lg:0}}  >
           <Flex justify="space-between">
             <Text fontSize="lg" fontWeight="bold" mb={4}>
               Collection List
@@ -129,10 +129,10 @@ const CollectionList = () => {
             </Flex>
           ) : (
             <>
-              <Box>
+              <Box overflowX="auto">
                 <Table
                   variant="simple"
-                  minW={{ base: "1200px", md: "1400px", xl: "1600px" }}
+                    minW={{ base: "900px", md: "1100px", lg: "1200px" }}
                   className="productsTable"
                   mt={1}
                 >
@@ -208,7 +208,7 @@ const CollectionList = () => {
                     Page {page} of {totalPages}
                   </Text>
                   <select
-                    style={{ width: "120px" }}
+                    style={{ width:"120px" }}
                     value={limit}
                     onChange={(e) => {
                       setLimit(Number(e.target.value));

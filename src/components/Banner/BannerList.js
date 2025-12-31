@@ -96,7 +96,7 @@ const BannerList = () => {
         </Box>
 
         {/* OUTER CARD */}
-        <Box p={4} mt={4} boxShadow="sm" bg="white" borderRadius="0.75rem">
+        <Box p={4} mt={4} boxShadow="sm" bg="white" borderRadius="0.75rem" mx={{base:3,md:3,lg:0}}>
           {/* HEADER SECTION */}
           <Flex
             justify="space-between"

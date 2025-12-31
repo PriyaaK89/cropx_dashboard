@@ -21,7 +21,8 @@ import {
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Context/AuthContext";
-
+ import { BsCollection } from "react-icons/bs";
+ 
 // Icons
 import { FiHome, FiLayers, FiLogOut } from "react-icons/fi";
 import { FaBoxOpen, FaTags, FaUser, FaThList } from "react-icons/fa";
@@ -201,6 +202,13 @@ const MobileNavbar = () => {
                 <Flex p="8px 14px" _hover={{ bg: "#d3e0e9ff" }}>
                   <Icon as={FaCartShopping} mr={4} />
                   <Text fontSize="14px">Order</Text>
+                </Flex>
+              </Link>
+                 {/* Collection */}
+                 <Link to="/collection" style={{ width: "100%" }}>
+                <Flex p="8px 14px" _hover={{ bg: "#d3e0e9ff" }}>
+                  <Icon as={BsCollection} mr={4} />
+                  <Text fontSize="14px">Collection</Text>
                 </Flex>
               </Link>
 

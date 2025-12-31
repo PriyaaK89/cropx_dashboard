@@ -121,7 +121,7 @@ const AddCategory = () => {
 
         {/* MAIN CONTENT */}
         <Box
-          width={{ base: "100%", md: "calc(100% - 260px)" }}
+          width={{ base: "100%", lg: "calc(100% - 260px)" }}
           ml={{ base: 0, lg: "260px" }}
           px={{ base: 0, lg: 6 }}
           mb={5}
@@ -133,7 +133,7 @@ const AddCategory = () => {
             <TopBar />
           </Box>
 
-          <Box bg="white" px={4} py={2} mt={4} boxShadow="lg" borderRadius="lg">
+          <Box bg="white" px={4} py={2} mt={4} boxShadow="lg" borderRadius="0.75rem" mx={{base:3,md:3,lg:0}}>
             {/* BREADCRUMB */}
             <HStack justify="space-between" mb={4}>
               <Breadcrumb fontSize="13px">

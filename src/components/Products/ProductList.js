@@ -24,6 +24,8 @@ import ResponsiveNavbar from "../TopBar/ResponsiveNavbar";
 import { Config } from "../../utils/Config";
 import { useNavigate } from "react-router-dom";
 import DeleteProductModal from "./DeleteProductModal";
+import { PiGreaterThan } from "react-icons/pi";
+import { PiLessThan } from "react-icons/pi";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -69,7 +71,7 @@ const ProductList = () => {
 
   useEffect(() => {
     getProducts();
-  }, [page, limit, expiryFilter]);
+  }, [page, limit, search, expiryFilter]);
 
   /* ================= DELETE MODAL ================= */
   const handleDeleteModal = (id) => {
@@ -87,12 +89,12 @@ const ProductList = () => {
       />
 
       <Box
-        width={{ base: "100%", lg:"calc(100% - 260px)" }}
+        width={{ base: "100%", lg: "calc(100% - 260px)" }}
         ml={{ base: "0", lg: "260px" }}
         mb={5}
-        px={{base:0, md:4, lg: 6 }}
+        px={{ base: 0, md: 0, lg: 6 }}
       >
-        <Box display={{ base: "flex", md:"flex", lg: "none" }}>
+        <Box display={{ base: "flex", md: "flex", lg: "none" }}>
           <ResponsiveNavbar />
         </Box>
 
@@ -100,7 +102,14 @@ const ProductList = () => {
           <TopBar />
         </Box>
 
-        <Box mt={4} bg="white" p={4} borderRadius="0.75rem" boxShadow="lg">
+        <Box
+          mt={4}
+          bg="white"
+          p={4}
+          borderRadius="0.75rem"
+          boxShadow="lg"
+          mx={{ base: 3, md: 3, lg: 0 }}
+        >
           <Text fontSize="2xl" fontWeight="600" mb={4}>
             Product List
           </Text>
@@ -144,9 +153,8 @@ const ProductList = () => {
               <Box overflowX="auto" w="100%">
                 <Table
                   variant="simple"
-            minW={{ base: "1200px", md: "1500px", xl: "1750px" }}
-
-                   className="productsTable"
+                  minW={{ base: "1200px", md: "1500px", xl: "1750px" }}
+                  className="productsTable"
                 >
                   <Thead bg="gray.100">
                     <Tr>
@@ -311,12 +319,11 @@ const ProductList = () => {
               {/* ================= PAGINATION ================= */}
               <Flex
                 mt={6}
-                justifyContent="space-between"
-                align="center"
-                flexWrap="wrap"
                 w={"100%"}
+                direction={{base:"column",md:"row"}}
+                gap={{base:4, md:0}}
               >
-                <Flex gap={10} align="center">
+                <Flex w="100%" justify={{base:"space-between",md:"space-between"}} align="center">
                   <Text fontSize="md">
                     Page {page} Of {totalPages}
                   </Text>
@@ -333,14 +340,14 @@ const ProductList = () => {
                     <option value={30}>30</option>
                   </Select>
                 </Flex>
+               <Flex w="100%" justify="center" align="center">
+                    <HStack>
 
-                <HStack>
                   <Button
-                    isDisabled={page === 1}
+                    bg="blue.50"
                     onClick={() => setPage(page - 1)}
-                    mr={4}
                   >
-                    Prev
+                    <PiLessThan size={18} color="black" />
                   </Button>
 
                   {Array.from({ length: totalPages }).map((_, i) => (
@@ -355,12 +362,13 @@ const ProductList = () => {
                   ))}
 
                   <Button
-                    isDisabled={page === totalPages}
                     onClick={() => setPage(page + 1)}
+                    bg="blue.50"
                   >
-                    Next
+                    <PiGreaterThan size={18} color="black" />
                   </Button>
-                </HStack>
+                  </HStack>
+                   </Flex>
               </Flex>
             </>
           )}

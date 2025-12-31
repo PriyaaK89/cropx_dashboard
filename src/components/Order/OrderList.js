@@ -113,7 +113,7 @@ const OrderList = () => {
           <TopBar />
         </Box>
 
-        <Box p={4} bg="white" mt={4} borderRadius="0.75rem" boxShadow="lg">
+        <Box p={4} bg="white" mt={4} borderRadius="0.75rem" boxShadow="lg" mx={{base:3,md:3,lg:0}}>
           <Box overflowX="auto" w="100%">
              <Text fontSize="2xl" fontWeight="600" mb={4}>
                         Order List

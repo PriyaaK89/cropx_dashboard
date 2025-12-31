@@ -83,7 +83,7 @@ const CategoryList = () => {
       <ChildCategory isOpen={isChildOpen} onClose={onChildClose} />
 
       <Box
-        width={{ base: "100%", md: "calc(100% - 260px)" }}
+        width={{ base: "100%", lg: "calc(100% - 260px)" }}
         ml={{ base: 0, lg: "260px" }}
         px={{ base: 0, lg: 6}}
         mb={5}
@@ -97,7 +97,7 @@ const CategoryList = () => {
         </Box>
 
         {/* CONTENT */}
-        <Box bg="white" p={4} mt={4} borderRadius="lg" boxShadow="lg">
+        <Box bg="white" p={4} mt={4}  borderRadius="0.75rem" boxShadow="lg" mx={{base:3,md:3,lg:0}} >
           <Flex
             justify="space-between"
             align={{ base: "flex-start", md: "center" }}

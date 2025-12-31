@@ -14,14 +14,21 @@ import {
   Image,
   InputGroup,
   InputRightElement,
+  HStack,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { CalendarIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import LeftSidebar from "../LeftSidebarLayout/LeftSidebar";
+import { GoHomeFill } from "react-icons/go";
 import TopBar from "../TopBar/TopBar";
 import ResponsiveNavbar from "../TopBar/ResponsiveNavbar";
 import { Config } from "../../utils/Config";
+import { Link } from "react-router-dom";
+
 
 const AddProduct2 = () => {
   const toast = useToast();
@@ -173,21 +180,47 @@ const AddProduct2 = () => {
         </Box>
 
         <Box
-          width={{ base: "100%", md: "calc(100% - 260px)" }}
-          ml={{ base: 0, lg: "260px" }}
-          px={{ base: 0, lg: 6 }}
+          width={{ base: "100%", lg: "calc(100% - 260px)" }}
+          ml={{ base: 0, md: 0, lg: "260px" }}
+          px={{ base: 0, md: 0, lg: 6 }}
+          mb={5}
         >
-          <Box display={{ base: "flex", md:"flex", lg:"none" }}>
+          <Box display={{ base: "flex", md: "flex", lg: "none" }}>
             <ResponsiveNavbar />
           </Box>
-          <Box display={{ base: "none", lg:"flex" }}>
+          <Box display={{ base: "none", lg: "flex" }}>
             <TopBar />
           </Box>
 
-          <Box bg="white" p={4} mt={4} boxShadow="lg" borderRadius="lg">
-            <Heading fontSize="sm" mb={4}>
-              Add New Product
-            </Heading>
+          <Box
+            bg="white"
+            p={4}
+            mt={4}
+            boxShadow="lg"
+            borderRadius="0.75rem"
+            mx={{ base: 3, md: 3, lg: 0 }}
+          >
+            {/* BREDCRUMB */}
+            <HStack justifyContent="space-between" mb={4}>
+              <Breadcrumb fontSize="13px">
+              <BreadcrumbItem>
+                <BreadcrumbLink as={Link} to="/">
+                <GoHomeFill/>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbItem>
+                 <BreadcrumbLink as={Link} to="/product-list">
+                 Product List
+                 </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbItem isCurrentPage>
+              <BreadcrumbLink>Add Product</BreadcrumbLink>
+              </BreadcrumbItem>
+              </Breadcrumb>
+              <Heading fontSize="sm" mb={4}>
+                Add New Product
+              </Heading>
+            </HStack>
 
             <SimpleGrid columns={[1, 1, 2]} spacing={6}>
               {/* LEFT */}
@@ -200,6 +233,7 @@ const AddProduct2 = () => {
                     name="product_name"
                     value={formData.product_name}
                     onChange={handleChange}
+                    placeholder="Enter product name"
                   />
                 </FormControl>
 
@@ -267,6 +301,7 @@ const AddProduct2 = () => {
                     name="brand"
                     value={formData.brand}
                     onChange={handleChange}
+                    placeholder="Enter brand name"
                   />
                 </FormControl>
 
@@ -278,6 +313,7 @@ const AddProduct2 = () => {
                     name="product_description"
                     value={formData.product_description}
                     onChange={handleChange}
+                    placeholder="Enter product description"
                   />
                 </FormControl>
               </VStack>
@@ -340,9 +376,7 @@ const AddProduct2 = () => {
                   <Input type="file" onChange={handleImage} />
                 </FormControl>
 
-                {preview && (
-                  <Image src={preview} w="150px" borderRadius="md" />
-                )}
+                {preview && <Image src={preview} w="150px" borderRadius="md" />}
               </VStack>
             </SimpleGrid>
 

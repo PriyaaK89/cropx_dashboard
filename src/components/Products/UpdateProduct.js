@@ -14,6 +14,10 @@ import {
   Image,
   InputGroup,
   InputRightElement,
+  HStack,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { CalendarIcon } from "@chakra-ui/icons";
@@ -23,6 +27,9 @@ import LeftSidebar from "../LeftSidebarLayout/LeftSidebar";
 import TopBar from "../TopBar/TopBar";
 import ResponsiveNavbar from "../TopBar/ResponsiveNavbar";
 import { Config } from "../../utils/Config";
+import {Link} from "react-router-dom";
+import {GoHomeFill } from "react-icons/go";
+
 
 const UpdateProduct = () => {
   const { id } = useParams();
@@ -69,7 +76,7 @@ const UpdateProduct = () => {
 
   const fetchProduct = async () => {
     const res = await axios.get(`${Config.get_product_by_id}/${id}`);
-    const data = res?.data?.data;
+    const data = res?.data?.product;
 
     setFormData({
       product_name: data.product_name,
@@ -141,11 +148,28 @@ const UpdateProduct = () => {
             <TopBar />
           </Box>
 
-          <Box bg="white" mt={4} p={4} borderRadius="lg" boxShadow="lg">
-            <Heading fontSize="sm" mb={4}>
-              Update Product
-            </Heading>
-
+          <Box bg="white" mt={4} p={4} borderRadius="0.75rem" boxShadow="lg" mx={{base:3,md:0,lg:0}}>
+           <HStack justifyContent="space-between" mb={4}>
+                         <Breadcrumb fontSize="13px">
+                         <BreadcrumbItem>
+                           <BreadcrumbLink as={Link} to="/">
+                           <GoHomeFill/>
+                           </BreadcrumbLink>
+                         </BreadcrumbItem>
+                         <BreadcrumbItem>
+                            <BreadcrumbLink as={Link} to="/product-list">
+                            Product List
+                            </BreadcrumbLink>
+                         </BreadcrumbItem>
+                         <BreadcrumbItem isCurrentPage>
+                         <BreadcrumbLink>Update Product</BreadcrumbLink>
+                         </BreadcrumbItem>
+                         </Breadcrumb>
+                         <Heading fontSize="sm" mb={4}>
+                           Update Product
+                         </Heading>
+                       </HStack>
+            
             <SimpleGrid columns={[1, 2]} spacing={6}>
               <VStack spacing={4}>
                 <FormControl mb={1}>
@@ -153,7 +177,7 @@ const UpdateProduct = () => {
                     Product Name
                   </FormLabel>
                   <Input
-                    name="product_name"
+                    name="form.product_name"
                     placeholder="Enter product name"
                     value={formData.product_name}
                     onChange={handleChange}

@@ -45,7 +45,7 @@ const UserList = () => {
 
   return (
     <Box
-      width={{ base: "100%", lg: "calc(100% - 260px)" }}
+      width={{ base:"100%", lg: "calc(100% - 260px)" }}
       mb={5}
       px={{ base: 0, lg: 6 }}
       ml={{ base: "0", lg: "260px" }}
@@ -60,7 +60,7 @@ const UserList = () => {
         <TopBar />
       </Box>
 
-      <Box p={4} bg="white" mt={4} borderRadius="0.75rem" boxShadow="lg">
+      <Box p={4} bg="white" mt={4} borderRadius="0.75rem" boxShadow="lg" mx={{base:3,md:3,lg:0}}>
          
          
         <Flex justify="space-between" align="center" px={5} mt={5}>
