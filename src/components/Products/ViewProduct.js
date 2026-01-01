@@ -133,23 +133,23 @@ const ViewProduct = () => {
       />
 
       {/* ===================== LAYOUT FIXED HERE ===================== */}
-      <Box width="100%" bg="#f8f8f8">
+      <Box width="100%" bg="#f8f8f8" pt={{base:"60px",lg:0}}>
         <Flex>
-          <Box display={{ base: "none", lg: "flex" }}>
+          <Box display={{ base: "none", lg: "block" }}>
             <LeftSidebar />
           </Box>
 
           {/* RIGHT MAIN AREA */}
           <Box
             w={{ base: "100%", lg: "calc(100% - 260px)" }}
-            ml={{ base: 0, md: 0, lg: "260px" }}
-            px={{ base: 0, md: 0, lg: 6 }}
+            ml={{ base: 0,  lg: "260px" }}
+            px={{ base: 0,  lg: 6 }}
             mb={5}
           >
-            <Box display={{ base: "flex", md: "flex", lg: "none" }}>
+            <Box display={{ base: "flex", lg: "block" }}>
               <ResponsiveNavbar />
             </Box>
-            <Box display={{ base: "none", md: "none", lg: "flex" }}>
+            <Box display={{ base: "none",  lg: "block" }} position="sticky" top="0px" bottom="0px" left="0px" right="0px" z-index={100}>
               <TopBar />
             </Box>
 
@@ -159,7 +159,7 @@ const ViewProduct = () => {
               mt={4}
               boxShadow="lg"
               borderRadius="0.75rem"
-              mx={{ base: 3, md: 3, lg: 0 }}
+              mx={{ base: 3,  lg: 0 }}
             >
               <HStack justifyContent="space-between" mb={4}>
                 <Breadcrumb fontSize="13px">
@@ -177,9 +177,7 @@ const ViewProduct = () => {
                     <BreadcrumbLink>Update Product</BreadcrumbLink>
                   </BreadcrumbItem>
                 </Breadcrumb>
-                <Heading fontSize="sm" mb={4}>
-                  View Product
-                </Heading>
+                
               </HStack>
               {/* PRODUCT HEADER */}
               <Flex gap="30px" align="flex-start">

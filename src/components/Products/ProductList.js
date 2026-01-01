@@ -92,13 +92,19 @@ const ProductList = () => {
         width={{ base: "100%", lg: "calc(100% - 260px)" }}
         ml={{ base: "0", lg: "260px" }}
         mb={5}
-        px={{ base: 0, md: 0, lg: 6 }}
+        minH="100vh"
+       px={{ base: 0, lg: 6 }}
       >
-        <Box display={{ base: "flex", md: "flex", lg: "none" }}>
+        <Box display={{ base: "block", lg: "none" }}>
           <ResponsiveNavbar />
         </Box>
 
-        <Box display={{ base: "none", lg: "flex" }}>
+        <Box display={{ base: "none", lg: "block" }}  position="sticky"
+                top="0px"
+                bottom="0px"
+                left="0px"
+                right="0px"
+                z-index={100}>
           <TopBar />
         </Box>
 
@@ -108,7 +114,7 @@ const ProductList = () => {
           p={4}
           borderRadius="0.75rem"
           boxShadow="lg"
-          mx={{ base: 3, md: 3, lg: 0 }}
+          mx={{ base: 3, lg: 0 }}
         >
           <Text fontSize="2xl" fontWeight="600" mb={4}>
             Product List
@@ -123,13 +129,13 @@ const ProductList = () => {
           >
             <Input
               placeholder="Search product..."
-              w={{ base: "100%", sm: "100%", md: "250px" }}
+              w={{ base: "100%", md: "250px" }}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
 
             <Select
-              w={{ base: "100%", sm: "100%", md: "180px" }}
+              w={{ base: "100%",  md:"200px" }}
               value={expiryFilter}
               onChange={(e) => {
                 setExpiryFilter(e.target.value);
@@ -150,7 +156,7 @@ const ProductList = () => {
             </Flex>
           ) : (
             <>
-              <Box overflowX="auto" w="100%">
+              <Box overflowX="auto">
                 <Table
                   variant="simple"
                   minW={{ base: "1200px", md: "1500px", xl: "1750px" }}

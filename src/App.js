@@ -13,6 +13,7 @@ import ViewProduct from './components/Products/ViewProduct';
 import Banner from './pages/Banners';
 import UpdateProduct from './components/Products/UpdateProduct';
 import ProductDetails from './components/Products/ProductDetails';
+import ProductType from './pages/ProductType';
 import Users from './pages/Users';
 import Order from './pages/Order';
 import AddProduct2 from './components/Products/AddProduct2';
@@ -34,6 +35,7 @@ function App() {
           <Route path='/product-details/:id' element={<ProductDetails/>}/>
           <Route path='/banner' element={<Banner/>}/>
           <Route path='/update-product/:id' element={<UpdateProduct/>}/>
+           <Route path='/product-type' element = {<ProductType/>}/>
           <Route path='/users' element={<Users/>}/>
           <Route path='/order' element={<Order/>}/>
           <Route path='/collection' element={<Collection/>}/>

@@ -10,17 +10,18 @@ const Home = () => {
   return (
     <Box
       width={{ base: "100%", lg: "calc(100% - 260px)" }}
-      ml={{ base: 0, md: 0, lg: "260px" }}
-      px={{ base: 0, md: 0, lg: 6 }}
+      ml={{ base: 0,  lg: "260px" }}
+      px={{ base: 0,  lg: 6 }}
       mb={5}
+      minH="100vh"
     >
       {/* Mobile Navbar */}
-      <Box display={{ base: "flex", md: "flex", lg: "none" }}>
+      <Box display={{ base: "block", lg: "none" }}>
         <ResponsiveNavbar />
       </Box>
 
       {/* Desktop TopBar */}
-      <Box display={{ base: "none", lg: "flex" }}>
+      <Box display={{ base: "none", lg: "block"}} position="sticky" top="0px" bottom="0px" left="0px" right="0px" z-index={100} >
         <TopBar />
       </Box>
       <Box

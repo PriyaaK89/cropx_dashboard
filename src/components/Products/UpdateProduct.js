@@ -129,9 +129,9 @@ const UpdateProduct = () => {
   /* ================= UI ================= */
 
   return (
-    <Box width="100%" bg="#f8f8fb">
+    <Box width="100%" bg="#f8f8fb" pt={{base:"60px",md:"60px",lg:0}}>
       <Flex>
-        <Box display={{ base: "none", lg: "flex" }}>
+        <Box display={{ base: "none", lg: "block" }}>
           <LeftSidebar />
         </Box>
 
@@ -140,11 +140,11 @@ const UpdateProduct = () => {
           ml={{ base: 0, lg: "260px" }}
           px={{ base: 0, lg: 6 }}
         >
-          <Box display={{ base: "flex", lg: "none" }}>
+          <Box display={{ base: "block", lg: "none" }}>
             <ResponsiveNavbar />
           </Box>
 
-          <Box display={{ base: "none", lg: "flex" }}>
+          <Box display={{ base: "none", lg: "block" }} position="sticky" top="0px" bottom="0px" right="0px" z-index={100}>
             <TopBar />
           </Box>
 

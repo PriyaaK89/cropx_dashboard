@@ -36,6 +36,8 @@ import {
 
 
 import logo from "../../assets/logo.jpeg";
+import { MdFilterList } from "react-icons/md";
+
 
 const MobileNavbar = () => {
   const { auth, setAuth } = useContext(AuthContext); // ✅ FIX
@@ -75,10 +77,11 @@ const MobileNavbar = () => {
         justify="space-between"
         px={3}
         boxShadow="sm"
-        position="sticky"
+        position="fixed"
         top="0"
         zIndex={20}
         display={{ base: "flex", md: "flex", lg:"none" }}
+        left="0"
       >
         <Image
           src={logo}
@@ -164,6 +167,11 @@ const MobileNavbar = () => {
                     path: "/add-category",
                     label: "Add Category",
                     icon: FaTags,
+                  },
+                   {
+                    path: "/product-type",
+                    label: "product-type",
+                    icon:  MdFilterList ,
                   },
                 ].map((item) => (
                   <Link key={item.path} to={item.path}>

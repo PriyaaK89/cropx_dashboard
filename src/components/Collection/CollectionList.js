@@ -105,10 +105,10 @@ const CollectionList = () => {
         mb={5}
       >
         {/* Navbar */}
-        <Box display={{ base: "flex", md:"flex", lg: "none" }}>
+        <Box display={{ base: "block", lg: "none" }}>
           <ResponsiveNavbar />
         </Box>
-        <Box display={{ base: "none", lg: "flex" }}>
+        <Box display={{ base: "none", lg: "block" }} position="sticky" top="0px" left="0px" bottom="0px" z-index={100}>
           <TopBar />
         </Box>
 

@@ -5,10 +5,10 @@ import LeftSidebar from "../components/LeftSidebarLayout/LeftSidebar";
 
 const Dashboard = () => {
   return (
-    <Box bg="#f8f8fb" minH="100vh">
+    <Box bg="#f8f8fb" minH="100vh" pt={{base:"60px",lg:0}}>
       <Box display="flex">
         {/* Sidebar → only LG and above */}
-        <Box display={{ base: "none", lg: "flex" }}>
+        <Box display={{ base: "none", lg: "block" }}>
           <LeftSidebar />
         </Box>
 

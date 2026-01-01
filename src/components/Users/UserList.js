@@ -51,16 +51,16 @@ const UserList = () => {
       ml={{ base: "0", lg: "260px" }}
     >
       {/* Mobile Navbar */}
-      <Box display={{ base: "flex", md:"flex", lg: "none" }}>
+      <Box display={{ base: "block", lg: "none" }} position="sticky" top="0px" bottom="0px" left="0px" right="0px" z-index={100}>
         <ResponsiveNavbar />
       </Box>
 
       {/* Desktop TopBar */}
-      <Box display={{ base: "none", lg: "flex" }}>
+      <Box display={{ base: "none", lg: "block" }}>
         <TopBar />
       </Box>
 
-      <Box p={4} bg="white" mt={4} borderRadius="0.75rem" boxShadow="lg" mx={{base:3,md:3,lg:0}}>
+      <Box p={4} bg="white" mt={4} borderRadius="0.75rem" boxShadow="lg" mx={{base:3,lg:0}}>
          
          
         <Flex justify="space-between" align="center" px={5} mt={5}>

@@ -99,21 +99,22 @@ const OrderList = () => {
       />
       <Box
         width={{ base: "100%", lg: "calc(100% - 260px)" }}
-        ml={{ base: 0, md:0 , lg: "260px" }}
+        ml={{ base: 0, lg: "260px" }}
         mb={5}
-        px={{ base:0, md:0 ,lg: 6 }}
+        px={{ base:0, lg:6 }}
+        minH="100vh"
       >
         {/* Mobile Navbar */}
-        <Box display={{ base: "flex", md:"flex", lg: "none" }}>
+        <Box display={{ base: "block",  lg:"none" }}>
           <ResponsiveNavbar />
         </Box>
 
         {/* Desktop TopBar */}
-        <Box display={{ base: "none", lg: "flex" }}>
+        <Box display={{ base:"none", lg:"block"}} position="sticky" top="0px" bottom="0px" left="0px" z-index={100}>
           <TopBar />
         </Box>
 
-        <Box p={4} bg="white" mt={4} borderRadius="0.75rem" boxShadow="lg" mx={{base:3,md:3,lg:0}}>
+        <Box p={4} bg="white" mt={4} borderRadius="0.75rem" boxShadow="lg" mx={{base:3,lg:0}}>
           <Box overflowX="auto" w="100%">
              <Text fontSize="2xl" fontWeight="600" mb={4}>
                         Order List

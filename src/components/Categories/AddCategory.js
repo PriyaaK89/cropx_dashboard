@@ -112,10 +112,10 @@ const AddCategory = () => {
   /* ================= UI ================= */
 
   return (
-    <Box width="100%" bg="#f8f8fb">
-      <Flex justifyContent="space-between">
+    <Box width="100%" bg="#f8f8fb" pt={{base:"60px",md:"60px",lg:0}}>
+      <Flex>
         {/* SIDEBAR */}
-        <Box display={{ base: "none", lg: "flex" }}>
+        <Box display={{ base: "none", lg: "block" }}>
           <LeftSidebar />
         </Box>
 
@@ -126,14 +126,14 @@ const AddCategory = () => {
           px={{ base: 0, lg: 6 }}
           mb={5}
         >
-          <Box display={{ base: "flex", md:"flex", lg: "none" }}>
+          <Box display={{ base: "block",  lg: "none" }}>
             <ResponsiveNavbar />
           </Box>
-          <Box display={{ base: "none", lg: "flex" }}>
+          <Box display={{ base: "none", lg: "block"}} position="sticky" top="0px" bottom="0px" left="0px" right="0px" z-index={100}>
             <TopBar />
           </Box>
 
-          <Box bg="white" px={4} py={2} mt={4} boxShadow="lg" borderRadius="0.75rem" mx={{base:3,md:3,lg:0}}>
+          <Box bg="white" px={4} py={2} mt={4} boxShadow="lg" borderRadius="0.75rem" mx={{base:3,lg:0}}>
             {/* BREADCRUMB */}
             <HStack justify="space-between" mb={4}>
               <Breadcrumb fontSize="13px">

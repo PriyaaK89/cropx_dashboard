@@ -173,49 +173,50 @@ const AddProduct2 = () => {
   /* ================= UI ================= */
 
   return (
-    <Box width="100%" bg="#f8f8fb">
+    <Box width="100%" bg="#f8f8fb"  pt={{base:"60px",lg:0}}>
       <Flex>
-        <Box display={{ base: "none", lg: "flex" }}>
+        <Box display={{ base: "none", lg: "block" }}>
           <LeftSidebar />
         </Box>
 
         <Box
           width={{ base: "100%", lg: "calc(100% - 260px)" }}
-          ml={{ base: 0, md: 0, lg: "260px" }}
-          px={{ base: 0, md: 0, lg: 6 }}
+          ml={{ base: 0,  lg: "260px" }}
+          px={{ base: 0,  lg: 6 }}
           mb={5}
-        >
-          <Box display={{ base: "flex", md: "flex", lg: "none" }}>
+    >
+          <Box display={{ base: "block",  lg: "none" }}>
             <ResponsiveNavbar />
           </Box>
-          <Box display={{ base: "none", lg: "flex" }}>
+          <Box display={{ base: "none", lg: "block"}} position="sticky" top="0px" left="0px" right="0px" bottom="0px" z-index={100}  >
             <TopBar />
           </Box>
 
           <Box
             bg="white"
             p={4}
-            mt={4}
+            // mt={4}
             boxShadow="lg"
             borderRadius="0.75rem"
-            mx={{ base: 3, md: 3, lg: 0 }}
+            mx={{ base: 3, lg: 0 }}
+            mt={4}
           >
             {/* BREDCRUMB */}
             <HStack justifyContent="space-between" mb={4}>
               <Breadcrumb fontSize="13px">
-              <BreadcrumbItem>
-                <BreadcrumbLink as={Link} to="/">
-                <GoHomeFill/>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbItem>
-                 <BreadcrumbLink as={Link} to="/product-list">
-                 Product List
-                 </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbItem isCurrentPage>
-              <BreadcrumbLink>Add Product</BreadcrumbLink>
-              </BreadcrumbItem>
+                <BreadcrumbItem>
+                  <BreadcrumbLink as={Link} to="/">
+                    <GoHomeFill />
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbItem>
+                  <BreadcrumbLink as={Link} to="/product-list">
+                    Product List
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbItem isCurrentPage>
+                  <BreadcrumbLink>Add Product</BreadcrumbLink>
+                </BreadcrumbItem>
               </Breadcrumb>
               <Heading fontSize="sm" mb={4}>
                 Add New Product

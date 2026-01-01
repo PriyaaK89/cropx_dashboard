@@ -23,6 +23,8 @@ import { MdArrowDropDown, MdArrowLeft } from "react-icons/md";
 import { FaUser, FaThList } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
 import { BsCollection } from "react-icons/bs";
+import { MdFilterList } from "react-icons/md";
+
 
 const LeftSidebar = () => {
   const navigate = useNavigate();
@@ -39,6 +41,7 @@ const LeftSidebar = () => {
     "/categories-list",
     "/add-category",
     "/collection",
+    "/product-type"
   ];
 
   const shouldCatalogBeOpen = catalogRoutes.includes(location.pathname);
@@ -154,13 +157,26 @@ const LeftSidebar = () => {
               <Text
                 p="6px"
                 paddingLeft="3rem"
-                bg={isActive("/add-category") ? "#e9ecee" : "transparent"}
-                color={isActive("/add-category") ? "#4d4d4d" : "#black"}
+                bg={isActive("/product-type") ? "#e9ecee" : "transparent"}
+                color={isActive("/product-type") ? "#4d4d4d" : "#black"}
                 _hover={{ bg: "#434444ff", color: "#fff" }}
                 fontSize="14px"
               >
                 <Icon as={FaTags} mr={3} />
                 Category
+              </Text>
+            </Link>
+            <Link to="/product-type">
+              <Text
+                p="6px"
+                paddingLeft="3rem"
+                bg={isActive("/product-type") ? "#e9ecee" : "transparent"}
+                color={isActive("/product-type") ? "#4d4d4d" : "#black"}
+                _hover={{ bg: "#434444ff", color: "#fff" }}
+                fontSize="14px"
+              >
+                <Icon as={MdFilterList} mr={3} />
+                Product Type
               </Text>
             </Link>
           </Box>
