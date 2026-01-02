@@ -177,7 +177,7 @@ const UpdateProduct = () => {
                     Product Name
                   </FormLabel>
                   <Input
-                    name="form.product_name"
+                    name="product_name"
                     placeholder="Enter product name"
                     value={formData.product_name}
                     onChange={handleChange}

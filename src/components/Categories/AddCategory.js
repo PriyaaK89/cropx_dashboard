@@ -118,7 +118,7 @@ const AddCategory = () => {
         <Box display={{ base: "none", lg: "block" }}>
           <LeftSidebar />
         </Box>
-
+ 
         {/* MAIN CONTENT */}
         <Box
           width={{ base: "100%", lg: "calc(100% - 260px)" }}

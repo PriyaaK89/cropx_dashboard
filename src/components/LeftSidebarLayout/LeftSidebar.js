@@ -157,8 +157,8 @@ const LeftSidebar = () => {
               <Text
                 p="6px"
                 paddingLeft="3rem"
-                bg={isActive("/product-type") ? "#e9ecee" : "transparent"}
-                color={isActive("/product-type") ? "#4d4d4d" : "#black"}
+                bg={isActive("/add-category") ? "#e9ecee" : "transparent"}
+                color={isActive("/add-category") ? "#4d4d4d" : "#black"}
                 _hover={{ bg: "#434444ff", color: "#fff" }}
                 fontSize="14px"
               >
