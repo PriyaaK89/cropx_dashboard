@@ -53,7 +53,8 @@ const barOptions = {
 };
 
  const DashboardBarChart = () => (
-  <Box bg="white" p={4} borderRadius="lg" boxShadow="md">
+  <Box bg="white" p={4} borderRadius="0.75rem" boxShadow="lg" mx={{ base: 3, md: 3, lg: 0 }}
+>
     <Text fontSize="lg" fontWeight="bold" mb={3}>
       Monthly Users
     </Text>

@@ -35,7 +35,7 @@ const StateCards = () => {
   ];
 
   return (
-    <SimpleGrid columns={{ base: 1, md: 2, xl: 4 }} spacing={5} alignItems="stretch">
+    <SimpleGrid mx={{base:3,md:3,lg:0}} columns={{ base: 1, md: 2, lg: 3, xl: 4}} spacing={5} alignItems="stretch">
       {cards.map((card, index) => (
         <Box
           key={index}

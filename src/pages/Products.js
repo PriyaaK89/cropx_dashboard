@@ -1,18 +1,24 @@
 import React from "react";
-import { Box, Flex } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import LeftSidebar from "../components/LeftSidebarLayout/LeftSidebar";
 import ProductList from "../components/Products/ProductList";
 
 const Products = () => {
   return (
-    <>
-      <Box width="100%" backgroundColor="#f8f8fb"  >
-        <Box display="flex" justifyContent="space-between">
-          <Box display={{base:"none", md:"flex"}}> <LeftSidebar /></Box>
-          <ProductList />
+    <Box
+      w="100%"
+      bg="#f8f8fb"
+      pt={{ base: "60px",  lg: 0 }}
+    >
+      <Box display="flex">
+        {/* Sidebar only on lg */}
+        <Box display={{ base: "none", lg: "block" }}>
+          <LeftSidebar />
         </Box>
+
+        <ProductList />
       </Box>
-    </>
+    </Box>
   );
 };
 

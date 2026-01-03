@@ -56,7 +56,8 @@ const lineOptions = {
 };
 
  const DashboardLineChart = () => (
-  <Box bg="white" p={4} borderRadius="lg" boxShadow="md">
+  <Box bg="white" p={4} borderRadius="lg" boxShadow="md" mx={{base: 3, md: 3, lg: 0 }}
+>
     <Text fontSize="lg" fontWeight="bold" mb={3}>
       Users Growth
     </Text>

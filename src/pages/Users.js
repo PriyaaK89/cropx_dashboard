@@ -6,9 +6,9 @@ import UserList from "../components/Users/UserList";
 const Users = ()=>{
     return(
         <>
-      <Box width="100%" backgroundColor="#f8f8fb" >
-        <Box display="flex" justifyContent="space-between">
-           <Box display={{base:"none",md:"flex"}}> <LeftSidebar/> </Box>
+      <Box width="100%" backgroundColor="#f8f8fb" pt={{base:"60px",lg:"0"}} >
+        <Box display="flex">
+           <Box display={{base:"none",lg:"block"}}> <LeftSidebar/> </Box>
            <UserList/>
         </Box>
         </Box>

@@ -21,7 +21,7 @@ import ViewOrderListModal from "./ViewOrderListModal";
 import UpdateOrdersModal from "./UpdateOrdersModal";
 import { useDisclosure } from "@chakra-ui/react";
 
-const Order = () => {
+const OrderList = () => {
   const { auth } = useContext(AuthContext);
   const apiToken = auth?.token;
 
@@ -97,34 +97,46 @@ const Order = () => {
         orderId={selectedOrderID}
         refreshOrders={getOrders}
       />
-
-      <Box width={{base:"100%",md:"77.5%"}} minH="100vh" pl={{base:"none",md:"1rem"}} mr={{base:"0",md:"1rem"}}>
+      <Box
+        width={{ base: "100%", lg: "calc(100% - 260px)" }}
+        ml={{ base: 0, lg: "260px" }}
+        mb={5}
+        px={{ base:0, lg:6 }}
+        minH="100vh"
+      >
         {/* Mobile Navbar */}
-        <Box display={{base: "flex", md: "none" }}>
+        <Box display={{ base: "block",  lg:"none" }}>
           <ResponsiveNavbar />
         </Box>
 
         {/* Desktop TopBar */}
-        <Box display={{base: "none", md:"flex" }}>
+        <Box display={{ base:"none", lg:"block"}} position="sticky" top="0px" bottom="0px" left="0px" z-index={100}>
           <TopBar />
         </Box>
 
-        <Box p={4} bg="white" mt={4} borderRadius="0.75rem" boxShadow="lg">
-          <Box overflowX="auto">
-            <Table minW="1500px">
+        <Box p={4} bg="white" mt={4} borderRadius="0.75rem" boxShadow="lg" mx={{base:3,lg:0}}>
+          <Box overflowX="auto" w="100%">
+             <Text fontSize="2xl" fontWeight="600" mb={4}>
+                        Order List
+                      </Text>
+            
+            <Table
+              variant="simple"
+              minW={{ base: "900px", md: "1200px", xl: "1400px" }}
+            >
               <Thead bg="gray.100">
                 <Tr>
-                  <Th>#</Th>
-                  <Th>Order ID</Th>
-                  <Th>User</Th>
-                  <Th>Products</Th>
-                  <Th>Subtotal</Th>
-                  <Th>Total</Th>
-                  <Th>Payment</Th>
-                  <Th>Status</Th>
-                  <Th>Date</Th>
-                  <Th>View</Th>
-                  <Th>Update</Th>
+                  <Th minW="60px">#</Th>
+                  <Th minW="150px">Order ID</Th>
+                  <Th minW="150px">User</Th>
+                  <Th minW="260px">Products</Th>
+                  <Th minW="120px">Subtotal</Th>
+                  <Th minW="120px">Total</Th>
+                  <Th minW="140px">Payment</Th>
+                  <Th minW="140px">Status</Th>
+                  <Th minW="180px">Date</Th>
+                  <Th minW="120px">View</Th>
+                  <Th minW="120px">Update</Th>
                 </Tr>
               </Thead>
 
@@ -165,17 +177,19 @@ const Order = () => {
                       <Td>{formatDate(order.created_at)}</Td>
 
                       <Td>
-                        <Button
-                          size="sm"
-                          colorScheme="green"
-                          onClick={() => {
-                            setSelectedOrderID(order.order_id);
-                            setSelectedItems(order.items);
-                            onViewOpen();
-                          }}
-                        >
-                          View
-                        </Button>
+                        <Flex gap={2} wrap="wrap">
+                          <Button
+                            size="sm"
+                            colorScheme="green"
+                            onClick={() => {
+                              setSelectedOrderID(order.order_id);
+                              setSelectedItems(order.items);
+                              onViewOpen();
+                            }}
+                          >
+                            View
+                          </Button>
+                        </Flex>
                       </Td>
 
                       <Td>
@@ -202,4 +216,4 @@ const Order = () => {
   );
 };
 
-export default Order;
+export default OrderList;
