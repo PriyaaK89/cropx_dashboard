@@ -21,11 +21,14 @@ import {
 import axios from "axios";
 import TopBar from "../TopBar/TopBar";
 import ResponsiveNavbar from "../TopBar/ResponsiveNavbar";
+import { FiEye, FiEdit } from "react-icons/fi";
+import { RiDeleteBin6Line } from "react-icons/ri";
 import { Config } from "../../utils/Config";
 import { useNavigate } from "react-router-dom";
 import DeleteProductModal from "./DeleteProductModal";
 import { PiGreaterThan } from "react-icons/pi";
 import { PiLessThan } from "react-icons/pi";
+import { FaInfoCircle } from "react-icons/fa";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -93,18 +96,21 @@ const ProductList = () => {
         ml={{ base: "0", lg: "260px" }}
         mb={5}
         minH="100vh"
-       px={{ base: 0, lg: 6 }}
+        px={{ base: 0, lg: 6 }}
       >
         <Box display={{ base: "block", lg: "none" }}>
           <ResponsiveNavbar />
         </Box>
 
-        <Box display={{ base: "none", lg: "block" }}  position="sticky"
-                top="0px"
-                bottom="0px"
-                left="0px"
-                right="0px"
-                z-index={100}>
+        <Box
+          display={{ base: "none", lg: "block" }}
+          position="sticky"
+          top="0px"
+          bottom="0px"
+          left="0px"
+          right="0px"
+          z-index={100}
+        >
           <TopBar />
         </Box>
 
@@ -135,7 +141,7 @@ const ProductList = () => {
             />
 
             <Select
-              w={{ base: "100%",  md:"200px" }}
+              w={{ base: "100%", md: "200px" }}
               value={expiryFilter}
               onChange={(e) => {
                 setExpiryFilter(e.target.value);
@@ -281,38 +287,36 @@ const ProductList = () => {
                         <Td>
                           <HStack spacing={2}>
                             <Button
+                              bgColor="white"
                               size="sm"
-                              colorScheme="blue"
                               onClick={() => navigate(`/product/${item.id}`)}
                             >
-                              {" "}
-                              View{" "}
+                              <FiEye size={18} color="#2563eb" />
                             </Button>
                             <Button
+                              bgColor="white"
                               size="sm"
-                              colorScheme="green"
                               onClick={() =>
                                 navigate(`/product-details/${item.id}`)
                               }
                             >
-                              {" "}
-                              Details{" "}
+                              <FaInfoCircle size={18} color="#FFA500" />
                             </Button>
                             <Button
+                              bgColor="white"
                               size="sm"
-                              colorScheme="yellow"
                               onClick={() =>
                                 navigate(`/update-product/${item.id}`)
                               }
                             >
-                              Edit
+                              <FiEdit size={18} color="#16a34a" />
                             </Button>
                             <Button
+                              bg="white"
                               size="sm"
-                              colorScheme="red"
                               onClick={() => handleDeleteModal(item.id)}
                             >
-                              Delete
+                              <RiDeleteBin6Line size={18} color="#dc2626" />
                             </Button>
                           </HStack>
                         </Td>
@@ -326,10 +330,14 @@ const ProductList = () => {
               <Flex
                 mt={6}
                 w={"100%"}
-                direction={{base:"column",md:"row"}}
-                gap={{base:4, md:0}}
+                direction={{ base: "column", md: "row" }}
+                gap={{ base: 4, md: 0 }}
               >
-                <Flex w="100%" justify={{base:"space-between",md:"space-between"}} align="center">
+                <Flex
+                  w="100%"
+                  justify={{ base: "space-between", md: "space-between" }}
+                  align="center"
+                >
                   <Text fontSize="md">
                     Page {page} Of {totalPages}
                   </Text>
@@ -346,35 +354,28 @@ const ProductList = () => {
                     <option value={30}>30</option>
                   </Select>
                 </Flex>
-               <Flex w="100%" justify="center" align="center">
-                    <HStack>
-
-                  <Button
-                    bg="blue.50"
-                    onClick={() => setPage(page - 1)}
-                  >
-                    <PiLessThan size={18} color="black" />
-                  </Button>
-
-                  {Array.from({ length: totalPages }).map((_, i) => (
-                    <Button
-                      key={i}
-                      size="sm"
-                      onClick={() => setPage(i + 1)}
-                      colorScheme={page === i + 1 ? "blue" : "gray"}
-                    >
-                      {i + 1}
+                <Flex w="100%" justify="center" align="center">
+                  <HStack>
+                    <Button bg="blue.50" onClick={() => setPage(page - 1)}>
+                      <PiLessThan size={18} color="black" />
                     </Button>
-                  ))}
 
-                  <Button
-                    onClick={() => setPage(page + 1)}
-                    bg="blue.50"
-                  >
-                    <PiGreaterThan size={18} color="black" />
-                  </Button>
+                    {Array.from({ length: totalPages }).map((_, i) => (
+                      <Button
+                        key={i}
+                        size="sm"
+                        onClick={() => setPage(i + 1)}
+                        colorScheme={page === i + 1 ? "blue" : "gray"}
+                      >
+                        {i + 1}
+                      </Button>
+                    ))}
+
+                    <Button onClick={() => setPage(page + 1)} bg="blue.50">
+                      <PiGreaterThan size={18} color="black" />
+                    </Button>
                   </HStack>
-                   </Flex>
+                </Flex>
               </Flex>
             </>
           )}

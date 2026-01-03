@@ -174,7 +174,7 @@ const ViewProduct = () => {
                     </BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbItem isCurrentPage>
-                    <BreadcrumbLink>Update Product</BreadcrumbLink>
+                    <BreadcrumbLink>View Product</BreadcrumbLink>
                   </BreadcrumbItem>
                 </Breadcrumb>
                 
