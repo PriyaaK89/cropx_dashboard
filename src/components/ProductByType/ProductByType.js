@@ -3,6 +3,7 @@ import {
   Box,
   Flex,
   useDisclosure,
+  Spinner,
 } from "@chakra-ui/react";
 import ResponsiveNavbar from "../TopBar/ResponsiveNavbar";
 import TopBar from "../TopBar/TopBar";
@@ -12,13 +13,18 @@ import { useColorModeValue } from "@chakra-ui/react";
 import ProductQuantityModal from "./ProductQuantityModal";
 import BestSelling from "./BestSelling";
 import NewArrivals from "./NewArrivals";
-
 import { Config } from "../../utils/Config";
+
 const ProductByType = () => {
   const [products, setProducts] = useState([]);
+  const [newArrivals, setNewArrivals] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [activeTab, setActiveTab] = useState("best");
-  const [newArrivals, setNewArrivals] = useState([]);
+
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(6);
+  const [totalPages, setTotalPages] = useState(1);
 
   const {
     isOpen: isQuantityModalOpen,
@@ -30,39 +36,50 @@ const ProductByType = () => {
     setSelectedProduct(product);
     onQuantityModalOpen();
   };
+
   const cardBg = useColorModeValue("white", "gray.800");
   const priceColor = useColorModeValue("green.600", "green.300");
 
-  const getDiscountPercent = (actual, discounted) => {
-    const diff = actual - discounted;
-    const percent = (diff / actual) * 100;
-    return Math.round(percent);
-  };
+  /* ================= FETCH BEST SELLING ================= */
   const fetchBestSelling = async () => {
+    setLoading(true);
     try {
-      const res = await axios.get(`${Config?.best_selling}`);
+      const res = await axios.get(Config.best_selling);
       setProducts(res.data.data);
-      console.log(res.data.data, "best selling");
     } catch (error) {
-      console.log("Error fetching collection", error);
+      console.log("Error fetching Best Selling:", error);
     }
-  };
-  const fetchNewArrivals = async () => {
-    try {
-      const res = await axios.get(`${Config?.new_arrivals}`);
-      setNewArrivals(res.data.data);
-    } catch (error) {
-      console.log("Error fetching new arrivals", error);
-    }
+    setLoading(false);
   };
 
+  /* ================= FETCH NEW ARRIVALS ================= */
+  const fetchNewArrivals = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get(Config.new_arrivals, {
+        params: { page, limit },
+      });
+
+      if (res.data.success) {
+        setNewArrivals(res.data.data);
+        setTotalPages(res.data.totalPages);
+      }
+    } catch (error) {
+      console.log("Error fetching New Arrivals:", error);
+    }
+    setLoading(false);
+  };
+
+  /* ================= USE EFFECT ================= */
   useEffect(() => {
     if (activeTab === "best") {
       fetchBestSelling();
-    } else {
+    }
+
+    if (activeTab === "new") {
       fetchNewArrivals();
     }
-  }, [activeTab]);
+  }, [activeTab, page, limit]);
 
   return (
     <>
@@ -71,8 +88,9 @@ const ProductByType = () => {
         onQuantityModalClose={onQuantityModalClose}
         product={selectedProduct}
       />
+
       <Box
-        w={{ base: "100%", lg: "calc(100% - 260px )" }}
+        w={{ base: "100%", lg: "calc(100% - 260px)" }}
         ml={{ base: 0, lg: "260px" }}
         px={{ base: 0, lg: 6 }}
         mb={5}
@@ -82,23 +100,12 @@ const ProductByType = () => {
         <Box display={{ base: "block", lg: "none" }}>
           <ResponsiveNavbar />
         </Box>
-        <Box
-          display={{ base: "none", lg: "block" }}
-          position="sticky"
-          top="0"
-          zIndex={100}
-        >
+        <Box display={{ base: "none", lg: "block" }} position="sticky" top="0" zIndex={100}>
           <TopBar />
         </Box>
 
-        <Box
-          mt={4}
-          bg="white"
-          p={4}
-          borderRadius="0.75rem"
-          boxShadow="lg"
-          mx={{ base: 3, lg: 0 }}
-        >
+        <Box mt={4} bg="white" p={4} borderRadius="0.75rem" boxShadow="lg" mx={{ base: 3, lg: 0 }}>
+          {/* Tabs */}
           <Flex justify="space-between" mb={4}>
             <Button
               colorScheme={activeTab === "best" ? "green" : "gray"}
@@ -108,12 +115,21 @@ const ProductByType = () => {
             </Button>
             <Button
               colorScheme={activeTab === "new" ? "green" : "gray"}
-              onClick={() => setActiveTab("new")}
+              onClick={() => {
+                setActiveTab("new");
+                setPage(1);
+              }}
             >
               New Arrivals
             </Button>
           </Flex>
-          {activeTab === "best" ? (
+
+          {/* ================= TAB CONTENT ================= */}
+          {loading ? (
+            <Flex justify="center" mt={10}>
+              <Spinner size="xl" />
+            </Flex>
+          ) : activeTab === "best" ? (
             <Flex flexWrap="wrap" justifyContent="center" gap="2rem">
               {products.map((p) => (
                 <BestSelling
@@ -131,6 +147,12 @@ const ProductByType = () => {
               cardBg={cardBg}
               priceColor={priceColor}
               handleOpenModal={handleOpenModal}
+              page={page}
+              setPage={setPage}
+              totalPages={totalPages}
+              limit={limit}
+              setLimit={setLimit}
+              loading={loading}
             />
           )}
         </Box>

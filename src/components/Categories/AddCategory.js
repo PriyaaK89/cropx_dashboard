@@ -167,44 +167,44 @@ const AddCategory = () => {
                 mt={2}
               >
                 <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
-                  <FormControl>
-                    <FormLabel>Category Name</FormLabel>
+                  <FormControl mb="4px" isRequired>
+                    <FormLabel fontSize="14px" fontWeight="bold">Category Name</FormLabel>
                     <Input name="cate_name" value={form.cate_name} onChange={handleChange} placeholder="Enter your category name" />
                   </FormControl>
 
-                  <FormControl>
-                    <FormLabel>Slug</FormLabel>
+                  <FormControl mb="4px" isRequired>
+                    <FormLabel fontSize="14px" fontWeight="bold">Slug</FormLabel>
                     <Input name="slug" value={form.slug} onChange={handleChange} placeholder="Enter your slug" />
                   </FormControl>
 
-                  <FormControl gridColumn={{ md: "span 2" }}>
-                    <FormLabel>Description</FormLabel>
+                  <FormControl mb="4px" gridColumn={{ md: "span 2" }}>
+                    <FormLabel fontSize="14px" fontWeight="bold">Description</FormLabel>
                     <Textarea name="description" value={form.description} onChange={handleChange} placeholder="Enter your description" />
                   </FormControl>
 
-                  <FormControl>
-                    <FormLabel>Show In Menu (0 / 1)</FormLabel>
+                  <FormControl mb="4px" isRequired>
+                    <FormLabel fontSize="14px" fontWeight="bold">Show In Menu (0 / 1)</FormLabel>
                     <Input name="show_in_menu" value={form.show_in_menu} onChange={handleChange} placeholder="Enter 0 or 1" />
                   </FormControl>
 
-                  <FormControl>
-                    <FormLabel>Show On Home (0 / 1)</FormLabel>
+                  <FormControl isRequired mb="4px">
+                    <FormLabel fontSize="14px" fontWeight="bold">Show On Home (0 / 1)</FormLabel>
                     <Input name="show_on_home" value={form.show_on_home} onChange={handleChange} placeholder="Enter 0 Or 1" />
                   </FormControl>
 
-                  <FormControl>
-                    <FormLabel>Menu Order</FormLabel>
+                  <FormControl mb="4px">
+                    <FormLabel fontSize="14px" fontWeight="bold">Menu Order</FormLabel>
                     <Input type="number" name="menu_order" value={form.menu_order} onChange={handleChange} placeholder="Enter your menu order" />
                   </FormControl>
 
-                  <FormControl>
-                    <FormLabel>Home Order</FormLabel>
+                  <FormControl mb="4px">
+                    <FormLabel fontSize="14px" fontWeight="bold">Home Order</FormLabel>
                     <Input type="number" name="home_order" value={form.home_order} onChange={handleChange} placeholder="Enter your home order" />
                   </FormControl>
 
                   {/* IMAGE */}
-                  <FormControl gridColumn={{ md: "span 2" }}>
-                    <FormLabel>Upload Image</FormLabel>
+                  <FormControl mb="4px" gridColumn={{ md: "span 2" }}>
+                    <FormLabel fontSize="14px" fontWeight="bold">Upload Image</FormLabel>
                     <Box
                       border="2px dashed #CBD5E0"
                       p={6}

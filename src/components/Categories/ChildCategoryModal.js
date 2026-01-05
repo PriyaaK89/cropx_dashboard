@@ -129,8 +129,8 @@ const ChildCategory = ({ isOpen, onClose }) => {
 
         <ModalBody>
           {/* CATEGORY */}
-          <FormControl mb={3}>
-            <FormLabel>Category</FormLabel>
+          <FormControl mb="4px" isRequired>
+            <FormLabel fontSize="14px" fontWeight="bold">Category</FormLabel>
             <Select
               placeholder="Select category"
               value={categoryId}
@@ -145,8 +145,8 @@ const ChildCategory = ({ isOpen, onClose }) => {
           </FormControl>
 
           {/* SUB CATEGORY */}
-          <FormControl mb={3}>
-            <FormLabel>Sub Category</FormLabel>
+          <FormControl mb="4px" isRequired>
+            <FormLabel fontSize="14px" fontWeight="bold">Sub Category</FormLabel>
             <Select
               placeholder="Select sub category"
               value={subCategoryId}
@@ -162,8 +162,8 @@ const ChildCategory = ({ isOpen, onClose }) => {
           </FormControl>
 
           {/* CHILD NAME */}
-          <FormControl mb={3}>
-            <FormLabel>Child Category Name</FormLabel>
+          <FormControl mb="4px" isRequired>
+            <FormLabel fontSize="14px" fontWeight="bold">Child Category Name</FormLabel>
             <Input
               placeholder="Enter child category name"
               value={childName}
@@ -172,8 +172,8 @@ const ChildCategory = ({ isOpen, onClose }) => {
           </FormControl>
 
           {/* CHILD SLUG */}
-          <FormControl>
-            <FormLabel>Child Slug</FormLabel>
+          <FormControl mb="4px" isRequired>
+            <FormLabel fontSize="14px" fontWeight="bold">Child Slug</FormLabel>
             <Input
               placeholder="Enter Your Slug"
               value={childSlug}

@@ -109,7 +109,7 @@ const ProductList = () => {
           bottom="0px"
           left="0px"
           right="0px"
-          z-index={100}
+          Zindex={100}
         >
           <TopBar />
         </Box>
@@ -329,7 +329,7 @@ const ProductList = () => {
               {/* ================= PAGINATION ================= */}
               <Flex
                 mt={6}
-                w={"100%"}
+                w="100%"
                 direction={{ base: "column", md: "row" }}
                 gap={{ base: 4, md: 0 }}
               >

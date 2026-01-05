@@ -102,8 +102,8 @@ const SubCategory = ({ isOpen, onClose }) => {
 
         <ModalBody>
           {/* CATEGORY DROPDOWN */}
-          <FormControl mb={4}>
-            <FormLabel>Select Category</FormLabel>
+          <FormControl mb="4px" isRequired>
+            <FormLabel fontSize="14px" fontWeight="bold">Select Category</FormLabel>
             <Select
               placeholder="Select category"
               value={categoryId}
@@ -118,23 +118,23 @@ const SubCategory = ({ isOpen, onClose }) => {
           </FormControl>
 
           {/* SUB CATEGORY INPUT  */}
-          <FormControl mb={4}>
-            <FormLabel>Sub Category Name</FormLabel>
+          <FormControl mb="4px" isRequired>
+            <FormLabel fontSize="14px" fontWeight="bold">Sub Category Name</FormLabel>
             <Input
               placeholder="Enter sub category name"
               value={subName}
               onChange={(e) => setSubName(e.target.value)}
             />
           </FormControl>
-          <FormControl>
-            <FormLabel>Sub Category Slug</FormLabel>
+          <FormControl mb="4px" isRequired>
+            <FormLabel fontSize="14px" fontWeight="bold">Sub Category Slug</FormLabel>
              <Input placeholder="sub-category-slug"
                value={subSlug}
                onChange={(e)=> setSubSlug(e.target.value)}
               />
           </FormControl>
-           <FormControl>
-            <FormLabel> Sub Order Menu</FormLabel>
+           <FormControl mb="4px" isRequired>
+            <FormLabel fontSize="14px" fontWeight="bold"> Sub Order Menu</FormLabel>
              <Input placeholder="sub-order-menu"
                value={menuOrder}
                onChange={(e)=> setMenuOrder(e.target.value)}

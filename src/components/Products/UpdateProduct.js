@@ -256,7 +256,7 @@ const UpdateProduct = () => {
                       onChange={handleChange}
                     />
                     <InputRightElement cursor="pointer">
-                      <CalendarIcon />
+                      {/* <CalendarIcon /> */}
                     </InputRightElement>
                   </InputGroup>
                 </FormControl>
