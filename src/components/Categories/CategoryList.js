@@ -33,18 +33,14 @@ const CategoryList = () => {
   const [search, setSearch] = useState("");
 
   const [categoryId, setCategoryId] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedSub, setSelectedSub] = useState("");
 
   const [subCategories, setSubCategories] = useState([]);
   const [childCategories, setChildCategories] = useState([]);
+  const [selectedSub, setSelectedSub] = useState("");
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    isOpen: isSubOpen,
-    onOpen: onSubOpen,
-    onClose: onSubClose,
-  } = useDisclosure();
+  const { isOpen: isSubOpen, onOpen: onSubOpen, onClose: onSubClose } =
+    useDisclosure();
   const {
     isOpen: isChildOpen,
     onOpen: onChildOpen,
@@ -58,6 +54,11 @@ const CategoryList = () => {
       const res = await axios.get(Config.get_categories);
       setCategories(res.data.categories || []);
       setFiltered(res.data.categories || []);
+
+      // first category ke liye sub category load
+      if (res.data.categories?.length > 0) {
+        getSubCategories(res.data.categories[0].id);
+      }
     } catch (err) {
       console.log(err);
     }
@@ -69,7 +70,6 @@ const CategoryList = () => {
       const res = await axios.get(
         `${Config.get_sub_category}?category_id=${catID}`
       );
-      // backend response ke hisaab se data array extract karo
       setSubCategories(res.data?.data || []);
       setChildCategories([]);
       setSelectedSub("");
@@ -78,7 +78,6 @@ const CategoryList = () => {
       setSubCategories([]);
     }
   };
-
 
   const getChildCategories = async (subId) => {
     try {
@@ -125,6 +124,7 @@ const CategoryList = () => {
         categoryId={categoryId}
         fetchCategories={getCategories}
       />
+
       <SubCategory isOpen={isSubOpen} onClose={onSubClose} />
       <ChildCategory isOpen={isChildOpen} onClose={onChildClose} />
 
@@ -180,91 +180,76 @@ const CategoryList = () => {
             </Flex>
           ) : (
             <Box overflowX="auto">
-              <Table minW="1000px">
+              <Table variant="simple" 
+               minW={{base:"1200px",md:"1500px",xl:"1600px"}}
+              >
                 <Thead bg="gray.100">
                   <Tr>
-                    <Th>Category Name</Th>
-                    <Th>Description</Th>
-                    <Th>Created</Th>
-                    <Th>Menu</Th>
-                    <Th>Home</Th>
-                    <Th>Action</Th>
+                    <Th minW="250px">Category Name</Th>
+                    <Th minw="250px">Description</Th>
+                    <Th minW="250px">Created</Th>
+                    <Th minW="100px">Menu</Th>
+                    <Th minW="100px">Home</Th>
+                    <Th minW="150px">Action</Th>
                   </Tr>
                 </Thead>
 
                 <Tbody>
                   {filtered.map((item) => (
                     <Tr key={item.id}>
-                      {/* CATEGORY NAME COLUMN */}
+                      {/* CATEGORY NAME + DROPDOWNS */}
                       <Td>
-                        {item.cate_name}
+                        <Flex align="center" gap={3} wrap="nowrap">
+                          <Text fontWeight="500">{item.cate_name}</Text>
 
-                        {/* Show dropdowns if this category is selected */}
-                        {selectedCategory === item.id && (
-                          <Box mt={2}>
+                          {/* Sub Category */}
+                          <select
+                            style={{ width: "150px", padding: "6px" }}
+                            value={selectedSub}
+                            onChange={(e) => {
+                              const subId = e.target.value;
+                              setSelectedSub(subId);
+                              getChildCategories(subId);
+                            }}
+                          >
+                            <option value="">Sub Category</option>
+                            {subCategories.map((sub) => (
+                              <option key={sub.id} value={sub.id}>
+                                {sub.name}
+                              </option>
+                            ))}
+                          </select>
+
+                          {/* Child Category */}
+                          {childCategories.length > 0 && (
                             <select
-                              style={{
-                                width: "140px",
-                                padding: "5px",
-                                marginTop: "6px",
-                              }}
-                              onChange={(e) => {
-                                setSelectedSub(e.target.value);
-                                getChildCategories(e.target.value);
-                              }}
-                              value={selectedSub}
+                              style={{ width: "150px", padding: "6px" }}
                             >
-                              <option value="">Select Sub</option>
-                              {subCategories.map((sub) => (
-                                <option key={sub.id
-                                } value={sub.id}>
-                                  {sub.name}
+                              <option value="">Child Category</option>
+                              {childCategories.map((child) => (
+                                <option key={child.id} value={child.id}>
+                                  {child.name}
                                 </option>
                               ))}
                             </select>
-
-                            {childCategories.length > 0 && (
-                              <select
-                                style={{
-                                  width: "140px",
-                                  padding: "5px",
-                                  marginTop: "6px",
-                                }}
-                              >
-                                <option value="">Select Child</option>
-                                {childCategories.map((child) => (
-                                  <option key={child.id} value={child.id}>
-                                    {child.name}
-                                  </option>
-                                ))}
-                              </select>
-                            )}
-                          </Box>
-                        )}
+                          )}
+                        </Flex>
                       </Td>
 
-                      {/* OTHER COLUMNS */}
                       <Td>{item.description}</Td>
-                      <Td>{new Date(item.created_at).toLocaleDateString()}</Td>
+                      <Td>
+                        {new Date(item.created_at).toLocaleDateString()}
+                      </Td>
                       <Td>{item.show_in_menu === 1 ? "Yes" : "No"}</Td>
                       <Td>{item.show_on_menu === 1 ? "Yes" : "No"}</Td>
 
-                      {/* ACTION COLUMN */}
+                      {/* ACTIONS */}
                       <Td>
-                        {/* VIEW BUTTON */}
-                        <Button
-                          size="sm"
-                          bg="white"
-                          mr={2}
-                          onClick={() => {
-                            setSelectedCategory(item.id);
-                            getSubCategories(item.id);
-                          }}
-                        >
+                          <Link to="/view-category">
+                        <Button size="sm" bg="white" mr={2}>
                           <FiEye size={18} color="#2563eb" />
                         </Button>
-
-                        {/* DELETE BUTTON */}
+                      </Link>
                         <Button
                           bg="white"
                           size="sm"

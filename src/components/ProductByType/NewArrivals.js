@@ -1,3 +1,4 @@
+import React from "react";
 import { Flex, Button, Select, Text, HStack } from "@chakra-ui/react";
 import { PiLessThan, PiGreaterThan } from "react-icons/pi";
 import BestSelling from "./BestSelling";
@@ -13,11 +14,15 @@ const NewArrivals = ({
   limit,
   setLimit,
 }) => {
+
+  // SAFE total pages (NaN issue fix)
+  const safeTotalPages = Number(totalPages) || 1;
+
   return (
     <>
-      {/* PRODUCT LIST */}
+      {/* ================= PRODUCT LIST ================= */}
       <Flex flexWrap="wrap" justifyContent="center" gap="2rem">
-        {data.length > 0 ? (
+        {data && data.length > 0 ? (
           data.map((p) => (
             <BestSelling
               key={p.id}
@@ -32,19 +37,19 @@ const NewArrivals = ({
         )}
       </Flex>
 
-      {/* PAGINATION */}
+      {/* ================= PAGINATION ================= */}
       <Flex
         w="100%"
         mt={6}
         direction={{ base: "column", md: "row" }}
-        gap={{ base: 4, md: 0 }}
+        gap={4}
         justify="space-between"
         align="center"
       >
-        {/* PAGE INFO + LIMIT */}
+        {/* Page info + limit */}
         <Flex align="center" gap={4}>
-          <Text fontSize="md">
-            Page {page} of {totalPages}
+          <Text>
+            Page {page} of {safeTotalPages}
           </Text>
 
           <Select
@@ -61,19 +66,20 @@ const NewArrivals = ({
           </Select>
         </Flex>
 
-        {/* PAGE BUTTONS */}
+        {/* Pagination buttons */}
         <HStack>
           {/* Previous */}
           <Button
-            bg="blue.50"
             isDisabled={page === 1}
-            onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+            onClick={() =>
+              setPage((prev) => Math.max(Number(prev) - 1, 1))
+            }
           >
-            <PiLessThan size={18} />
+            <PiLessThan />
           </Button>
 
-          {/* Page Numbers */}
-          {Array.from({ length: totalPages || 1 }).map((_, i) => (
+          {/* Page numbers */}
+          {Array.from({ length: safeTotalPages }).map((_, i) => (
             <Button
               key={i}
               size="sm"
@@ -86,11 +92,14 @@ const NewArrivals = ({
 
           {/* Next */}
           <Button
-            bg="blue.50"
-            isDisabled={page === totalPages}
-            onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
+            isDisabled={page === safeTotalPages}
+            onClick={() =>
+              setPage((prev) =>
+                Math.min(Number(prev) + 1, safeTotalPages)
+              )
+            }
           >
-            <PiGreaterThan size={18} />
+            <PiGreaterThan />
           </Button>
         </HStack>
       </Flex>

@@ -196,7 +196,7 @@ const AddProduct2 = () => {
             left="0px"
             right="0px"
             bottom="0px"
-            z-index={100}
+            Zindex={100}
           >
             <TopBar />
           </Box>

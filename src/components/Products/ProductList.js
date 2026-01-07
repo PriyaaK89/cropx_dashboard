@@ -302,15 +302,15 @@ const ProductList = () => {
                             >
                               <FaInfoCircle size={18} color="#FFA500" />
                             </Button>
-                            <Button
+                             <Button
                               bgColor="white"
                               size="sm"
                               onClick={() =>
                                 navigate(`/update-product/${item.id}`)
                               }
-                            >
+                            > 
                               <FiEdit size={18} color="#16a34a" />
-                            </Button>
+                            </Button> 
                             <Button
                               bg="white"
                               size="sm"

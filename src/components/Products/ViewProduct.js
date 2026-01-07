@@ -192,9 +192,7 @@ const ViewProduct = () => {
                 <Box>
                   <Heading size="lg">{product.product_name}</Heading>
                   <Flex gap="10px" mt="10px">
-                    <Badge colorScheme="green" fontSize="14px">
                       {product.product_category}
-                    </Badge>
                     <Badge colorScheme="blue" fontSize="14px">
                       {product.product_type}
                     </Badge>

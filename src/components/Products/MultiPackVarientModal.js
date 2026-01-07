@@ -24,11 +24,11 @@ const MultiPackVariantModal = ({
   isMultiVariantOpen, onMultiVariantClose, productId, variantID, fetchDetails }) => {
   const toast = useToast();
 
-  const [formData, setFormData] = useState({
-    pack_quantity: "",
-    unit_price: "",
-    discount_percentage: "",
-  });
+ const [formData, setFormData] = useState({
+  pack_quantity: "",
+  unit_price: "",
+  discount_percentage: "",
+});
 
   // Handle input changes
   const handleChange = (field, value) => {
@@ -108,7 +108,7 @@ const MultiPackVariantModal = ({
               <NumberInput
                 min={1}
                 value={formData.pack_quantity}
-                onChange={(val) => handleChange("pack_quantity", val)} size='sm'
+                onChange={(valueString, valueNumber) => handleChange("pack_quantity", valueNumber)} size='sm'
               >
                 <NumberInputField placeholder="Enter number of packs"  />
               </NumberInput>

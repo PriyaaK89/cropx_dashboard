@@ -19,6 +19,7 @@ import Order from "./pages/Order";
 import AddProduct2 from "./components/Products/AddProduct2";
 import Collection from "./pages/Collection";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
+import ViewCategory from "./components/Categories/ViewCategory";
 function App() {
   return (
     <>
@@ -31,6 +32,7 @@ function App() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/categories-list" element={<Categories />} />
               <Route path="/add-category" element={<AddCategory />} />
+              <Route path="/view-category" element={<ViewCategory />} />
               <Route path="/product-list" element={<Products />} />
               <Route path="/add-product" element={<AddProduct2 />} />
               <Route path="/product/:id" element={<ViewProduct />} />
