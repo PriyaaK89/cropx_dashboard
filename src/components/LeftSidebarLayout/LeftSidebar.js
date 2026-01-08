@@ -87,7 +87,7 @@ const LeftSidebar = () => {
             p="8px 14px"
             bg={isActive("/dashboard") ? "#e9ecee" : "transparent"}
             color={isActive("/dashboard") ? "#4d4d4d" : "#black"}
-            _hover={{ bg: "#434444ff", color: "#fff" }}
+            _hover={{ bg: "#7285b1", color: "#fff" }}
           >
             <Icon as={FiHome} mr={4} />
             <Text fontSize="14px">Dashboard</Text>
@@ -99,7 +99,7 @@ const LeftSidebar = () => {
           align="center"
           p="8px 14px"
           cursor="pointer"
-          _hover={{ bg: "#434444ff", color: "#fff" }}
+          _hover={{ bg: "#7285b1", color: "#fff" }}
           onClick={toggleCatalog}
         >
           <Icon as={FiLayers} mr={4} />
@@ -117,7 +117,7 @@ const LeftSidebar = () => {
                 paddingLeft="3rem"
                 bg={isActive("/product-list") ? "#e9ecee" : "transparent"}
                 color={isActive("/product-list") ? "#4d4d4d" : "#black"}
-                _hover={{ bg: "#434444ff", color: "#fff" }}
+                _hover={{ bg: "#7285b1", color: "#fff" }}
                 fontSize="14px"
               >
                 <Icon as={FaBoxOpen} mr={3} />
@@ -131,7 +131,7 @@ const LeftSidebar = () => {
                 paddingLeft="3rem"
                 bg={isActive("/add-product") ? "#e9ecee" : "transparent"}
                 color={isActive("/add-product") ? "#4d4d4d" : "#black"}
-                _hover={{ bg: "#434444ff", color: "#fff" }}
+                _hover={{ bg: "#7285b1", color: "#fff" }}
                 fontSize="14px"
               >
                 <Icon as={MdOutlineProductionQuantityLimits} mr={3} />
@@ -145,7 +145,7 @@ const LeftSidebar = () => {
                 paddingLeft="3rem"
                 bg={isActive("/categories-list") ? "#e9ecee" : "transparent"}
                 color={isActive("/categories-list") ? "#4d4d4d" : "#black"}
-                _hover={{ bg: "#434444ff", color: "#fff" }}
+                _hover={{ bg: "#7285b1", color: "#fff" }}
                 fontSize="14px"
               >
                 <Icon as={MdCategory} mr={3} />
@@ -159,7 +159,7 @@ const LeftSidebar = () => {
                 paddingLeft="3rem"
                 bg={isActive("/add-category") ? "#e9ecee" : "transparent"}
                 color={isActive("/add-category") ? "#4d4d4d" : "#black"}
-                _hover={{ bg: "#434444ff", color: "#fff" }}
+                _hover={{ bg: "#7285b1", color: "#fff" }}
                 fontSize="14px"
               >
                 <Icon as={FaTags} mr={3} />
@@ -172,7 +172,7 @@ const LeftSidebar = () => {
                 paddingLeft="3rem"
                 bg={isActive("/product-type") ? "#e9ecee" : "transparent"}
                 color={isActive("/product-type") ? "#4d4d4d" : "#black"}
-                _hover={{ bg: "#434444ff", color: "#fff" }}
+                _hover={{ bg: "#7285b1", color: "#fff" }}
                 fontSize="14px"
               >
                 <Icon as={MdFilterList} mr={3} />
@@ -189,7 +189,7 @@ const LeftSidebar = () => {
             p="8px 14px"
             bg={isActive("/users") ? "#e9ecee" : "transparent"}
             color={isActive("/users") ? "#4d4d4d" : "#black"}
-            _hover={{ bg: "#434444ff", color: "#fff" }}
+            _hover={{ bg: "#7285b1", color: "#fff" }}
           >
             <Icon as={FaUser} mr={4} />
             <Text fontSize="14px">Users</Text>
@@ -203,7 +203,7 @@ const LeftSidebar = () => {
             p="8px 14px"
             bg={isActive("/banner") ? "#e9ecee" : "transparent"}
             color={isActive("/banner") ? "#4d4d4d" : "#black"}
-            _hover={{ bg: "#434444ff", color: "#fff" }}
+            _hover={{ bg: "#7285b1", color: "#fff" }}
           >
             <Icon as={FaThList} mr={4} />
             <Text fontSize="14px">Banner</Text>
@@ -217,7 +217,7 @@ const LeftSidebar = () => {
             p="8px 14px"
             bg={isActive("/order") ? "#e9ecee" : "transparent"}
             color={isActive("/order") ? "#4d4d4d" : "#black"}
-            _hover={{ bg: "#434444ff", color: "#fff" }}
+            _hover={{ bg: "#7285b1", color: "#fff" }}
           >
             <Icon as={FaCartShopping} mr={4} />
             <Text fontSize="14px">Order</Text>
@@ -229,7 +229,7 @@ const LeftSidebar = () => {
             p="8px 14px"
             bg={isActive("/collection") ? "#e9ecee" : "transparent"}
             color={isActive("/collection") ? "#4d4d4d" : "#black"}
-            _hover={{ bg: "#434444ff", color: "#fff" }}
+            _hover={{ bg: "#7285b1", color: "#fff" }}
           >
             <Icon as={BsCollection} mr={4} />
             <Text fontSize="14px">Collection</Text>

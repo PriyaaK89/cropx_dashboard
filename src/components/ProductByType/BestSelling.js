@@ -31,7 +31,7 @@ const BestSelling = ({ p, cardBg, priceColor, handleOpenModal }) => {
       <Box
         bg={cardBg}
         rounded="2xl"
-        shadow="md"
+        shadow="sm" border="1px solid #eeeded"
         overflow="hidden"
         position="relative"
         transition="all 0.3s"
@@ -39,17 +39,7 @@ const BestSelling = ({ p, cardBg, priceColor, handleOpenModal }) => {
         _hover={{ transform: "scale(1.03)", shadow: "lg" }}
       >
         {discountPercent && (
-          <Badge
-            position="absolute"
-            top={0}
-            left={0}
-            bg="#2c7d19"
-            color="white"
-            rounded="0px 0px 24px"
-            px={3}
-            py={1}
-            fontSize="12px"
-          >
+          <Badge position="absolute" top={0} left={0} bg="#2c7d19" color="white" rounded="0px 0px 24px" px={3} py={1} fontSize="12px">
             {discountPercent}% OFF
           </Badge>
         )}
@@ -95,10 +85,9 @@ const BestSelling = ({ p, cardBg, priceColor, handleOpenModal }) => {
                 </Text>
               </HStack>
 
-              {/* ✅ ALL QUANTITY BUTTONS */}
-              {p.single_packs?.map((pack) => (
+              {/* ALL QUANTITY BUTTONS */}
+
                 <Flex
-                  key={pack.id}
                   mt={2}
                   justify="space-between"
                   align="center"
@@ -108,21 +97,18 @@ const BestSelling = ({ p, cardBg, priceColor, handleOpenModal }) => {
                   py={1}
                   cursor="pointer"
                   _hover={{ bg: "gray.100" }}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    handleOpenModal({
-                      ...p,
-                      selectedPack: pack,
-                    });
-                  }}
+                 onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              handleOpenModal(p);
+                            }}
                 >
                   <Text fontSize="14px">
-                    {pack.quantity_value} {pack.quantity_type}
+                    {firstSingle.quantity_value} {firstSingle.quantity_type}
                   </Text>
                   <Icon as={FaChevronDown} />
                 </Flex>
-              ))}
+        
             </>
           )}
         </Box>

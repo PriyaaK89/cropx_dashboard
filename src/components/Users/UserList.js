@@ -51,7 +51,7 @@ const UserList = () => {
       ml={{ base: "0", lg: "260px" }}
     >
       {/* Mobile Navbar */}
-      <Box display={{ base: "block", lg: "none" }} position="sticky" top="0px" bottom="0px" left="0px" right="0px" z-index={100}>
+      <Box display={{ base: "block", lg: "none" }} position="sticky" top="0px" bottom="0px" left="0px" right="0px" zIndex="11">
         <ResponsiveNavbar />
       </Box>
 

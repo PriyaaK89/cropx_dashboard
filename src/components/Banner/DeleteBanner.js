@@ -1,33 +1,16 @@
-import {
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
-  Button,
-  Text,
-  Flex,
-  useToast,
-  Spinner,
-} from "@chakra-ui/react";
+import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Button, Text, Flex, useToast, Spinner,} from "@chakra-ui/react";
 import React, { useContext, useState } from "react";
 import axios from "axios";
 import { Config } from "../../utils/Config";
 import { WarningTwoIcon } from "@chakra-ui/icons";
 import { AuthContext } from "../Context/AuthContext";
 
-const DeleteBannerModal = ({
-  isDeleteModalOpen,
-  onDeleteModalClose,
-  fetchBanner,
-  selectedBannerId,
-}) => {
+const DeleteBannerModal = ({ isDeleteModalOpen, onDeleteModalClose, fetchBanner, selectedBannerId,}) => {
   const toast = useToast();
   const [loading, setLoading] = useState(false);
   const {auth} = useContext(AuthContext);
-  const apiToken = auth?.apiToken
-
+  const apiToken = auth?.token
+  console.log(apiToken, "TokenindeleteBannerModel")
   const handleDelete = async () => {
     setLoading(true);
     try {

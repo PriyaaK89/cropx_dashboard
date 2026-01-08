@@ -91,14 +91,14 @@ const UpdateDetailsModal = ({
       formData.append("additional_information", JSON.stringify(additionalInfo));
 
       const response = await axios.put(
-        `${Config.update_product_details}/${productId}`,
+        `${Config?.update_product_details}/${productId}`,
         formData
       );
 
       console.log(response.data);
       onUpdateDetailsModalClose();
       getProductDetails();
-
+        
     } catch (error) {
       console.log(error, "Error updating product details");
     }
@@ -155,7 +155,7 @@ const UpdateDetailsModal = ({
           {/* UPLOAD NEW IMAGES */}
           <Text fontWeight="600" mb={2}>Upload New Images</Text>
 
-          <Input type="file" multiple onChange={handleImageUpload} mb={3} />
+          <Input type="file" multiple  name="images"  onChange={handleImageUpload} mb={3} />
 
           <HStack spacing={3} mb={4}>
             {images.map((img, i) => (
