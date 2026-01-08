@@ -108,7 +108,7 @@ const ProductDetails = () => {
           <Box display={{base:"block",lg:"none"}}>
            <ResponsiveNavbar/>
           </Box>
-          <Box display={{base:"none",lg:"block"}} position="sticky" top="0px" left="0px" bottom="0px" z-index={100}>
+          <Box display={{base:"none",lg:"block"}} position="sticky" top="0px" left="0px" bottom="0px" zIndex="11">
             <TopBar/>
           </Box>
           <Box bg="white" p={4} mt={4} boxShadow="lg" borderRadius="0.75rem" mx={{base:3,  lg:0}} >

@@ -120,7 +120,7 @@ const UpdateProduct = () => {
     try {
       await axios.put(`${Config.update_product}/${id}`, fd);
       toast({ title: "Product Updated", status: "success" });
-      navigate("/product");
+      // navigate("/product");
     } catch (err) {
       toast({ title: "Update Failed", status: "error" });
     }
@@ -144,7 +144,7 @@ const UpdateProduct = () => {
             <ResponsiveNavbar />
           </Box>
 
-          <Box display={{ base: "none", lg: "block" }} position="sticky" top="0px" bottom="0px" right="0px" z-index={100}>
+          <Box display={{ base: "none", lg: "block" }} position="sticky" top="0px" bottom="0px" right="0px" zIndex="11">
             <TopBar />
           </Box>
 

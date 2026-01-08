@@ -110,7 +110,7 @@ const OrderList = () => {
         </Box>
 
         {/* Desktop TopBar */}
-        <Box display={{ base:"none", lg:"block"}} position="sticky" top="0px" bottom="0px" left="0px" z-index={100}>
+        <Box display={{ base:"none", lg:"block"}} position="sticky" top="0px" bottom="0px" left="0px" zIndex="11">
           <TopBar />
         </Box>
 
