@@ -109,7 +109,7 @@ const ProductList = () => {
           bottom="0px"
           left="0px"
           right="0px"
-          Zindex={100}
+          zIndex="11"
         >
           <TopBar />
         </Box>
@@ -148,7 +148,7 @@ const ProductList = () => {
                 setPage(1);
               }}
             >
-              <option value="">All Expiry</option>
+              <option value="">All</option>
               <option value="expired">Expired</option>
               <option value="near_expiry">Near Expiry</option>
               <option value="up_to_date">Up To Date</option>
@@ -172,11 +172,10 @@ const ProductList = () => {
                     <Tr>
                       <Th minW="275px">Product</Th>
                       <Th minW="200px">Category</Th>
-                      <Th minW="160px">Sub Category</Th>
+                      <Th minW="180px">Sub Category</Th>
                       <Th minW="170px">Child Category</Th>
-                      <Th minW="140px">Brand</Th>
+                      <Th minW="160px">Brand</Th>
                       <Th minW="120px">Type</Th>
-                      <Th minW="100px">Variants</Th>
                       <Th minW="120px">Stock</Th>
                       <Th minW="120px">Expiry</Th>
                       <Th minW="260px">Action</Th>
@@ -222,25 +221,17 @@ const ProductList = () => {
                         <Td>{item.child_category}</Td>
                         <Td>{item.brand}</Td>
                         <Td>{item.product_type}</Td>
-                        <Td>
-                          {item.single_packs.length + item.multi_packs.length}
-                        </Td>
 
                         <Td>
                           <Badge
-                            colorScheme={
-                              item.single_packs.reduce(
-                                (a, b) => a + b.stock_qty,
-                                0
-                              ) +
-                                item.multi_packs.reduce(
-                                  (a, b) => a + b.stock_qty,
-                                  0
-                                ) >
-                              0
-                                ? "green"
-                                : "red"
-                            }
+                            bg={
+                              item.single_packs.reduce((a, b) => a + b.stock_qty, 0 ) +
+                                item.multi_packs.reduce( (a, b) => a + b.stock_qty, 0 ) > 0
+                                  ? " #e7f5eb" : "#ffcece"}
+                            color={
+                              item.single_packs.reduce((a, b) => a + b.stock_qty, 0 ) +
+                                item.multi_packs.reduce( (a, b) => a + b.stock_qty, 0 ) > 0
+                                  ? " #5a6d5a" : "#623434"}
                             px={3}
                             py={1}
                             rounded="lg"
@@ -271,16 +262,18 @@ const ProductList = () => {
 
                         <Td>
                           <Badge
-                            colorScheme={
-                              item.expiry_status === "Near Expiry"
-                                ? "orange"
-                                : "gray"
+                            bg={
+                              item.expiry_status === "near_expiry"
+                                ? "#ffcece"
+                                : "#e7f5eb"
+                            } color={
+                              item.expiry_status === "near_expiry" ? "#623434" : "#5a6d5a"
                             }
                             px={2}
                             py={1}
                             rounded="lg"
                           >
-                            {item.expiry_status}
+                            {item.expiry_status === "near_expiry" ? "Near Expiry" : "Up to Date"}
                           </Badge>
                         </Td>
 

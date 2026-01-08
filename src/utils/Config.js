@@ -8,7 +8,7 @@ export const Config = {
   add_product: `${BASE_URL}product/add-product`,
   add_product_details: `${BASE_URL}product/add-product-details`,
   update_product_details: `${BASE_URL}product/update-product-details`,
-  update_product: `${BASE_URL}product/update-product`,
+  // update_product: `${BASE_URL}product/update-product`,
   delete_product: `${BASE_URL}product/delete-product`,
   get_categories: `${BASE_URL}category/get-category`,
   add_categories: `${BASE_URL}category/add-category`,
@@ -35,4 +35,5 @@ export const Config = {
   delete_collections: `${BASE_URL}collection`,
   best_selling: `${BASE_URL}products/best-selling`,
   new_arrivals: `${BASE_URL}products/new-arrivals`,
+  upload_image: `${BASE_URL}upload-image`,
 };

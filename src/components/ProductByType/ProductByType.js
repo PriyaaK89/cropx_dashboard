@@ -104,9 +104,15 @@ const ProductByType = () => {
           <TopBar />
         </Box>
 
-        <Box mt={4} bg="white" p={4} borderRadius="0.75rem" boxShadow="lg" mx={{ base: 3, lg: 0 }}>
-          {/* Tabs */}
-          <Flex justify="space-between" mb={4}>
+        <Box
+          mt={4}
+          bg="white"
+          p={4}
+          borderRadius="0.75rem"
+          boxShadow="lg"
+          mx={{ base: 3, lg: 0 }}
+        >
+          <Flex justify="center" mb={4} gap="10px">
             <Button
               colorScheme={activeTab === "best" ? "green" : "gray"}
               onClick={() => setActiveTab("best")}
