@@ -133,7 +133,7 @@ const ViewProduct = () => {
       />
 
       {/* ===================== LAYOUT FIXED HERE ===================== */}
-      <Box width="100%" bg="#f8f8f8" pt={{base:"60px",lg:0}}>
+      <Box width="100%" bg="#f8f8f8" pt={{ base: "60px", lg: 0 }}>
         <Flex>
           <Box display={{ base: "none", lg: "block" }}>
             <LeftSidebar />
@@ -142,8 +142,8 @@ const ViewProduct = () => {
           {/* RIGHT MAIN AREA */}
           <Box
             w={{ base: "100%", lg: "calc(100% - 260px)" }}
-            ml={{ base: 0,  lg: "260px" }}
-            px={{ base: 0,  lg: 6 }}
+            ml={{ base: 0, lg: "260px" }}
+            px={{ base: 0, lg: 6 }}
             mb={5}
           >
             <Box display={{ base: "flex", lg: "block" }}>
@@ -159,7 +159,7 @@ const ViewProduct = () => {
               mt={4}
               boxShadow="lg"
               borderRadius="0.75rem"
-              mx={{ base: 3,  lg: 0 }}
+              mx={{ base: 3, lg: 0 }}
             >
               <HStack justifyContent="space-between" mb={4}>
                 <Breadcrumb fontSize="13px">
@@ -177,7 +177,6 @@ const ViewProduct = () => {
                     <BreadcrumbLink>View Product</BreadcrumbLink>
                   </BreadcrumbItem>
                 </Breadcrumb>
-                
               </HStack>
               {/* PRODUCT HEADER */}
               <Flex gap="30px" align="flex-start">
@@ -192,7 +191,7 @@ const ViewProduct = () => {
                 <Box>
                   <Heading size="lg">{product.product_name}</Heading>
                   <Flex gap="10px" mt="10px">
-                      {product.product_category}
+                    {product.product_category}
                     <Badge colorScheme="blue" fontSize="14px">
                       {product.product_type}
                     </Badge>
@@ -234,9 +233,10 @@ const ViewProduct = () => {
                             border="1px solid red"
                             borderRadius="4px"
                             p={2}
-                            onClick={() =>
-                              handleSinglePackDeleteClick(v.variant_id)
-                            }
+                            onClick={() => {
+                              setVariantID(v.variant_id);
+                              onSinglePackVariantModalOpen();
+                            }}
                           >
                             <RiDeleteBin6Line color="red" />
                           </Box>
@@ -261,9 +261,10 @@ const ViewProduct = () => {
                           size="sm"
                           width="100%"
                           colorScheme="teal"
-                          onClick={() =>
-                            onUpdateSinglePackVariantOpen(v.variant_id)
-                          }
+                          onClick={() => {
+                            setVariantID(v.variant_id);
+                             onUpdateSinglePackVariantOpen();
+                          }}
                         >
                           Update Variant
                         </Button>
@@ -272,9 +273,9 @@ const ViewProduct = () => {
                           colorScheme="blue"
                           size="sm"
                           onClick={() => {
-                            setVariantID(v.variantID);
+                            setVariantID(v.variant_id);
                             onMultiVariantOpen();
-                          }}
+                          }} 
                         >
                           + Add Multi Pack
                         </Button>

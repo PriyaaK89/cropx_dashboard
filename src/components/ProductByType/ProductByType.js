@@ -1,10 +1,4 @@
-import {
-  Button,
-  Box,
-  Flex,
-  useDisclosure,
-  Spinner,
-} from "@chakra-ui/react";
+import { Button, Box, Flex, useDisclosure, Spinner } from "@chakra-ui/react";
 import ResponsiveNavbar from "../TopBar/ResponsiveNavbar";
 import TopBar from "../TopBar/TopBar";
 import axios from "axios";
@@ -100,7 +94,12 @@ const ProductByType = () => {
         <Box display={{ base: "block", lg: "none" }}>
           <ResponsiveNavbar />
         </Box>
-        <Box display={{ base: "none", lg: "block" }} position="sticky" top="0" zIndex={100}>
+        <Box
+          display={{ base: "none", lg: "block" }}
+          position="sticky"
+          top="0"
+          zIndex={100}
+        >
           <TopBar />
         </Box>
 
@@ -137,15 +136,17 @@ const ProductByType = () => {
             </Flex>
           ) : activeTab === "best" ? (
             <Flex flexWrap="wrap" justifyContent="center" gap="2rem">
-              {products.map((p) => (
-                <BestSelling
-                  key={p.id}
-                  p={p}
-                  cardBg={cardBg}
-                  priceColor={priceColor}
-                  handleOpenModal={handleOpenModal}
-                />
-              ))}
+              {products
+
+                .map((p) => (
+                  <BestSelling
+                    key={p.id}
+                    p={p}
+                    cardBg={cardBg}
+                    priceColor={priceColor}
+                    handleOpenModal={handleOpenModal}
+                  />
+                ))}
             </Flex>
           ) : (
             <NewArrivals

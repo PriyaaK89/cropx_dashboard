@@ -28,7 +28,7 @@ function App() {
           <Router>
             <ScrollToTop />
             <Routes>
-              <Route path="/" element={<LoginPage />} />
+              <Route path="/" element={<LoginPage />} /> 
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/categories-list" element={<Categories />} />
               <Route path="/add-category" element={<AddCategory />} />

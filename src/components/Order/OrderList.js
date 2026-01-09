@@ -145,6 +145,7 @@ const capitalize = (text = "") => {
             <Table
               variant="simple"
               minW={{ base: "900px", md: "1200px", xl: "1400px" }}
+              className="productsTable"
             >
               <Thead bg="gray.100">
                 <Tr>
@@ -156,7 +157,7 @@ const capitalize = (text = "") => {
                   <Th minW="120px">Total</Th>
                   <Th minW="140px">Payment</Th>
                   <Th minW="140px">Status</Th>
-                  <Th minW="180px">Date</Th>
+                  <Th minW="200px">Date</Th>
                   <Th minW="120px">Action</Th>
                 </Tr>
               </Thead>
@@ -189,11 +190,11 @@ const capitalize = (text = "") => {
                     <Tr key={order.order_id}>
                       <Td>{index + 1}</Td>
                       <Td>{order.order_id}</Td>
-                      <Td>{order.user_name}</Td>
+                      <Td> {capitalize (order.user_name)} </Td>
                       <Td>{order.product_names}</Td>
                       <Td>{order.subtotal}</Td>
                       <Td>{order.total_amount}</Td>
-                      <Td>{order.payment_method}</Td>
+                      <Td>{capitalize(order.payment_method)}</Td>
                       <Td> {capitalize(order.order_status)}</Td>
                       <Td>{formatDate(order.created_at)}</Td>
                       <Td>

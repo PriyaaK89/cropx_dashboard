@@ -34,13 +34,16 @@ const CategoryList = () => {
 
   const [categoryId, setCategoryId] = useState("");
 
-  const [subCategories, setSubCategories] = useState([]);
-  const [childCategories, setChildCategories] = useState([]);
-  const [selectedSub, setSelectedSub] = useState("");
+  const [subCategoriesMap, setSubCategoriesMap] = useState({});
+  const [childCategoriesMap, setChildCategoriesMap] = useState({});
+  const [selectedSubMap, setSelectedSubMap] = useState({});
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { isOpen: isSubOpen, onOpen: onSubOpen, onClose: onSubClose } =
-    useDisclosure();
+  const {
+    isOpen: isSubOpen,
+    onOpen: onSubOpen,
+    onClose: onSubClose,
+  } = useDisclosure();
   const {
     isOpen: isChildOpen,
     onOpen: onChildOpen,
@@ -50,6 +53,7 @@ const CategoryList = () => {
   /* ================= API CALLS ================= */
 
   const getCategories = async () => {
+    setLoading(true);
     try {
       const res = await axios.get(Config.get_categories);
       setCategories(res.data.categories || []);
@@ -70,24 +74,27 @@ const CategoryList = () => {
       const res = await axios.get(
         `${Config.get_sub_category}?category_id=${catID}`
       );
-      setSubCategories(res.data?.data || []);
-      setChildCategories([]);
-      setSelectedSub("");
+      setSubCategoriesMap((prev) => ({
+        ...prev,
+        [catID]: res.data?.data || [],
+      }));
     } catch (err) {
       console.log(err);
-      setSubCategories([]);
     }
   };
 
-  const getChildCategories = async (subId) => {
+  const getChildCategories = async (subId, catId) => {
     try {
       const res = await axios.get(
         `${Config.get_child_category}?sub_category_id=${subId}`
       );
-      setChildCategories(res.data?.data || []);
+
+      setChildCategoriesMap((prev) => ({
+        ...prev,
+        [catId]: res.data?.data || [],
+      }));
     } catch (err) {
       console.log(err);
-      setChildCategories([]);
     }
   };
 
@@ -96,19 +103,16 @@ const CategoryList = () => {
   useEffect(() => {
     getCategories();
   }, []);
-
   useEffect(() => {
-    if (!search) {
-      setFiltered(categories);
-    } else {
-      setFiltered(
-        categories.filter((c) =>
-          c.cate_name.toLowerCase().includes(search.toLowerCase())
-        )
-      );
+  filtered.forEach((item) => {
+    if (!subCategoriesMap[item.id]) {
+      getSubCategories(item.id);
     }
-  }, [search, categories]);
+  });
+}, [filtered]);
 
+
+ 
   /* ================= HANDLERS ================= */
 
   const handleDelete = (id) => {
@@ -180,16 +184,20 @@ const CategoryList = () => {
             </Flex>
           ) : (
             <Box overflowX="auto">
-              <Table variant="simple" 
-               minW={{base:"1200px",md:"1500px",xl:"1600px"}}
+              <Table
+                variant="simple"
+                minW={{ base: "900px", md: "1100px",  xl: "1400px" }}
+                className="productsTable"
               >
                 <Thead bg="gray.100">
                   <Tr>
-                    <Th minW="250px">Category Name</Th>
-                    <Th minw="250px">Description</Th>
-                    <Th minW="250px">Created</Th>
-                    <Th minW="100px">Menu</Th>
-                    <Th minW="100px">Home</Th>
+                    <Th minW="100px">Category Name</Th>
+                    <Th minW="150px">Sub Category</Th>
+                    <Th minW="150px">Child Category</Th>
+                    <Th minw="100px">Description</Th>
+                    <Th minW="100px">Created</Th>
+                    <Th minW="50px">Menu</Th>
+                    <Th minW="50px">Home</Th>
                     <Th minW="150px">Action</Th>
                   </Tr>
                 </Thead>
@@ -199,57 +207,59 @@ const CategoryList = () => {
                     <Tr key={item.id}>
                       {/* CATEGORY NAME + DROPDOWNS */}
                       <Td>
-                        <Flex align="center" gap={3} wrap="nowrap">
-                          <Text fontWeight="500">{item.cate_name}</Text>
+                        <Text fontWeight="500">{item.cate_name}</Text>
+                      </Td>
+                      <Td>
+                        {/* Sub Category */}
+                        <select
+                          style={{ width: "150px", padding: "6px" }}
+                          value={selectedSubMap[item.id] || ""}
+                          onChange={(e) => {
+                            const subId = e.target.value;
 
-                          {/* Sub Category */}
-                          <select
-                            style={{ width: "150px", padding: "6px" }}
-                            value={selectedSub}
-                            onChange={(e) => {
-                              const subId = e.target.value;
-                              setSelectedSub(subId);
-                              getChildCategories(subId);
-                            }}
-                          >
-                            <option value="">Sub Category</option>
-                            {subCategories.map((sub) => (
-                              <option key={sub.id} value={sub.id}>
-                                {sub.name}
-                              </option>
-                            ))}
-                          </select>
+                            setSelectedSubMap((prev) => ({
+                              ...prev,
+                              [item.id]: subId,
+                            }));
 
-                          {/* Child Category */}
-                          {childCategories.length > 0 && (
-                            <select
-                              style={{ width: "150px", padding: "6px" }}
-                            >
-                              <option value="">Child Category</option>
-                              {childCategories.map((child) => (
+                            getChildCategories(subId, item.id);
+                          }}
+                        >
+                          {(subCategoriesMap[item.id] || []).map((sub) => (
+                            <option key={sub.id} value={sub.id}>
+                              {sub.name}
+                            </option>
+                          ))}
+                        </select>
+                      </Td>
+
+                      {/* Child Category */}
+                      <Td>
+                        {(childCategoriesMap[item.id] || []).length > 0 && (
+                          <select style={{ width: "150px", padding: "6px" }}>
+                            {(childCategoriesMap[item.id] || []).map(
+                              (child) => (
                                 <option key={child.id} value={child.id}>
                                   {child.name}
                                 </option>
-                              ))}
-                            </select>
-                          )}
-                        </Flex>
+                              )
+                            )}
+                          </select>
+                        )}
                       </Td>
 
                       <Td>{item.description}</Td>
-                      <Td>
-                        {new Date(item.created_at).toLocaleDateString()}
-                      </Td>
+                      <Td>{new Date(item.created_at).toLocaleDateString()}</Td>
                       <Td>{item.show_in_menu === 1 ? "Yes" : "No"}</Td>
                       <Td>{item.show_on_menu === 1 ? "Yes" : "No"}</Td>
 
                       {/* ACTIONS */}
                       <Td>
-                          <Link to="/view-category">
-                        <Button size="sm" bg="white" mr={2}>
-                          <FiEye size={18} color="#2563eb" />
-                        </Button>
-                      </Link>
+                        <Link to="/view-category">
+                          <Button size="sm" bg="white" mr={2}>
+                            <FiEye size={18} color="#2563eb" />
+                          </Button>
+                        </Link>
                         <Button
                           bg="white"
                           size="sm"

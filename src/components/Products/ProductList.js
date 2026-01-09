@@ -122,9 +122,20 @@ const ProductList = () => {
           boxShadow="lg"
           mx={{ base: 3, lg: 0 }}
         >
+          <Box display="flex" justifyContent="space-between" alignItems="center">
           <Text fontSize="2xl" fontWeight="600" mb={4}>
             Product List
           </Text>
+          <Button
+          p={4}
+           colorScheme="blue"
+            size="sm"
+            onClick={() => navigate("/add-product")}
+          >
+            Add Product
+          </Button>
+                    </Box>
+
 
           {/* ================= FILTERS ================= */}
           <Flex
@@ -295,15 +306,15 @@ const ProductList = () => {
                             >
                               <FaInfoCircle size={18} color="#FFA500" />
                             </Button>
-                             <Button
+                            <Button
                               bgColor="white"
                               size="sm"
                               onClick={() =>
                                 navigate(`/update-product/${item.id}`)
                               }
-                            > 
+                            >
                               <FiEdit size={18} color="#16a34a" />
-                            </Button> 
+                            </Button>
                             <Button
                               bg="white"
                               size="sm"

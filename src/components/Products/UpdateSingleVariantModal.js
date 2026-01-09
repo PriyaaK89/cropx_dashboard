@@ -25,7 +25,6 @@ const UpdateSingleVariantModal = ({
   fetchDetails,
   variants,
 }) => {
-  console.log(variants, "variants");
   const toast = useToast();
 
   const [formData, setFormData] = useState({
