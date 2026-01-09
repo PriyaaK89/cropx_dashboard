@@ -232,6 +232,7 @@ const AddProduct2 = () => {
                     Product Name
                   </FormLabel>
                   <Input
+                   fontSize="14px"
                     name="product_name"
                     value={formData.product_name}
                     onChange={handleChange}
@@ -244,6 +245,7 @@ const AddProduct2 = () => {
                     Product Category
                   </FormLabel>
                   <Select
+                   fontSize="14px"
                     name="category_id"
                     value={formData.category_id}
                     onChange={handleCategoryChange}
@@ -267,6 +269,7 @@ const AddProduct2 = () => {
                     onChange={handleSubCategoryChange}
                     isDisabled={!formData.category_id}
                     placeholder="Select Sub Category"
+                    fontSize="14px"
                   >
                     {subCategories.map((sub) => (
                       <option key={sub.id} value={sub.id}>
@@ -281,6 +284,7 @@ const AddProduct2 = () => {
                     Child Category
                   </FormLabel>
                   <Select
+                    fontSize="14px"
                     name="child_category_id"
                     value={formData.child_category_id}
                     onChange={handleChange}
@@ -300,6 +304,7 @@ const AddProduct2 = () => {
                     Brand
                   </FormLabel>
                   <Input
+                   fontSize="14px"
                     name="brand"
                     value={formData.brand}
                     onChange={handleChange}
@@ -312,6 +317,7 @@ const AddProduct2 = () => {
                     Product Description
                   </FormLabel>
                   <Textarea
+                   fontSize="14px"
                     name="product_description"
                     value={formData.product_description}
                     onChange={handleChange}
@@ -330,6 +336,7 @@ const AddProduct2 = () => {
                     name="product_type"
                     value={formData.product_type}
                     onChange={handleChange}
+                    fontSize="14px"
                   >
                     <option value="">Select Type</option>
                     <option value="solid">Solid</option>
@@ -343,6 +350,7 @@ const AddProduct2 = () => {
                   </FormLabel>
                   <InputGroup>
                     <Input
+                      fontSize="14px"
                       type="date"
                       name="mfg_date"
                       value={formData.mfg_date}
@@ -360,6 +368,7 @@ const AddProduct2 = () => {
                   </FormLabel>
                   <InputGroup>
                     <Input
+                     fontSize="14px"
                       type="date"
                       name="exp_date"
                       value={formData.exp_date}

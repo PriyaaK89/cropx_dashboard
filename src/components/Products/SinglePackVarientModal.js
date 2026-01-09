@@ -24,10 +24,11 @@ const SinglePackVarientModal = ({ isOpen, onClose, productId, productType, fetch
   const submitVariant = async () => {
     try {
       setLoading(true);
-      await axios.post(Config?.add_single_variant, {
-       product_id: productId,
-           ...formData,
-});
+      await axios.post(`${Config?.add_single_variant}`, {
+        product_id: productId,
+        ...formData,
+      });
+
       toast({
         title: "Variant added successfully!",
         status: "success",

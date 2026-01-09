@@ -17,39 +17,58 @@ import { Config } from "../../utils/Config";
 
 const UpdateMultiVariantModal = ({ isUpdateMultiVariantOpen, onUpdateMultiVariantClose,
   variantID, multiPackId, fetchDetails, variants,productId}) => {
+    console.log("multipack id ", multiPackId);
     
   const toast = useToast();
   console.log(variantID, "variantIDin multipack")
   console.log(multiPackId, "multipackid multipack")
 
-  const multiPackData =
-    variants?.multi_packs?.find((mp) => mp.multipack_id === multiPackId) || {};
+ const [formData, setFormData] = useState({
+  product_id: productId,
+  variant_id: variantID,
+  pack_quantity: "",
+  unit_price: "",
+  discount_percentage: ""
+});
 
-  const [packQuantity, setPackQuantity] = useState("");
-  const [unitPrice, setUnitPrice] = useState("");
-  const [discount, setDiscount] = useState("");
 
   useEffect(() => {
-    if (multiPackData) {
-      setPackQuantity(multiPackData.pack_quantity || "");
-      setUnitPrice(multiPackData.total_actual_price / multiPackData.pack_quantity || "");
-      setDiscount(multiPackData.discount_percentage || "");
+  if (variantID && variants?.multi_packs?.length > 0) {
+    const selectedVariant = variants.multi_packs.find(
+      (v) => v.variant_id === variantID
+    );
+
+    if (selectedVariant) {
+      setFormData({
+        product_id: productId,
+        variant_id: selectedVariant.variant_id,
+        pack_quantity: selectedVariant.pack_quantity,
+        unit_price:
+          selectedVariant.actual_price,
+           
+        discount_percentage: selectedVariant.discount_percentage,
+      });
     }
-  }, [multiPackData]);
+  }
+}, [variantID, variants, productId]);
+
+  const handleChange = (e) => {
+  const { name, value } = e.target;
+
+  setFormData((prev) => ({
+    ...prev,
+    [name]: value,
+    ...(name === "pack_quantity" ? { unit_price: "" } : {}),
+  }));
+};
+
 
   const handleUpdateMultiPack = async () => {
     try {
-      const payload = {
-        product_id: productId,
-        variant_id: variantID,
-        pack_quantity: Number(packQuantity),
-        unit_price: Number(unitPrice),
-        discount_percentage: Number(discount),
-      };
 
       const response = await axios.put(
         `${Config?.update_multi_variant}/${multiPackId}`,
-        payload
+        formData
       );
 
       if (response?.status === 200) {
@@ -85,35 +104,38 @@ const UpdateMultiVariantModal = ({ isUpdateMultiVariantOpen, onUpdateMultiVarian
         <ModalCloseButton />
         <ModalBody pb={5}>
           {/* PACK QUANTITY */}
-          <FormControl mb={3}>
-            <FormLabel>Pack Quantity</FormLabel>
+          <FormControl mb="4px">
+            <FormLabel fontSize="14px" fontWeight="bold">Pack Quantity</FormLabel>
             <Input
+            fontSize="14px"
               type="number"
-              value={packQuantity}
-              onChange={(e) => setPackQuantity(e.target.value)}
-              placeholder="Enter pack quantity"
+              name="pack_quantity"
+              value={formData.pack_quantity}
+              onChange={handleChange}
             />
           </FormControl>
 
           {/* UNIT PRICE */}
-          <FormControl mb={3}>
-            <FormLabel>Unit Price</FormLabel>
+          <FormControl mb="4px">
+            <FormLabel fontSize="14px" fontWeight="bold">Unit Price</FormLabel>
             <Input
+            fontSize="14px"
+            name="unit_Price"
               type="number"
-              value={unitPrice}
-              onChange={(e) => setUnitPrice(e.target.value)}
-              placeholder="Enter unit price"
+              value={formData.unit_price}
+              onChange={handleChange}
             />
           </FormControl>
 
           {/* DISCOUNT PERCENTAGE */}
-          <FormControl mb={3}>
-            <FormLabel>Discount Percentage (%)</FormLabel>
+          <FormControl mb="4px">
+            <FormLabel fontSize="14px" fontWeight="bold">Discount Percentage (%)</FormLabel>
             <Input
+              fontSize="14px"
               type="number"
-              value={discount}
-              onChange={(e) => setDiscount(e.target.value)}
-              placeholder="Enter discount %"
+              name="discount_percentage"
+              value={formData.discount_percentage}
+              onChange={handleChange}
             />
           </FormControl>
 

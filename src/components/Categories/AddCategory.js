@@ -31,7 +31,7 @@ import { Config } from "../../utils/Config";
 
 const AddCategory = () => {
   const toast = useToast();
-
+   const [file, setFile]= useState(null);
   const [preview, setPreview] = useState(null);
   const [form, setForm] = useState({
     cate_name: "",
@@ -46,16 +46,19 @@ const AddCategory = () => {
 
   /* ================= HANDLE CHANGE ================= */
 
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
-
-    if (name === "image") {
-      setForm({ ...form, image: files[0] });
-      setPreview(URL.createObjectURL(files[0]));
-    } else {
-      setForm({ ...form, [name]: value });
-    }
+  const handleImage = (e) => {
+    const img = e.target.files[0];
+    setFile(img);
+    if (img) setPreview(URL.createObjectURL(img));
   };
+  const handleChange = (e) => {
+  const { name, value } = e.target;
+  setForm((prev) => ({
+    ...prev,
+    [name]: value,
+  }));
+};
+
 
   /* ================= SUBMIT ================= */
 
@@ -168,76 +171,89 @@ const AddCategory = () => {
               >
                 <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
                   <FormControl mb="4px" isRequired>
-                    <FormLabel fontSize="14px" fontWeight="bold">Category Name</FormLabel>
-                    <Input name="cate_name" value={form.cate_name} onChange={handleChange} placeholder="Enter your category name" />
+                    <FormLabel co fontSize="14px" fontWeight="bold">Category Name</FormLabel>
+                    <Input fontSize="14px" name="cate_name" value={form.cate_name} onChange={handleChange} placeholder="Enter your category name" />
                   </FormControl>
 
                   <FormControl mb="4px" isRequired>
                     <FormLabel fontSize="14px" fontWeight="bold">Slug</FormLabel>
-                    <Input name="slug" value={form.slug} onChange={handleChange} placeholder="Enter your slug" />
+                    <Input fontSize="14px" name="slug" value={form.slug} onChange={handleChange} placeholder="Enter your slug" />
                   </FormControl>
 
-                  <FormControl mb="4px" gridColumn={{ md: "span 2" }}>
-                    <FormLabel fontSize="14px" fontWeight="bold">Description</FormLabel>
-                    <Textarea name="description" value={form.description} onChange={handleChange} placeholder="Enter your description" />
-                  </FormControl>
+                  
 
                   <FormControl mb="4px" isRequired>
                     <FormLabel fontSize="14px" fontWeight="bold">Show In Menu (0 / 1)</FormLabel>
-                    <Input name="show_in_menu" value={form.show_in_menu} onChange={handleChange} placeholder="Enter 0 or 1" />
+                    <Input fontSize="14px" name="show_in_menu" value={form.show_in_menu} onChange={handleChange} placeholder="Enter 0 or 1" />
                   </FormControl>
 
                   <FormControl isRequired mb="4px">
                     <FormLabel fontSize="14px" fontWeight="bold">Show On Home (0 / 1)</FormLabel>
-                    <Input name="show_on_home" value={form.show_on_home} onChange={handleChange} placeholder="Enter 0 Or 1" />
+                    <Input fontSize="14px" name="show_on_home" value={form.show_on_home} onChange={handleChange} placeholder="Enter 0 Or 1" />
                   </FormControl>
 
                   <FormControl mb="4px">
                     <FormLabel fontSize="14px" fontWeight="bold">Menu Order</FormLabel>
-                    <Input type="number" name="menu_order" value={form.menu_order} onChange={handleChange} placeholder="Enter your menu order" />
+                    <Input fontSize="14px" type="number" name="menu_order" value={form.menu_order} onChange={handleChange} placeholder="Enter your menu order" />
                   </FormControl>
 
                   <FormControl mb="4px">
                     <FormLabel fontSize="14px" fontWeight="bold">Home Order</FormLabel>
-                    <Input type="number" name="home_order" value={form.home_order} onChange={handleChange} placeholder="Enter your home order" />
+                    <Input fontSize="14px" type="number" name="home_order" value={form.home_order} onChange={handleChange} placeholder="Enter your home order" />
+                  </FormControl>
+                   <FormControl mb="4px" gridColumn={{ md: "span 2" }}>
+                    <FormLabel fontSize="14px" fontWeight="bold">Description</FormLabel>
+                    <Textarea fontSize="14px" name="description" value={form.description} onChange={handleChange} placeholder="Enter your description" />
                   </FormControl>
 
                   {/* IMAGE */}
                   <FormControl mb="4px" gridColumn={{ md: "span 2" }}>
                     <FormLabel fontSize="14px" fontWeight="bold">Upload Image</FormLabel>
-                    <Box
-                      border="2px dashed #CBD5E0"
-                      p={6}
-                      rounded="xl"
-                      textAlign="center"
-                      position="relative"
-                      cursor="pointer"
-                    >
-                      <Input
-                        type="file"
-                        name="image"
-                        opacity="0"
-                        position="absolute"
-                        top="0"
-                        left="0"
-                        w="100%"
-                        h="100%"
-                        onChange={handleChange}
-                      />
-                      <Icon as={FiUploadCloud} boxSize={10} />
-                      <Text mt={2}>Click to upload image</Text>
-                    </Box>
+                  
+                      <Box
+                        border="2px dashed"
+                        borderColor="gray.300"
+                        borderRadius="md"
+                        p={6}
+                         display="flex"
+                         flexDirection="column"
+                         alignItems="center"
+                         justifyContent="center"
+                        cursor="pointer"
+                        _hover={{ borderColor: "blue.400" }}
+                        onClick={() => document.getElementById("productImage").click()}
+                      >
+                        {preview ? (
+                          <Image
+                            src={preview}
+                            mx="auto"
+                            maxH="160px"
+                            objectFit="contain"
+                            
+                          />
+                        ) : (
+                          <>
+                            <FiUploadCloud  size={40} color="#4299E1"/>
+                            <Text mt={2} fontSize="sm" color="gray.500">
+                              Drop your image here or{" "}
+                              <Text as="span" color="blue.500" fontWeight="bold">
+                                click to browse
+                              </Text>
+                            </Text>
+                          </>
+                        )}
+                    
+                        <Input
+                          type="file"
+                          id="productImage"
+                          display="none"
+                          accept="image/*"
+                          onChange={handleImage}
+                        />
+                      </Box>
                   </FormControl>
 
-                  {preview && (
-                    <Image
-                      src={preview}
-                      gridColumn={{ md: "span 2" }}
-                      h="220px"
-                      objectFit="cover"
-                      rounded="xl"
-                    />
-                  )}
+                
 
                   <Button
                     gridColumn={{ md: "span 2" }}

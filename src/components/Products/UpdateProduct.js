@@ -191,14 +191,14 @@ const UpdateProduct = () => {
 
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6} mt={5}>
               <VStack align="stretch">
-                <FormControl>
-                  <FormLabel>Product Name</FormLabel>
-                  <Input name="product_name" value={formData.product_name} onChange={handleChange} />
+                <FormControl mb="4px">
+                  <FormLabel fontSize="14px" fontWeight="bold">Product Name</FormLabel>
+                  <Input fontSize="14px" name="product_name" value={formData.product_name} onChange={handleChange} />
                 </FormControl>
 
-                <FormControl>
-                  <FormLabel>Category</FormLabel>
-                  <Select name="category_id" value={formData.category_id} onChange={handleChange}>
+                <FormControl mb="4px">
+                  <FormLabel fontSize="14px" fontWeight="bold">Category</FormLabel>
+                  <Select fontSize="14px"  name="category_id" value={formData.category_id} onChange={handleChange}>
                     <option value="">Select</option>
                     {categories.map((c) => (
                       <option key={c.id} value={c.id}>{c.cate_name}</option>
@@ -206,25 +206,26 @@ const UpdateProduct = () => {
                   </Select>
                 </FormControl>
 
-                <FormControl>
-                  <FormLabel>Description</FormLabel>
-                  <Textarea name="product_description" value={formData.product_description} onChange={handleChange} />
+                <FormControl mb="4px">
+                  <FormLabel fontSize="14px" fontWeight="bold">Description</FormLabel>
+                  <Textarea fontSize="14px"  name="product_description" value={formData.product_description} onChange={handleChange} />
                 </FormControl>
               </VStack>
 
               <VStack align="stretch">
-                <FormControl>
-                  <FormLabel>Product Type</FormLabel>
-                  <Select name="product_type" value={formData.product_type} onChange={handleChange}>
+                <FormControl mb="4px">
+                  <FormLabel fontSize="14px" fontWeight="bold">Product Type</FormLabel>
+                  <Select fontSize="14px" name="product_type" value={formData.product_type} onChange={handleChange}>
                     <option value="">Select</option>
                     <option value="solid">Solid</option>
                     <option value="liquid">Liquid</option>
                   </Select>
                 </FormControl>
 
-                <FormControl>
-                  <FormLabel>MFG Date</FormLabel>
+                <FormControl mb="4px">
+                  <FormLabel fontSize="14px" fontWeight="bold">MFG Date</FormLabel>
                   <DatePicker
+                  fontSize="14px"
                     selected={formData.mfg_date}
                     onChange={(d) => handleDateChange(d, "mfg_date")}
                     customInput={<CustomDateInput placeholder="YYYY-MM-DD" />}
@@ -233,9 +234,10 @@ const UpdateProduct = () => {
                   />
                 </FormControl>
 
-                <FormControl>
-                  <FormLabel>EXP Date</FormLabel>
+                <FormControl mb="4px">
+                  <FormLabel fontSize="14px" fontWeight="bold">EXP Date</FormLabel>
                   <DatePicker
+                  fontSize="14px"
                     selected={formData.exp_date}
                     onChange={(d) => handleDateChange(d, "exp_date")}
                     customInput={<CustomDateInput placeholder="YYYY-MM-DD" />}
@@ -244,8 +246,8 @@ const UpdateProduct = () => {
                   />
                 </FormControl>
 
-                <FormControl>
-                  <FormLabel>Product Image</FormLabel>
+                <FormControl mb="4px">
+                  <FormLabel fontSize="14px" fontWeight="bold">Product Image</FormLabel>
 
                   <Input
                     type="file"

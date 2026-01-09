@@ -105,6 +105,7 @@ const SubCategory = ({ isOpen, onClose }) => {
           <FormControl mb="4px" isRequired>
             <FormLabel fontSize="14px" fontWeight="bold">Select Category</FormLabel>
             <Select
+            fontSize="14px"
               placeholder="Select category"
               value={categoryId}
               onChange={(e) => setCategoryId(e.target.value)}
@@ -121,6 +122,7 @@ const SubCategory = ({ isOpen, onClose }) => {
           <FormControl mb="4px" isRequired>
             <FormLabel fontSize="14px" fontWeight="bold">Sub Category Name</FormLabel>
             <Input
+              fontSize="14px"
               placeholder="Enter sub category name"
               value={subName}
               onChange={(e) => setSubName(e.target.value)}
@@ -129,6 +131,7 @@ const SubCategory = ({ isOpen, onClose }) => {
           <FormControl mb="4px" isRequired>
             <FormLabel fontSize="14px" fontWeight="bold">Sub Category Slug</FormLabel>
              <Input placeholder="sub-category-slug"
+              fontSize="14px"
                value={subSlug}
                onChange={(e)=> setSubSlug(e.target.value)}
               />
@@ -136,6 +139,7 @@ const SubCategory = ({ isOpen, onClose }) => {
            <FormControl mb="4px" isRequired>
             <FormLabel fontSize="14px" fontWeight="bold"> Sub Order Menu</FormLabel>
              <Input placeholder="sub-order-menu"
+             fontSize="14px"
                value={menuOrder}
                onChange={(e)=> setMenuOrder(e.target.value)}
               />

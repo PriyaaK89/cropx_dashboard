@@ -36,6 +36,7 @@ const ViewProduct = () => {
   const { id } = useParams();
   const [productData, setProductData] = useState(null);
   const [variantID, setVariantID] = useState(null);
+   const [productId, setProductID] = useState(null);
   const [multiPackId, setMultiPackId] = useState();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -149,7 +150,15 @@ const ViewProduct = () => {
             <Box display={{ base: "flex", lg: "block" }}>
               <ResponsiveNavbar />
             </Box>
-            <Box display={{ base: "none",  lg: "block" }} position="sticky" top="0px" bottom="0px" left="0px" right="0px" zIndex="11">
+            <Box
+              display={{ base: "none", lg: "block" }}
+              position="sticky"
+              top="0px"
+              bottom="0px"
+              left="0px"
+              right="0px"
+              zIndex="11"
+            >
               <TopBar />
             </Box>
 
@@ -233,10 +242,9 @@ const ViewProduct = () => {
                             border="1px solid red"
                             borderRadius="4px"
                             p={2}
-                            onClick={() => {
-                              setVariantID(v.variant_id);
-                              onSinglePackVariantModalOpen();
-                            }}
+                            onClick={() =>
+                              handleSinglePackDeleteClick(v.variant_id)
+                            }
                           >
                             <RiDeleteBin6Line color="red" />
                           </Box>
@@ -261,8 +269,8 @@ const ViewProduct = () => {
                           size="sm"
                           width="100%"
                           colorScheme="teal"
-                          onClick={() => {
-                            setVariantID(v.variant_id);
+                          onClick={() =>{
+                             setVariantID(v.variant_id);
                              onUpdateSinglePackVariantOpen();
                           }}
                         >
@@ -273,9 +281,9 @@ const ViewProduct = () => {
                           colorScheme="blue"
                           size="sm"
                           onClick={() => {
-                            setVariantID(v.variant_id);
+                            setVariantID(v.variantID);
                             onMultiVariantOpen();
-                          }} 
+                          }}
                         >
                           + Add Multi Pack
                         </Button>
@@ -328,12 +336,12 @@ const ViewProduct = () => {
                           size="sm"
                           width="100%"
                           colorScheme="teal"
-                          onClick={() =>
-                            onUpdateMultiVariantOpen(
-                              m.multipack_id,
-                              m.variant_id
-                            )
-                          }
+                          onClick={() => {
+                            setVariantID(m.variant_id);
+                            setProductID(id);
+                            setMultiPackId(m.multipack_id)
+                            onUpdateMultiVariantOpen();
+                          }} 
                         >
                           Update Variant
                         </Button>
