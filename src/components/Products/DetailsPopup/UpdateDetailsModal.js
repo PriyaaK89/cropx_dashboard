@@ -9,9 +9,11 @@ import {
   Button,
   Input,
   Text,
+  Flex,
   HStack,
   Image,
   IconButton,
+  ModalFooter,
 } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
 import axios from "axios";
@@ -144,8 +146,11 @@ const UpdateDetailsModal = ({
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Update Product Details</ModalHeader>
-        <ModalCloseButton />
+         <Flex bg="#5c94cF" color="white" px="16px" py="5px" justify="space-between" algin="center" borderTopRadius="md">
+          <Text fontWeight="bold">Update Product Details</Text>
+        <ModalCloseButton position="static" />
+        </Flex>
+        
         <ModalBody>
           {/* Existing images */}
           <Text fontWeight="600" mb={2}>
@@ -222,16 +227,19 @@ const UpdateDetailsModal = ({
             additionalInfo,
             setAdditionalInfo
           )}
-
+              </ModalBody>
+              <ModalFooter>
           <Button
-            colorScheme="blue"
-            width="100%"
-            mt={4}
+           bg="#5c94cF"
+          color="white"
+          _hover={{bgColor:"#2664a7"}}
             onClick={handleUpdateProductDetails}
+            mx="auto"
           >
             Update Details
           </Button>
-        </ModalBody>
+      </ModalFooter>
+          
       </ModalContent>
     </Modal>
   );

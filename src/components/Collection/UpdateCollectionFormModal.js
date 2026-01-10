@@ -13,6 +13,7 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Flex,
   Textarea,
   Image,
   useToast,
@@ -113,8 +114,11 @@ const UpdateCollectionModal = ({
     <Modal isOpen={isOpen} onClose={onClose} size="lg" isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Update Collection</ModalHeader>
-        <ModalCloseButton />
+        <Flex bg="green.500" color="white" px="16px" py="5px" justifyContent="space-between" alignItems="center" borderTopRadius="md">
+          <Text fontWeight="bold">Update Collection</Text>
+        <ModalCloseButton position="static" />
+        </Flex>
+        
 
         <ModalBody>
           <SimpleGrid columns={2} spacing={4} width="100%">
@@ -255,7 +259,7 @@ const UpdateCollectionModal = ({
           <Button variant="ghost" mr={3} onClick={onClose}>
             Cancel
           </Button>
-          <Button colorScheme="blue" onClick={handleUpdate} isLoading={loading}>
+          <Button bgColor="green.500" _hover={{bgColor:"green.600"}} color="white" onClick={handleUpdate} isLoading={loading}>
             Update
           </Button>
         </ModalFooter>

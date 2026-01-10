@@ -10,6 +10,8 @@ import {
   Button,
   FormControl,
   FormLabel,
+  Text,
+  Flex,
   Select,
   Input,
   useToast,
@@ -21,7 +23,7 @@ const SubCategory = ({ isOpen, onClose }) => {
   const [subCategories, setSubCategories] = useState([]);
   const [categoryId, setCategoryId] = useState("");
   const [subName, setSubName] = useState("");
-  const [subSlug,setSubSlug] = useState("");
+  const [subSlug, setSubSlug] = useState("");
   const [menuOrder, setMenuOrder] = useState();
   const toast = useToast();
 
@@ -46,66 +48,80 @@ const SubCategory = ({ isOpen, onClose }) => {
 
   // 🔹 ADD SUB CATEGORY
   const handleSubmit = async () => {
-  if (!categoryId ==="" || !subName  ===""||! subSlug === "" ||!menuOrder === "") {
-    toast({
-      title: "All fields are required",
-      status: "warning",
-      duration: 1500,
-      isClosable: true,
-    });
-    return;
-  }
+    if (
+      !categoryId === "" ||
+      !subName === "" ||
+      !subSlug === "" ||
+      !menuOrder === ""
+    ) {
+      toast({
+        title: "All fields are required",
+        status: "warning",
+        duration: 1500,
+        isClosable: true,
+      });
+      return;
+    }
 
-  try {
-    const payload = {
-      category_id: Number(categoryId), 
-      name: subName,
-      slug: subSlug,
-      menu_order: menuOrder,
+    try {
+      const payload = {
+        category_id: Number(categoryId),
+        name: subName,
+        slug: subSlug,
+        menu_order: menuOrder,
+      };
 
-    };
+      console.log("ADD PAYLOAD", payload);
 
-    console.log("ADD PAYLOAD", payload);
+      const res = await axios.post(Config?.add_sub_category, payload);
+      console.log("ADD RESPONSE ", res.data);
 
-    const res = await axios.post(Config?.add_sub_category, payload);
-    console.log("ADD RESPONSE ", res.data);
+      toast({
+        title: "Sub Category Added Successfully",
+        status: "success",
+        duration: 1500,
+        isClosable: true,
+      });
 
-    toast({
-      title: "Sub Category Added Successfully",
-      status: "success",
-      duration: 1500,
-      isClosable: true,
-    });
+      setSubName("");
+      setCategoryId("");
+      onClose();
+    } catch (error) {
+      console.error("ADD ERROR ", error);
 
-    setSubName("");
-    setCategoryId("");
-    onClose();
-  } catch (error) {
-    console.error("ADD ERROR ", error);
-
-    toast({
-      title: error?.response?.data?.message || "Something went wrong",
-      status: "error",
-      duration: 1500,
-      isClosable: true,
-    });
-  }
-};
-
+      toast({
+        title: error?.response?.data?.message || "Something went wrong",
+        status: "error",
+        duration: 1500,
+        isClosable: true,
+      });
+    }
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Add Sub Category</ModalHeader>
-        <ModalCloseButton />
-
+        <Flex
+          bg="#5c94cF"
+          color="white"
+          px="16px"
+          py="5px"
+          justify="space-between"
+          algin="center"
+          borderTopRadius="md"
+        >
+          <Text fontWeight="bold">Add Sub Category</Text>
+          <ModalCloseButton position="static" />
+        </Flex>
         <ModalBody>
           {/* CATEGORY DROPDOWN */}
           <FormControl mb="4px" isRequired>
-            <FormLabel fontSize="14px" fontWeight="bold">Select Category</FormLabel>
+            <FormLabel fontSize="14px" fontWeight="bold">
+              Select Category
+            </FormLabel>
             <Select
-            fontSize="14px"
+              fontSize="14px"
               placeholder="Select category"
               value={categoryId}
               onChange={(e) => setCategoryId(e.target.value)}
@@ -120,7 +136,9 @@ const SubCategory = ({ isOpen, onClose }) => {
 
           {/* SUB CATEGORY INPUT  */}
           <FormControl mb="4px" isRequired>
-            <FormLabel fontSize="14px" fontWeight="bold">Sub Category Name</FormLabel>
+            <FormLabel fontSize="14px" fontWeight="bold">
+              Sub Category Name
+            </FormLabel>
             <Input
               fontSize="14px"
               placeholder="Enter sub category name"
@@ -129,20 +147,27 @@ const SubCategory = ({ isOpen, onClose }) => {
             />
           </FormControl>
           <FormControl mb="4px" isRequired>
-            <FormLabel fontSize="14px" fontWeight="bold">Sub Category Slug</FormLabel>
-             <Input placeholder="sub-category-slug"
+            <FormLabel fontSize="14px" fontWeight="bold">
+              Sub Category Slug
+            </FormLabel>
+            <Input
+              placeholder="sub-category-slug"
               fontSize="14px"
-               value={subSlug}
-               onChange={(e)=> setSubSlug(e.target.value)}
-              />
+              value={subSlug}
+              onChange={(e) => setSubSlug(e.target.value)}
+            />
           </FormControl>
-           <FormControl mb="4px" isRequired>
-            <FormLabel fontSize="14px" fontWeight="bold"> Sub Order Menu</FormLabel>
-             <Input placeholder="sub-order-menu"
-             fontSize="14px"
-               value={menuOrder}
-               onChange={(e)=> setMenuOrder(e.target.value)}
-              />
+          <FormControl mb="4px" isRequired>
+            <FormLabel fontSize="14px" fontWeight="bold">
+              {" "}
+              Sub Order Menu
+            </FormLabel>
+            <Input
+              placeholder="sub-order-menu"
+              fontSize="14px"
+              value={menuOrder}
+              onChange={(e) => setMenuOrder(e.target.value)}
+            />
           </FormControl>
         </ModalBody>
 
@@ -150,7 +175,12 @@ const SubCategory = ({ isOpen, onClose }) => {
           <Button mr={3} onClick={onClose}>
             Cancel
           </Button>
-          <Button colorScheme="blue" onClick={handleSubmit}>
+          <Button
+            bg="#5c94cF"
+            color="white"
+            _hover={{ bgColor: "#2664a7" }}
+            onClick={handleSubmit}
+          >
             Add
           </Button>
         </ModalFooter>

@@ -10,6 +10,8 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Flex,
+  Text,
   Select,
   useToast,
 } from "@chakra-ui/react";
@@ -115,8 +117,11 @@ const UpdateSingleVariantModal = ({
       size="lg">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Update Single Variant</ModalHeader>
-        <ModalCloseButton />
+        <Flex bg="#5c94cF" color="white" px="16px" py="5px" justify="space-between" align="center" borderTopRadius="md">
+           <Text fontWeight="bold">Update Single Variant</Text>
+        <ModalCloseButton position="static" />
+        </Flex>
+        
 
         <ModalBody>
           {/* PRODUCT TYPE */}
@@ -216,7 +221,7 @@ const UpdateSingleVariantModal = ({
           <Button variant="ghost" onClick={onUpdateSinglePackVariantClose}>
             Cancel
           </Button>
-          <Button colorScheme="blue" ml={3} onClick={handleUpdateSingleVariant}>
+          <Button bg="#5c94cF" color="white" _hover={{bgColor:"#2664a7"}} ml={3} onClick={handleUpdateSingleVariant}>
             Update Variant
           </Button>
         </ModalFooter>

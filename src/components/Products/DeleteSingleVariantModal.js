@@ -60,15 +60,13 @@ const DeleteSingleVariantModal = ({
       isCentered
       motionPreset="slideInBottom"
     >
-      <ModalOverlay bg="blackAlpha.400" backdropFilter="blur(4px)" />
-
-      <ModalContent borderRadius="2xl" p={2} bg="white" boxShadow="lg">
-        <ModalHeader fontWeight="700" fontSize="xl" textAlign="center">
-          Delete Variant
-        </ModalHeader>
-
-        <ModalCloseButton />
-
+      <ModalOverlay />
+      <ModalContent>
+        <Flex bg="red.600" color="white" px="16px" py="5px" justify="space-between" align="center" borderTopRadius="md">
+            <Text fontWeight="bold">Delete Variant</Text>
+        <ModalCloseButton position="static" />
+        </Flex>
+        
         <ModalBody>
           <Flex direction="column" align="center" gap={4} py={2}>
             <Icon as={WarningTwoIcon} boxSize={12} color="red.400" />

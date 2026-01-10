@@ -12,6 +12,7 @@ import {
   FormLabel,
   Input,
   Text,
+  Flex,
   Box,
   Textarea,
   Image,
@@ -108,8 +109,11 @@ const CollectionFormModal = ({ isOpen, onClose }) => {
     <Modal isOpen={isOpen} onClose={onClose} size="lg" isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Create Collection</ModalHeader>
-        <ModalCloseButton />
+        <Flex bg="#5c94cf" color="white" px="16px" py="5px" justifyContent="space-between" algin="center" borderTopRadius="md">
+             <Text fontWeight="bold">Create Collection</Text>
+        <ModalCloseButton position="static" />
+        </Flex>
+       
 
         <ModalBody>
           <SimpleGrid columns={2} spacing={4}>
@@ -207,7 +211,7 @@ const CollectionFormModal = ({ isOpen, onClose }) => {
                 alignItems="center"
                 justifyContent="center"
                 cursor="pointer"
-                _hover={{ borderColor: "blue.400" }}
+                 _hover={{bgColor:"#6dabee"}}
                 onClick={() =>
                   document.getElementById("collectionImage").click()
                 }
@@ -242,9 +246,11 @@ const CollectionFormModal = ({ isOpen, onClose }) => {
             Cancel
           </Button>
           <Button
-            colorScheme="blue"
-            onClick={handleSubmit}
+          bgColor="#4c9aee" 
+          color="white"
+          onClick={handleSubmit}
             isLoading={loading}
+             _hover={{bgColor:"#2664a7"}}
           >
             Create
           </Button>

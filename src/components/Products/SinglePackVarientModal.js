@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button, FormControl, FormLabel, Input, Select, useToast, VStack, Box} from "@chakra-ui/react";
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, Flex,Text, ModalBody, ModalCloseButton, Button, FormControl, FormLabel, Input, Select, useToast, VStack, Box } from "@chakra-ui/react";
 import axios from "axios";
 import { Config } from "../../utils/Config";
 
@@ -50,26 +50,17 @@ const SinglePackVarientModal = ({ isOpen, onClose, productId, productType, fetch
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="md" motionPreset="slideInBottom">
-      <ModalOverlay bg="blackAlpha.400" backdropFilter="blur(5px)" />
-
-      <ModalContent bg="white" borderRadius="2xl" boxShadow="lg" p={1}
-      >
-        <ModalHeader
-          fontSize="xl"
-          fontWeight="700"
-          borderBottom="1px solid #f1f1f1"
-          pb={4}
-        >
-          Add Variant
-        </ModalHeader>
-
-        <ModalCloseButton />
-
+      <ModalOverlay />
+      <ModalContent> 
+        <Flex bg="#5c94cf" color="white" px="16px" py="5px" justify="space-between" align="center" borderTopRadius="md">
+          <Text fontWeight="bold">Add Variant</Text>
+          <ModalCloseButton position="static" />
+        </Flex>
         <ModalBody>
           <VStack spacing={5} mt={2} className="modal-stack">
             <FormControl>
               <FormLabel fontWeight="600" color="gray.700">Stock Quantity</FormLabel>
-               <Input
+              <Input
                 type="number"
                 name="stock_qty"
                 placeholder="Enter Stock quantity"
@@ -107,7 +98,6 @@ const SinglePackVarientModal = ({ isOpen, onClose, productId, productType, fetch
                 placeholder="Enter quantity"
                 value={formData.quantity_value}
                 onChange={handleChange}
-                borderRadius="lg"
                 size='sm'
                 focusBorderColor="blue.400"
               />
@@ -145,11 +135,13 @@ const SinglePackVarientModal = ({ isOpen, onClose, productId, productType, fetch
 
         <ModalFooter borderTop="1px solid #f1f1f1" mt={4}>
           <Button
-            colorScheme="blue"
-            w="full"
+           bgColor="#5c94cF"
+            color="white"
             borderRadius="lg"
+            _hover={{bgColor:"#2664a7"}}
             isLoading={loading}
             onClick={submitVariant}
+            mx="auto"
           >
             Save Variant
           </Button>

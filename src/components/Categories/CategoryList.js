@@ -255,7 +255,7 @@ const CategoryList = () => {
 
                       {/* ACTIONS */}
                       <Td>
-                        <Link to="/view-category">
+                        <Link to="/view-category/${item.slug}">
                           <Button size="sm" bg="white" mr={2}>
                             <FiEye size={18} color="#2563eb" />
                           </Button>

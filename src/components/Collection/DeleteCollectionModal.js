@@ -10,6 +10,7 @@ import {
   Text,
   useToast,
   Spinner,
+  Flex,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { Config } from "../../utils/Config";
@@ -54,25 +55,29 @@ const DeleteCollectionModal = ({
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Delete Collection</ModalHeader>
-        <ModalCloseButton />
+        <Flex
+          bg="red.500"
+          color="white"
+          px="16px"
+          py="5px"
+          justify="space-between"
+          align="center"
+          borderTopRadius="md"
+        >
+          <Text fontWeight="bold">Delete Collection</Text>
+          <ModalCloseButton position="static" />
+        </Flex>
 
-        <ModalBody>
-          <Text>
-            Are you sure you want to delete this collection?  
-          </Text>
+        <ModalBody py="18px">
+          <Text>Are you sure you want to delete this collection?</Text>
         </ModalBody>
 
-        <ModalFooter>
+        <ModalFooter> 
           <Button mr={3} onClick={onClose}>
             Cancel
           </Button>
 
-          <Button
-            colorScheme="red"
-            onClick={handleDelete}
-            isDisabled={loading}
-          >
+          <Button colorScheme="red" onClick={handleDelete} isDisabled={loading}>
             {loading ? <Spinner size="sm" /> : "Delete"}
           </Button>
         </ModalFooter>

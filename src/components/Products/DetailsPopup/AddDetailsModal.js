@@ -135,8 +135,11 @@ const AddDetailsModal = ({ isOpen, onClose, productId, getProductDetails }) => {
     <Modal isOpen={isOpen} onClose={onClose} size="xl">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Add Product Details</ModalHeader>
-        <ModalCloseButton />
+        <Flex bgColor="#5c94cF" color="white" justifyContent="space-between" align="center" px="16px" py="5px" borderTopRadius="md">
+         <Text fontWeight="bold">Add Product Details</Text>
+        <ModalCloseButton position="static" />
+        </Flex>
+        
 
         <ModalBody pb={6}>
           {/* IMAGE UPLOAD */}
@@ -166,8 +169,8 @@ const AddDetailsModal = ({ isOpen, onClose, productId, getProductDetails }) => {
             setter={setAdditionalInfo}
           />
 
-          <Flex justify="flex-end" mt={5}>
-            <Button colorScheme="blue" onClick={handleAddDetails}>
+          <Flex justify="center"  mt={5}>
+            <Button bg="#5c94cF" color="white" _hover={{bgColor:"#2664a7"}} onClick={handleAddDetails}>
               Save Details
             </Button>
           </Flex>

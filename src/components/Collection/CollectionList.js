@@ -127,7 +127,7 @@ const CollectionList = () => {
             <Text fontSize="lg" fontWeight="bold" mb={4}>
               Collection List
             </Text>
-            <Button bg="blue.500" color="white" onClick={onOpen}>
+            <Button bg="#5c94cf" _hover={{bgColor:"#2664a7"}} color="white" onClick={onOpen}>
               Create Collection
             </Button>
           </Flex>

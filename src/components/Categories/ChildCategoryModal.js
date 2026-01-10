@@ -5,6 +5,8 @@ import {
   ModalContent,
   ModalHeader,
   ModalBody,
+  Flex,
+  Text,
   ModalFooter,
   ModalCloseButton,
   Button,
@@ -124,9 +126,10 @@ const ChildCategory = ({ isOpen, onClose }) => {
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Add Child Category</ModalHeader>
-        <ModalCloseButton />
-
+         <Flex bg="#5c94cF" color="white" px="16px" py="5px" justify="space-between" algin="center" borderTopRadius="md">
+          <Text fontWeight="bold"> Add Child Category</Text>
+               <ModalCloseButton position="static" />
+        </Flex>
         <ModalBody>
           {/* CATEGORY */}
           <FormControl mb="4px" isRequired>
@@ -190,7 +193,10 @@ const ChildCategory = ({ isOpen, onClose }) => {
           <Button mr={3} onClick={onClose}>
             Cancel
           </Button>
-          <Button colorScheme="blue" onClick={handleSubmit}>
+          <Button 
+           bg="#5c94cF"
+          color="white"
+          _hover={{bgColor:"#2664a7"}}  onClick={handleSubmit}>
             Add
           </Button>
         </ModalFooter>

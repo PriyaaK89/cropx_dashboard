@@ -15,6 +15,7 @@ import {
   VStack,
   useToast,
   Flex,
+  Text
 } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useState } from "react";
@@ -91,13 +92,15 @@ const MultiPackVariantModal = ({
 
   return (
     <Modal isOpen={isMultiVariantOpen} onClose={onMultiVariantClose} isCentered>
-      <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(6px)" />
-      <ModalContent borderRadius="20px" p="5px" bg="white" shadow="lg">
-        <ModalHeader fontSize="22px" fontWeight="bold">
+      <ModalOverlay/>
+      <ModalContent>
+      <Flex bg="#5c94cF" color="white" px="16px" py="5px" justify="space-between" algin="center" borderTopRadius="md">
+        <Text fontWeight="bold">
           Add Multi Pack Variant
-        </ModalHeader>
-
-        <ModalCloseButton />
+        </Text>
+        <ModalCloseButton position=
+        "static" />
+   </Flex>
 
         <ModalBody pb="20px">
           <VStack spacing="20px" mt="10px" className="modal-stack">
@@ -136,7 +139,7 @@ const MultiPackVariantModal = ({
                 Cancel
               </Button>
 
-              <Button colorScheme="blue" onClick={handleSubmit}>
+              <Button bgColor="#5c94cF" color="white" _hover={{bgColor:"#2664a7"}} onClick={handleSubmit}>
                 Add Multi Pack
               </Button>
             </Flex>

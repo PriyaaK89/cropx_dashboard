@@ -21,10 +21,12 @@ const ViewOrderListModal = ({ isOpen, onClose, selectedItems,orderId }) => {
     <Modal isOpen={isOpen} onClose={onClose} size="xl" isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>View Orders</ModalHeader>
-        <ModalCloseButton />
+    <Flex bg="#5c94cf" color="white" justify="space-between" align="center" px="16px" py="5px" borderTopRadius="md" >
+        <Text fontWeight="bold">View Orders</Text>
+        <ModalCloseButton position="static"/>
+                  </Flex>
 
-        <ModalBody>
+        <ModalBody p={2}>
           {selectedItems?.map((order, index) => (
             <Box
               key={index}

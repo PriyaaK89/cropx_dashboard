@@ -7,6 +7,7 @@ import {
   ModalOverlay,
   Button,
   Image,
+  Flex,
   Text,
   Box,
   Input,
@@ -88,12 +89,12 @@ const AddBannerModal = ({ isOpen, onClose, fetchBanner }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
-
-      <ModalContent borderRadius="lg" p={2}>
-        <ModalHeader>Add Banner</ModalHeader>
-        <ModalCloseButton />
-
-        <ModalBody pb={5}>
+      <ModalContent>
+        <Flex bg="#5c94cf" color="white" px="16px" py="5px"  justifyContent="space-between" alignItems="center" borderTopRadius="md">
+            <Text fontWeight="bold">Add Banner</Text>
+        <ModalCloseButton position="static"/>
+        </Flex>
+        <ModalBody pt={5} pb={5}>
           {/* UPLOAD BOX */}
           <Box
             border="2px dashed"
@@ -141,10 +142,13 @@ const AddBannerModal = ({ isOpen, onClose, fetchBanner }) => {
 
           {/* SUBMIT BUTTON */}
           <Button
-            colorScheme="blue"
+          bgColor="#5c94cf"
+          color="white"
+
             width="100%"
             onClick={handleAddBanner}
             isDisabled={loading}
+            _hover={{bgColor:"#2664a7"}}
           >
             {loading ? <Spinner size="sm" /> : "Upload Banner"}
           </Button>

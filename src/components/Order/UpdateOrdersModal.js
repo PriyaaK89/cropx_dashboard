@@ -7,6 +7,8 @@ import {
   ModalFooter,
   ModalCloseButton,
   Button,
+  Flex,
+  Text,
   useToast,
 } from "@chakra-ui/react";
 import { useState, useContext } from "react";
@@ -21,7 +23,7 @@ const UpdateOrderModal = ({ isOpen, onClose, orderId, refreshOrders }) => {
   const { auth } = useContext(AuthContext);
   const apiToken = auth?.token;
   const toast = useToast();
-  console.log(orderId ,"orderId")
+  console.log(orderId, "orderId")
 
   // status button click
   const handleStatusClick = (status) => {
@@ -48,27 +50,27 @@ const UpdateOrderModal = ({ isOpen, onClose, orderId, refreshOrders }) => {
         new_status: selectedStatus,
       };
 
-     const response = await axios.put(`${Config?.update_order_status}`, payload, 
-      {
-        headers: {
-          Authorization: `Bearer ${apiToken}`
+      const response = await axios.put(`${Config?.update_order_status}`, payload,
+        {
+          headers: {
+            Authorization: `Bearer ${apiToken}`
+          }
         }
-      }
-     )
-     if(response?.status === 200){
- toast({
-        title: "Order status updated successfully",
-        status: "success",
-        duration: 2000,
-        isClosable: true,
-      });
-     
-      refreshOrders();      // list refresh
-      setSelectedStatus(""); // reset
-      onClose();
-     }
+      )
+      if (response?.status === 200) {
+        toast({
+          title: "Order status updated successfully",
+          status: "success",
+          duration: 2000,
+          isClosable: true,
+        });
 
-     
+        refreshOrders();      // list refresh
+        setSelectedStatus(""); // reset
+        onClose();
+      }
+
+
     } catch (error) {
       toast({
         title: "Failed to update order",
@@ -92,38 +94,48 @@ const UpdateOrderModal = ({ isOpen, onClose, orderId, refreshOrders }) => {
     <Modal isOpen={isOpen} onClose={handleClose} isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Update Order Status</ModalHeader>
-        <ModalCloseButton />
+        <Flex bg="#5c94cf" color="white" px="16px" py="5px" justify="space-between" align="center" borderTopRadius="md" >
+          <Text fontWeight="bold">Update Order Status</Text>
+          <ModalCloseButton position="static" />
+        </Flex>
 
-        <ModalBody>
-          {["DISPATCHED", "SHIPPED", "DELIVERED"].map((status) => (
-            <Button
-              key={status}
-              mr={3}
-              mb={2}
-              variant="outline"
-              bg={selectedStatus === status ? "blue.100" : "white"}
-              onClick={() => handleStatusClick(status)}
-            >
-              {status}
-            </Button>
-          ))}
+        <ModalBody p="2rem 0rem">
+          <Flex justifyContent="center" align="center">
+
+            {["DISPATCHED", "SHIPPED", "DELIVERED"].map((status) => (
+
+              <Button
+                key={status}
+                mr={3}
+                mb={2}
+                px="8px"
+                variant="outline"
+                bg={selectedStatus === status ? "blue.100" : "white"}
+                onClick={() => handleStatusClick(status)}
+              >
+                {status}
+              </Button>
+
+            ))}
+          </Flex>
         </ModalBody>
 
-        <ModalFooter>
+        <ModalFooter p="0px 0px 10px 0px">
+          <Button colorScheme="gray" onClick={handleClose} mr={2}>
+            Cancel
+          </Button>
           <Button
-            colorScheme="blue"
+            bgColor="#5c94cf"
+            color="white"
             mr={3}
             onClick={handleUpdateStatus}
-            isDisabled={!selectedStatus}
             isLoading={loading}
+            _hover={{bgColor:"#2664a7"}}
           >
             Update
           </Button>
 
-          <Button variant="ghost" onClick={handleClose}>
-            Cancel
-          </Button>
+          
         </ModalFooter>
       </ModalContent>
     </Modal>
