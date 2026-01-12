@@ -1,14 +1,16 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { Box, Button, Flex, Input, FormControl, FormLabel, Text, Heading, useToast, VStack, InputRightElement, IconButton, InputGroup,} from "@chakra-ui/react";
 import axios from "axios";
 import { Config } from "../utils/Config";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "./Context/AuthContext";
+import { AuthContext} from "./Context/AuthContext";
 
 
 const Login = () => {
-  const { login } = useContext(AuthContext);
+  const { login, auth } = useContext(AuthContext);
+
+
   const toast = useToast();
   const navigate = useNavigate()
   const [formdata, setFormdata] = useState({
@@ -23,6 +25,16 @@ const Login = () => {
   };
 
  const userlogin = async () => {
+  if (!formdata.email || !formdata.password) {
+    toast({
+      title: "Please fill all fields",
+      status: "warning",
+      duration: 2000,
+      isClosable: true,
+    });
+    return;
+  }
+
   try {
     const response = await axios.post(`${Config?.Login_url}`, formdata);
 
@@ -43,11 +55,10 @@ const Login = () => {
         isClosable: true,
       });
 
-      setTimeout(() => {
-        navigate("/dashboard");
-      }, 1500);
+     
 
     } else {
+
       toast({
         title: response.data.message,
         status: "error",
@@ -65,6 +76,11 @@ const Login = () => {
     });
   }
 };
+useEffect(() => {
+  if (auth?.token) {
+    navigate("/dashboard", { replace: true });
+  }
+}, [auth?.token]);
 
   return (
     <Box bg={"linear-gradient(348deg, #2e686c, #008d9242)"} height="100vh">

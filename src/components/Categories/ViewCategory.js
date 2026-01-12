@@ -82,7 +82,6 @@ const ViewCategory = () => {
     ))}
   </Flex>
 )}
-
           </Box>
         </Box>
       </Flex>
