@@ -11,6 +11,9 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Text,
+  Flex,
+  Box,
   Textarea,
   Image,
   useToast,
@@ -19,6 +22,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { Config } from "../../utils/Config";
+import { FiUploadCloud } from "react-icons/fi";
 
 const CollectionFormModal = ({ isOpen, onClose }) => {
   const [title, setTitle] = useState("");
@@ -32,6 +36,18 @@ const CollectionFormModal = ({ isOpen, onClose }) => {
   const [loading, setLoading] = useState(false);
 
   const toast = useToast();
+
+  /* ================= IMAGE HANDLER ================= */
+
+  const handleImage = (e) => {
+    const img = e.target.files[0];
+    if (img) {
+      setImage(img);
+      setPreview(URL.createObjectURL(img));
+    }
+  };
+
+  /* ================= SUBMIT ================= */
 
   const handleSubmit = async () => {
     if (!title || !slug || !image) {
@@ -55,7 +71,7 @@ const CollectionFormModal = ({ isOpen, onClose }) => {
     try {
       setLoading(true);
       const res = await axios.post(
-        Config?.create_collections,
+        Config.create_collections,
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -93,89 +109,135 @@ const CollectionFormModal = ({ isOpen, onClose }) => {
     <Modal isOpen={isOpen} onClose={onClose} size="lg" isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Create Collection</ModalHeader>
-        <ModalCloseButton />
+        <Flex bg="#5c94cf" color="white" px="16px" py="5px" justifyContent="space-between" algin="center" borderTopRadius="md">
+             <Text fontWeight="bold">Create Collection</Text>
+        <ModalCloseButton position="static" />
+        </Flex>
+       
 
         <ModalBody>
           <SimpleGrid columns={2} spacing={4}>
-
-            <FormControl>
-              <FormLabel fontSize="14px" fontWeight="bold">Title</FormLabel>
+            <FormControl mb="4px" gridColumn="span 2" >
+              <FormLabel fontSize="14px" fontWeight="bold">
+                Title
+              </FormLabel>
               <Input
+                fontSize="14px"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Enter title"
               />
             </FormControl>
 
-            <FormControl>
-              <FormLabel fontSize="14px" fontWeight="bold">Slug</FormLabel>
+            <FormControl mb="4px">
+              <FormLabel fontSize="14px" fontWeight="bold">
+                Slug
+              </FormLabel>
               <Input
+                fontSize="14px"
                 value={slug}
                 onChange={(e) => setSlug(e.target.value)}
                 placeholder="Enter slug"
               />
             </FormControl>
-
-            <FormControl>
-              <FormLabel fontSize="14px" fontWeight="bold">Show In Menu</FormLabel>
-              <Select
-                placeholder="Select option"
-                value={showInMenu}
-                onChange={(e) => setShowInMenu(Number(e.target.value))}
-              >
-                <option value={1}>Yes</option>
-                <option value={0}>No</option>
-              </Select>
-            </FormControl>
-
-            <FormControl>
-              <FormLabel fontSize="14px" fontWeight="bold">Home Order</FormLabel>
+            <FormControl mb="4px">
+              <FormLabel fontSize="14px" fontWeight="bold">
+                Home Order
+              </FormLabel>
               <Input
+                fontSize="14px"
                 type="number"
                 value={homeOrder}
                 onChange={(e) => setHomeOrder(e.target.value)}
-                placeholder="Enter display order (1,2,3...)"
+                placeholder="1, 2, 3..."
               />
             </FormControl>
 
-            <FormControl>
-              <FormLabel fontSize="14px" fontWeight="bold">Show On Home</FormLabel>
+            <FormControl mb="4px">
+              <FormLabel fontSize="14px" fontWeight="bold">
+                Show In Menu
+              </FormLabel>
               <Select
+                fontSize="14px"
+                value={showInMenu}
+                onChange={(e) => setShowInMenu(Number(e.target.value))}
                 placeholder="Select option"
-                value={showOnHome}
-                onChange={(e) => setShowOnHome(Number(e.target.value))}
               >
                 <option value={1}>Yes</option>
                 <option value={0}>No</option>
               </Select>
             </FormControl>
 
-            <FormControl>
-              <FormLabel fontSize="14px" fontWeight="bold">Image</FormLabel>
-              <Input
-                type="file"
-                onChange={(e) => {
-                  const file = e.target.files[0];
-                  setImage(file);
-                  setPreview(URL.createObjectURL(file));
-                }}
-              />
-            </FormControl>
+            
 
-            {preview && (
-              <Image src={preview} boxSize="120px" rounded="md" />
-            )}
-
-            <FormControl gridColumn="span 2">
-              <FormLabel fontSize="14px" fontWeight="bold">Description</FormLabel>
+            <FormControl mb="4px">
+              <FormLabel fontSize="14px" fontWeight="bold">
+                Show On Home
+              </FormLabel>
+              <Select
+                fontSize="14px"
+                value={showOnHome}
+                onChange={(e) => setShowOnHome(Number(e.target.value))}
+                placeholder="Select option"
+              >
+                <option value={1}>Yes</option>
+                <option value={0}>No</option>
+              </Select>
+            </FormControl >
+             <FormControl mb="4px" gridColumn="span 2">
+              <FormLabel fontSize="14px" fontWeight="bold">
+                Description
+              </FormLabel>
               <Textarea
+                fontSize="14px"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Enter description"
               />
             </FormControl>
 
+            {/* IMAGE */}
+            <FormControl mb="4px" gridColumn="span 2">
+              <FormLabel fontSize="14px" fontWeight="bold">
+                Image
+              </FormLabel>
+              <Box
+                border="2px dashed"
+                borderColor="gray.300"
+                borderRadius="md"
+                p={6}
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center"
+                cursor="pointer"
+                 _hover={{bgColor:"#6dabee"}}
+                onClick={() =>
+                  document.getElementById("collectionImage").click()
+                }
+              >
+                {preview ? (
+                  <Image src={preview} maxH="160px" objectFit="contain" />
+                ) : (
+                  <>
+                    <FiUploadCloud size={40} color="#4299E1" />
+                    <Text mt={2} fontSize="sm" color="gray.500">
+                      Click to upload image
+                    </Text>
+                  </>
+                )}
+
+                <Input
+                  type="file"
+                  id="collectionImage"
+                  display="none"
+                  accept="image/*"
+                  onChange={handleImage}
+                />
+              </Box>
+            </FormControl>
+
+           
           </SimpleGrid>
         </ModalBody>
 
@@ -184,9 +246,11 @@ const CollectionFormModal = ({ isOpen, onClose }) => {
             Cancel
           </Button>
           <Button
-            colorScheme="blue"
-            onClick={handleSubmit}
+          bgColor="#4c9aee" 
+          color="white"
+          onClick={handleSubmit}
             isLoading={loading}
+             _hover={{bgColor:"#2664a7"}}
           >
             Create
           </Button>

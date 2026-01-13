@@ -10,7 +10,7 @@ import { Config } from "../../utils/Config";
 
 import {
   Box,
-  Table, 
+  Table,
   Thead,
   Tbody,
   Tr,
@@ -24,6 +24,8 @@ import {
   Flex,
   useDisclosure,
 } from "@chakra-ui/react";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { FiEdit } from "react-icons/fi";
 
 const CollectionList = () => {
   const [collections, setCollections] = useState([]);
@@ -99,9 +101,9 @@ const CollectionList = () => {
       />
 
       <Box
-        width={{ base: "100%",  lg:"calc(100% - 260px)" }}
-        px={{ base: 0, md:0, lg:6 }}
-        ml={{ base: "0", md:0, lg:"260px" }}
+        width={{ base: "100%", lg: "calc(100% - 260px)" }}
+        px={{ base: 0, md: 0, lg: 6 }}
+        ml={{ base: "0", md: 0, lg: "260px" }}
         mb={5}
       >
         {/* Navbar */}
@@ -113,12 +115,19 @@ const CollectionList = () => {
         </Box>
 
         {/* Collection Table */}
-        <Box mt={4} bg="white" p={4} borderRadius="0.75rem" boxShadow="lg" mx={{base:3,md:3,lg:0}}  >
+        <Box
+          mt={4}
+          bg="white"
+          p={4}
+          borderRadius="0.75rem"
+          boxShadow="lg"
+          mx={{ base: 3, md: 3, lg: 0 }}
+        >
           <Flex justify="space-between">
             <Text fontSize="lg" fontWeight="bold" mb={4}>
               Collection List
             </Text>
-            <Button bg="blue.500" color="white" onClick={onOpen}>
+            <Button bg="#5c94cf" _hover={{bgColor:"#2664a7"}} color="white" onClick={onOpen}>
               Create Collection
             </Button>
           </Flex>
@@ -132,7 +141,7 @@ const CollectionList = () => {
               <Box overflowX="auto">
                 <Table
                   variant="simple"
-                    minW={{ base: "900px", md: "1100px", lg: "1200px" }}
+                  minW={{ base: "900px", md: "1100px", lg: "1200px" }}
                   className="productsTable"
                   mt={1}
                 >
@@ -146,8 +155,7 @@ const CollectionList = () => {
                       <Th minW="140px">Home Order</Th>
                       <Th minW="160px">Show On Home</Th>
                       <Th minW="280px">Description</Th>
-                      <Th minW="140px">Update</Th>
-                      <Th minW="140px">Delete</Th>
+                      <Th minW="200px">Action</Th>
                     </Tr>
                   </Thead>
 
@@ -173,23 +181,22 @@ const CollectionList = () => {
                         <Td>{item.show_on_home === 1 ? "Yes" : "No"}</Td>
                         <Td>{item.description}</Td>
                         <Td>
-                          <Flex>
+                          <Flex gap={4}>
                             <Button
                               size="sm"
-                              colorScheme="blue"
                               onClick={() => handleUpdate(item)}
+                              bgColor="white"
                             >
-                              Update
+                              <FiEdit size={18} color="#16a34a" />
+                            </Button>
+                            <Button
+                            bgColor="white"
+                              size="sm"
+                              onClick={() => handleDelete(item)}
+                            >
+                              <RiDeleteBin6Line size={18} color="#dc2626" />
                             </Button>
                           </Flex>
-                        </Td>
-                        <Td>
-                          <Button
-                            colorScheme="red"
-                            onClick={() => handleDelete(item)}
-                          >
-                            Delete
-                          </Button>
                         </Td>
                       </Tr>
                     ))}
@@ -208,7 +215,7 @@ const CollectionList = () => {
                     Page {page} of {totalPages}
                   </Text>
                   <select
-                    style={{ width:"120px" }}
+                    style={{ width: "120px" }}
                     value={limit}
                     onChange={(e) => {
                       setLimit(Number(e.target.value));

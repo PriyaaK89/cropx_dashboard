@@ -10,6 +10,8 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Flex,
+  Text,
   Select,
   useToast,
 } from "@chakra-ui/react";
@@ -56,7 +58,7 @@ const UpdateSingleVariantModal = ({
               : "liquid",
           quantity_type: selectedVariant.base_quantity_type,
           quantity_value: selectedVariant.base_quantity_value,
-          actual_price: selectedVariant.total_actual_price,
+          actual_price: selectedVariant.actual_price,
           discount_percent: selectedVariant.discount_percent,
             stock_qty: selectedVariant.stock_qty //  Backend value
         });
@@ -115,14 +117,18 @@ const UpdateSingleVariantModal = ({
       size="lg">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Update Single Variant</ModalHeader>
-        <ModalCloseButton />
+        <Flex bg="#5c94cF" color="white" px="16px" py="5px" justify="space-between" align="center" borderTopRadius="md">
+           <Text fontWeight="bold">Update Single Variant</Text>
+        <ModalCloseButton position="static" />
+        </Flex>
+        
 
         <ModalBody>
           {/* PRODUCT TYPE */}
-          <FormControl mb="3">
-            <FormLabel>Product Type</FormLabel>
+          <FormControl mb="4px">
+            <FormLabel fontSize="14px" fontWeight="bold">Product Type</FormLabel>
             <Select
+            fontSize="14px"
               name="product_type"
               value={formData.product_type}
               onChange={handleChange}>
@@ -132,9 +138,10 @@ const UpdateSingleVariantModal = ({
             </Select>
           </FormControl>
           {/* STOCK QUANTITY */}
-           <FormControl mb="3">
-  <FormLabel>Stock Quantity</FormLabel>
+           <FormControl mb="4px">
+  <FormLabel fontSize="14px" fontWeight="bold">Stock Quantity</FormLabel>
   <Input
+    fontSize="14px"
     type="number"
     name="stock_qty"
     value={formData.stock_qty}
@@ -144,10 +151,11 @@ const UpdateSingleVariantModal = ({
 
 
           {/* QUANTITY TYPE */}
-          <FormControl mb="3">
-            <FormLabel>Quantity Type</FormLabel>
+          <FormControl mb="4px">
+            <FormLabel fontSize="14px" fontWeight="bold">Quantity Type</FormLabel>
 
             <Select
+            fontSize="14px"
               name="quantity_type"
               value={formData.quantity_type}
               onChange={handleChange}
@@ -173,9 +181,10 @@ const UpdateSingleVariantModal = ({
           </FormControl>
 
           {/* QUANTITY VALUE */}
-          <FormControl mb="3">
-            <FormLabel>Quantity Value</FormLabel>
+          <FormControl mb="4px">
+            <FormLabel fontSize="14px" fontWeight="bold">Quantity Value</FormLabel>
             <Input
+             fontSize="14px"
               type="number"
               name="quantity_value"
               value={formData.quantity_value}
@@ -184,9 +193,10 @@ const UpdateSingleVariantModal = ({
           </FormControl>
 
           {/* ACTUAL PRICE */}
-          <FormControl mb="3">
-            <FormLabel>Actual Price</FormLabel>
+          <FormControl mb="4px">
+            <FormLabel fontSize="14px" fontWeight="bold">Actual Price</FormLabel>
             <Input
+             fontSize="14px"
               type="number"
               name="actual_price"
               value={formData.actual_price}
@@ -195,9 +205,10 @@ const UpdateSingleVariantModal = ({
           </FormControl>
 
           {/* DISCOUNT PERCENT */}
-          <FormControl mb="3">
-            <FormLabel>Discount %</FormLabel>
+          <FormControl mb="4px">
+            <FormLabel fontSize="14px" fontWeight="bold">Discount %</FormLabel>
             <Input
+             fontSize="14px"
               type="number"
               name="discount_percent"
               value={formData.discount_percent}
@@ -210,7 +221,7 @@ const UpdateSingleVariantModal = ({
           <Button variant="ghost" onClick={onUpdateSinglePackVariantClose}>
             Cancel
           </Button>
-          <Button colorScheme="blue" ml={3} onClick={handleUpdateSingleVariant}>
+          <Button bg="#5c94cF" color="white" _hover={{bgColor:"#2664a7"}} ml={3} onClick={handleUpdateSingleVariant}>
             Update Variant
           </Button>
         </ModalFooter>

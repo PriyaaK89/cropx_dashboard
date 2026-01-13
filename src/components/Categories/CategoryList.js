@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   Text,
-  Image,
-  Badge,
   Flex,
   Input,
   Table,
@@ -13,14 +11,14 @@ import {
   Th,
   Td,
   Button,
-  HStack,
   Spinner,
-  SimpleGrid,
   useDisclosure,
 } from "@chakra-ui/react";
-import { FiSearch } from "react-icons/fi";
+import { FiSearch, FiEye } from "react-icons/fi";
+import { RiDeleteBin6Line } from "react-icons/ri";
 import axios from "axios";
 import { Link } from "react-router-dom";
+
 import TopBar from "../TopBar/TopBar";
 import ResponsiveNavbar from "../TopBar/ResponsiveNavbar";
 import { Config } from "../../utils/Config";
@@ -33,38 +31,89 @@ const CategoryList = () => {
   const [filtered, setFiltered] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+
   const [categoryId, setCategoryId] = useState("");
 
+  const [subCategoriesMap, setSubCategoriesMap] = useState({});
+  const [childCategoriesMap, setChildCategoriesMap] = useState({});
+  const [selectedSubMap, setSelectedSubMap] = useState({});
+
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { isOpen: isSubOpen, onOpen: onSubOpen, onClose: onSubClose } = useDisclosure();
-  const { isOpen: isChildOpen, onOpen: onChildOpen, onClose: onChildClose } = useDisclosure();
+  const {
+    isOpen: isSubOpen,
+    onOpen: onSubOpen,
+    onClose: onSubClose,
+  } = useDisclosure();
+  const {
+    isOpen: isChildOpen,
+    onOpen: onChildOpen,
+    onClose: onChildClose,
+  } = useDisclosure();
+
+  /* ================= API CALLS ================= */
 
   const getCategories = async () => {
+    setLoading(true);
     try {
-      const res = await axios.get(Config?.get_categories);
-      setCategories(res.data.categories);
-      setFiltered(res.data.categories);
+      const res = await axios.get(Config.get_categories);
+      setCategories(res.data.categories || []);
+      setFiltered(res.data.categories || []);
+
+      // first category ke liye sub category load
+      if (res.data.categories?.length > 0) {
+        getSubCategories(res.data.categories[0].id);
+      }
     } catch (err) {
       console.log(err);
     }
     setLoading(false);
   };
 
+  const getSubCategories = async (catID) => {
+    try {
+      const res = await axios.get(
+        `${Config.get_sub_category}?category_id=${catID}`
+      );
+      setSubCategoriesMap((prev) => ({
+        ...prev,
+        [catID]: res.data?.data || [],
+      }));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const getChildCategories = async (subId, catId) => {
+    try {
+      const res = await axios.get(
+        `${Config.get_child_category}?sub_category_id=${subId}`
+      );
+
+      setChildCategoriesMap((prev) => ({
+        ...prev,
+        [catId]: res.data?.data || [],
+      }));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  /* ================= EFFECTS ================= */
+
   useEffect(() => {
     getCategories();
   }, []);
-
   useEffect(() => {
-    if (!search) {
-      setFiltered(categories);
-    } else {
-      setFiltered(
-        categories.filter((c) =>
-          c.cate_name.toLowerCase().includes(search.toLowerCase())
-        )
-      );
+  filtered.forEach((item) => {
+    if (!subCategoriesMap[item.id]) {
+      getSubCategories(item.id);
     }
-  }, [search, categories]);
+  });
+}, [filtered]);
+
+
+ 
+  /* ================= HANDLERS ================= */
 
   const handleDelete = (id) => {
     setCategoryId(id);
@@ -79,14 +128,14 @@ const CategoryList = () => {
         categoryId={categoryId}
         fetchCategories={getCategories}
       />
+
       <SubCategory isOpen={isSubOpen} onClose={onSubClose} />
       <ChildCategory isOpen={isChildOpen} onClose={onChildClose} />
 
       <Box
-        width={{ base: "100%", lg:"calc(100% - 260px)" }}
+        width={{ base: "100%", lg: "calc(100% - 260px)" }}
         ml={{ base: 0, lg: "260px" }}
-        px={{ base: 0, lg: 6}}
-        mb={5}
+        px={{ base: 0, lg: 6 }}
         minH="100vh"
       >
         {/* NAVBAR */}
@@ -98,19 +147,13 @@ const CategoryList = () => {
         </Box>
 
         {/* CONTENT */}
-        <Box bg="white" p={4} mt={4}  borderRadius="0.75rem" boxShadow="lg" mx={{base:3, lg:0}} >
-          <Flex
-            justify="space-between"
-            align={{ base: "flex-start", md: "center" }}
-            direction={{ base: "column", md: "row" }}
-            gap={4}
-            mb={5}
-          >
+        <Box bg="white" p={4} mt={4} borderRadius="lg" boxShadow="lg">
+          <Flex justify="space-between" mb={5} flexWrap="wrap" gap={3}>
             <Text fontSize="2xl" fontWeight="600">
               Category List
             </Text>
 
-            <Flex gap={3} flexWrap="wrap">
+            <Flex gap={3}>
               <Button colorScheme="blue" onClick={onSubOpen}>
                 + Sub Category
               </Button>
@@ -124,14 +167,7 @@ const CategoryList = () => {
           </Flex>
 
           {/* SEARCH */}
-          <Flex
-            mb={4}
-            p={2}
-            align="center"
-            borderRadius="md"
-            boxShadow="sm"
-            maxW="300px"
-          >
+          <Flex mb={4} p={2} align="center" maxW="300px">
             <FiSearch />
             <Input
               ml={2}
@@ -142,62 +178,106 @@ const CategoryList = () => {
             />
           </Flex>
 
-          {/* LOADING */}
           {loading ? (
             <Flex justify="center" mt={10}>
               <Spinner size="xl" />
             </Flex>
-          ) 
-           :
-              (<Box   overflowX="auto">
-                <Table
-                  minW={{ md:"700px", lg: "1000px", xl: "1200px", "2xl": "1400px" }}
-                >
-                  <Thead bg="gray.100">
-                    <Tr>
-                      <Th>Category Name</Th>
-                      <Th>Description</Th>
-                      <Th>Created</Th>
-                      <Th>Show In Menu</Th>
-                      <Th>Show On Home</Th>
-                      <Th>Action</Th>
-                    </Tr>
-                  </Thead>
+          ) : (
+            <Box overflowX="auto">
+              <Table
+                variant="simple"
+                minW={{ base: "900px", md: "1100px",  xl: "1400px" }}
+                className="productsTable"
+              >
+                <Thead bg="gray.100">
+                  <Tr>
+                    <Th minW="100px">Category Name</Th>
+                    <Th minW="150px">Sub Category</Th>
+                    <Th minW="150px">Child Category</Th>
+                    <Th minw="100px">Description</Th>
+                    <Th minW="100px">Created</Th>
+                    <Th minW="50px">Menu</Th>
+                    <Th minW="50px">Home</Th>
+                    <Th minW="150px">Action</Th>
+                  </Tr>
+                </Thead>
 
-                  <Tbody>
-                    {filtered.map((item) => (
-                      <Tr key={item.id}>
-                        <Td>
-                            <Text>{item.cate_name}</Text>
-                        </Td>
+                <Tbody>
+                  {filtered.map((item) => (
+                    <Tr key={item.id}>
+                      {/* CATEGORY NAME + DROPDOWNS */}
+                      <Td>
+                        <Text fontWeight="500">{item.cate_name}</Text>
+                      </Td>
+                      <Td>
+                        {/* Sub Category */}
+                        <select
+                          style={{ width: "150px", padding: "6px" }}
+                          value={selectedSubMap[item.id] || ""}
+                          onChange={(e) => {
+                            const subId = e.target.value;
 
-                        <Td>{item.description}</Td>
+                            setSelectedSubMap((prev) => ({
+                              ...prev,
+                              [item.id]: subId,
+                            }));
 
-                        <Td>
-                          {new Date(item.created_at).toLocaleDateString()}
-                        </Td>
-                        <Td>{item.show_in_menu ===1 ? "Yes" : "No"}</Td>
-                           <Td>{item.show_on_menu ===1 ? "Yes" : "No"}</Td>
+                            getChildCategories(subId, item.id);
+                          }}
+                        >
+                          {(subCategoriesMap[item.id] || []).map((sub) => (
+                            <option key={sub.id} value={sub.id}>
+                              {sub.name}
+                            </option>
+                          ))}
+                        </select>
+                      </Td>
 
-                          <Td>
-                          <Button
-                            size="sm"
-                            colorScheme="red"
-                            onClick={() => handleDelete(item.id)}
-                          >
-                            Delete
+                      {/* Child Category */}
+                      <Td>
+                        {(childCategoriesMap[item.id] || []).length > 0 && (
+                          <select style={{ width: "150px", padding: "6px" }}>
+                            {(childCategoriesMap[item.id] || []).map(
+                              (child) => (
+                                <option key={child.id} value={child.id}>
+                                  {child.name}
+                                </option>
+                              )
+                            )}
+                          </select>
+                        )}
+                      </Td>
+
+                      <Td>{item.description}</Td>
+                      <Td>{new Date(item.created_at).toLocaleDateString()}</Td>
+                      <Td>{item.show_in_menu === 1 ? "Yes" : "No"}</Td>
+                      <Td>{item.show_on_menu === 1 ? "Yes" : "No"}</Td>
+
+                      {/* ACTIONS */}
+                      <Td>
+                        <Link to="/view-category/${item.slug}">
+                          <Button size="sm" bg="white" mr={2}>
+                            <FiEye size={18} color="#2563eb" />
                           </Button>
-
-                        </Td>
-                      </Tr>
-                    ))}
-                  </Tbody>
-                </Table>
-              </Box>
-              )}
-      </Box>
+                        </Link>
+                        <Button
+                          bg="white"
+                          size="sm"
+                          onClick={() => handleDelete(item.id)}
+                        >
+                          <RiDeleteBin6Line size={18} color="#dc2626" />
+                        </Button>
+                      </Td>
+                    </Tr>
+                  ))}
+                </Tbody>
+              </Table>
+            </Box>
+          )}
+        </Box>
       </Box>
     </>
-)};
+  );
+};
 
 export default CategoryList;

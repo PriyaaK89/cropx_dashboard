@@ -1,23 +1,36 @@
-import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Box, Button, Input, Text, IconButton, Flex, useToast,} from "@chakra-ui/react";
+import {
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  Box,
+  Button,
+  Input,
+  Text,
+  IconButton,
+  Flex,
+  useToast,
+} from "@chakra-ui/react";
 import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
 import axios from "axios";
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { Config } from "../../../utils/Config";
 import ImageUpload from "./ImageUpload";
 
-
-// ---------------------- REUSABLE COMPONENT (MOVED OUTSIDE) ----------------------
-const ArrayInputBlock = ({ title, list, setter, keyName }) => {
+// ---------------------- ARRAY INPUT BLOCK ----------------------
+const ArrayInputBlock = ({ title, list, setter }) => {
   const handleChange = (index, value) => {
     setter((prev) => {
       const updated = [...prev];
-      updated[index][keyName] = value;
+      updated[index].name = value;
       return updated;
     });
   };
 
   const handleAdd = () => {
-    setter((prev) => [...prev, { id: Date.now(), [keyName]: "" }]);
+    setter((prev) => [...prev, { id: Date.now(), name: "" }]);
   };
 
   const handleRemove = (index) => {
@@ -31,10 +44,10 @@ const ArrayInputBlock = ({ title, list, setter, keyName }) => {
       </Text>
 
       {list.map((item, index) => (
-        <Flex key={item.id} mb={3} alignItems="center">
+        <Flex key={item.id} mb={3} align="center">
           <Input
-            placeholder={`Enter ${keyName}`}
-            value={item[keyName]}
+            placeholder={`Enter ${title}`}
+            value={item.name}
             onChange={(e) => handleChange(index, e.target.value)}
           />
           <IconButton
@@ -59,111 +72,105 @@ const ArrayInputBlock = ({ title, list, setter, keyName }) => {
   );
 };
 
-
-
-// ---------------------- MAIN MODAL COMPONENT ----------------------
+// ---------------------- MAIN MODAL ----------------------
 const AddDetailsModal = ({ isOpen, onClose, productId, getProductDetails }) => {
   const toast = useToast();
 
   const [images, setImages] = useState([]);
 
-  // Using unique IDs to prevent rerender cursor issues
-  const [productOverview, setProductOverview] = useState([
-    { id: Date.now() + 1, name: "" },
-  ]);
-  const [keyFeatures, setKeyFeatures] = useState([
-    { id: Date.now() + 2, name: "" },
-  ]);
-  const [expertAdvice, setExpertAdvice] = useState([
-    { id: Date.now() + 3, name: "" },
-  ]);
-  const [additionalInfo, setAdditionalInfo] = useState([
-    { id: Date.now() + 4, name: "" },
-  ]);
+  const [productOverview, setProductOverview] = useState([{ id: 1, name: "" }]);
+  const [keyFeatures, setKeyFeatures] = useState([{ id: 2, name: "" }]);
+  const [expertAdvice, setExpertAdvice] = useState([{ id: 3, name: "" }]);
+  const [additionalInfo, setAdditionalInfo] = useState([{ id: 4, name: "" }]);
+
+  // 🔁 RESET FORM WHEN MODAL CLOSES
+  useEffect(() => {
+    if (!isOpen) {
+      setImages([]);
+      setProductOverview([{ id: 1, name: "" }]);
+      setKeyFeatures([{ id: 2, name: "" }]);
+      setExpertAdvice([{ id: 3, name: "" }]);
+      setAdditionalInfo([{ id: 4, name: "" }]);
+    }
+  }, [isOpen]);
 
   // ---------------------- API CALL ----------------------
-const handleAddDetails = async () => {
-  const formData = new FormData();
-
-  // ---------------------- APPEND IMAGES ----------------------
-  images.forEach((img) => {
-    formData.append("images", img.file);  // raw file
-  });
-
-  // ---------------------- STRINGIFY ARRAY FIELDS ----------------------
-  const clean = (arr) => arr.map((item) => ({ name: item.name }));
-
-  formData.append("product_overview", JSON.stringify(clean(productOverview)));
-  formData.append("key_features_and_benefits", JSON.stringify(clean(keyFeatures)));
-  formData.append("expert_advice", JSON.stringify(clean(expertAdvice)));
-  formData.append("additional_information", JSON.stringify(clean(additionalInfo)));
-
-  try {
-    const res = await axios.post(
-      `${Config.add_product_details}/${productId}`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
-
-    if (res.status === 200 || res.status === 201) {
-      toast({ title: "Details added successfully!", status: "success" });
-      getProductDetails()
-      onClose();
+  const handleAddDetails = async () => {
+    //  BASIC VALIDATION
+    if (!productOverview[0].name.trim()) {
+      toast({ title: "Product overview required", status: "warning" });
+      return;
     }
-  } catch (error) {
-    console.log(error);
-    toast({ title: "Failed to add details.", status: "error" });
-  }
-};
 
+    const formData = new FormData();
 
+    images.forEach((img) => {
+      formData.append("images", img.file);
+    });
+
+    const clean = (arr) => arr.filter(i => i.name.trim());
+
+    formData.append("product_overview", JSON.stringify(clean(productOverview)));
+    formData.append("key_features_and_benefits", JSON.stringify(clean(keyFeatures)));
+    formData.append("expert_advice", JSON.stringify(clean(expertAdvice)));
+    formData.append("additional_information", JSON.stringify(clean(additionalInfo)));
+
+    try {
+      const res = await axios.post(
+        `${Config.add_product_details}/${productId}`,
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+
+      toast({ title: "Details added successfully!", status: "success" });
+      getProductDetails();
+      onClose();
+    } catch (error) {
+      console.log(error);
+      toast({ title: "Failed to add details", status: "error" });
+    }
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xl">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Add Product Details</ModalHeader>
-        <ModalCloseButton />
+        <Flex bgColor="#5c94cF" color="white" justifyContent="space-between" align="center" px="16px" py="5px" borderTopRadius="md">
+         <Text fontWeight="bold">Add Product Details</Text>
+        <ModalCloseButton position="static" />
+        </Flex>
+        
 
         <ModalBody pb={6}>
-          {/* IMAGE UPLOAD SECTION */}
+          {/* IMAGE UPLOAD */}
           <ImageUpload images={images} setImages={setImages} toast={toast} />
 
-          {/* REPEATED FIELDS */}
           <ArrayInputBlock
             title="Product Overview"
             list={productOverview}
             setter={setProductOverview}
-            keyName="name"
           />
 
           <ArrayInputBlock
             title="Key Features & Benefits"
             list={keyFeatures}
             setter={setKeyFeatures}
-            keyName="name"
           />
 
           <ArrayInputBlock
             title="Expert Advice"
             list={expertAdvice}
             setter={setExpertAdvice}
-            keyName="name"
           />
 
           <ArrayInputBlock
             title="Additional Information"
             list={additionalInfo}
             setter={setAdditionalInfo}
-            keyName="name"
           />
 
-          <Flex justify="flex-end" mt={5}>
-            <Button colorScheme="blue" onClick={handleAddDetails}>
+          <Flex justify="center"  mt={5}>
+            <Button bg="#5c94cF" color="white" _hover={{bgColor:"#2664a7"}} onClick={handleAddDetails}>
               Save Details
             </Button>
           </Flex>

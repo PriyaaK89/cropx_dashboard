@@ -7,6 +7,8 @@ import {
   ModalOverlay,
   Button,
   Image,
+  Flex,
+  Text,
   Box,
   Input,
   useToast,
@@ -16,11 +18,13 @@ import React, { useContext, useState } from "react";
 import axios from "axios";
 import { Config } from "../../utils/Config";
 import { AuthContext } from "../Context/AuthContext";
+import { FiUploadCloud } from "react-icons/fi";
 
 const AddBannerModal = ({ isOpen, onClose, fetchBanner }) => {
   const [bannerFile, setBannerFile] = useState(null);
   const [loading, setLoading] = useState(false);
-  const {auth} = useContext(AuthContext);
+
+  const { auth } = useContext(AuthContext);
   const apiToken = auth?.token;
 
   const toast = useToast();
@@ -28,14 +32,16 @@ const AddBannerModal = ({ isOpen, onClose, fetchBanner }) => {
   // HANDLE FILE SELECT
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    setBannerFile(file);
+    if (file) {
+      setBannerFile(file);
+    }
   };
 
-  // SUBMIT BANNER API
+  // SUBMIT API
   const handleAddBanner = async () => {
     if (!bannerFile) {
       toast({
-        title: "Please select an image.",
+        title: "Please select an image",
         status: "warning",
         duration: 3000,
       });
@@ -47,32 +53,35 @@ const AddBannerModal = ({ isOpen, onClose, fetchBanner }) => {
 
     setLoading(true);
     try {
-      const res = await axios.post(`${Config?.add_banner}`,
-        formData, 
-        {  headers: { "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${apiToken}`}
+      const res = await axios.post(
+        Config.add_banner,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${apiToken}`,
+          },
         }
       );
 
       if (res.status === 201) {
         toast({
-          title: "Banner added successfully!",
+          title: "Banner uploaded successfully",
           status: "success",
           duration: 3000,
         });
 
         setBannerFile(null);
         onClose();
-
-        if (fetchBanner) fetchBanner(); 
+        fetchBanner && fetchBanner();
       }
     } catch (error) {
       toast({
-        title: "Failed to upload banner",
+        title: "Banner upload failed",
         status: "error",
         duration: 3000,
       });
-      console.log(error);
+      console.error(error);
     }
     setLoading(false);
   };
@@ -80,41 +89,66 @@ const AddBannerModal = ({ isOpen, onClose, fetchBanner }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
-      <ModalContent borderRadius="lg" p={2}>
-        <ModalHeader>Add Banner</ModalHeader>
-        <ModalCloseButton />
-
-        <ModalBody pb={5}>
-
-          {/* IMAGE PREVIEW */}
-          {bannerFile && (
-            <Box mb={4}>
+      <ModalContent>
+        <Flex bg="#5c94cf" color="white" px="16px" py="5px"  justifyContent="space-between" alignItems="center" borderTopRadius="md">
+            <Text fontWeight="bold">Add Banner</Text>
+        <ModalCloseButton position="static"/>
+        </Flex>
+        <ModalBody pt={5} pb={5}>
+          {/* UPLOAD BOX */}
+          <Box
+            border="2px dashed"
+            borderColor="gray.300"
+            borderRadius="md"
+            p={6}
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            cursor="pointer"
+            _hover={{ borderColor: "blue.400" }}
+            onClick={() =>
+              document.getElementById("bannerImage").click()
+            }
+            mb={4}
+          >
+            {bannerFile ? (
               <Image
                 src={URL.createObjectURL(bannerFile)}
-                borderRadius="md"
-                width="100%"
-                height="auto"
-                objectFit="cover"
+                maxH="160px"
+                objectFit="contain"
               />
-            </Box>
-          )}
+            ) : (
+              <>
+                <FiUploadCloud size={40} color="#4299E1" />
+                <Text mt={2} fontSize="sm" color="gray.500">
+                  Drop your image here or{" "}
+                  <Text as="span" color="blue.500" fontWeight="bold">
+                    click to browse
+                  </Text>
+                </Text>
+              </>
+            )}
+          </Box>
 
-          {/* FILE INPUT */}
+          {/* HIDDEN INPUT */}
           <Input
+            id="bannerImage"
             type="file"
             accept="image/*"
+            display="none"
             onChange={handleFileChange}
-            mb={4}
-            cursor="pointer"
           />
 
           {/* SUBMIT BUTTON */}
           <Button
-            colorScheme="blue"
+          bgColor="#5c94cf"
+          color="white"
+
             width="100%"
-            borderRadius="md"
             onClick={handleAddBanner}
             isDisabled={loading}
+            _hover={{bgColor:"#2664a7"}}
           >
             {loading ? <Spinner size="sm" /> : "Upload Banner"}
           </Button>

@@ -8,15 +8,20 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
+import { FiUploadCloud } from "react-icons/fi";
 
 const ImageUpload = React.memo(({ images, setImages, toast }) => {
-  
+
   const handleImageUpload = useCallback(
     (e) => {
       const files = Array.from(e.target.files);
 
       if (images.length + files.length > 4) {
-        toast({ title: "You can upload only 4 images.", status: "warning" });
+        toast({
+          title: "You can upload only 4 images.",
+          status: "warning",
+          position: "top",
+        });
         return;
       }
 
@@ -26,9 +31,9 @@ const ImageUpload = React.memo(({ images, setImages, toast }) => {
           setImages((prev) => [
             ...prev,
             {
-              file: file,       // ✅ REAL FILE (important)
-              src: reader.result, // preview image
-            }
+              file: file,
+              src: reader.result,
+            },
           ]);
         };
         reader.readAsDataURL(file);
@@ -53,10 +58,45 @@ const ImageUpload = React.memo(({ images, setImages, toast }) => {
       <Input
         type="file"
         accept="image/*"
+        id="addImages"
         multiple
+        display="none"
         onChange={handleImageUpload}
-        cursor="pointer"
       />
+
+      <Box
+        border="2px dashed"
+        borderColor="gray.300"
+        borderRadius="md"
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        p={6}
+        textAlign="center"
+        cursor="pointer"
+        _hover={{ borderColor: "blue.400" }}
+        onClick={() => document.getElementById("addImages").click()}
+      >
+        {images.length > 0 ? (
+          <Image
+            src={images[0].src}
+            mx="auto"
+            maxH="160px"
+            objectFit="contain"
+          />
+        ) : (
+          <>
+            <FiUploadCloud size={40} color="#4299E1" />
+            <Text mt={2} fontSize="sm" color="#4299E1">
+              Drop your image here or{" "}
+              <Text as="span" color="blue.500" fontWeight="bold">
+                click to browse
+              </Text>
+            </Text>
+          </>
+        )}
+      </Box>
 
       <Flex mt={3} wrap="wrap" gap={3}>
         {images.map((img, index) => (

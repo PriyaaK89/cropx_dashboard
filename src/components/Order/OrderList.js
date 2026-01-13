@@ -20,6 +20,7 @@ import { Config } from "../../utils/Config";
 import ViewOrderListModal from "./ViewOrderListModal";
 import UpdateOrdersModal from "./UpdateOrdersModal";
 import { useDisclosure } from "@chakra-ui/react";
+import { FiEye, FiEdit } from "react-icons/fi";
 
 const OrderList = () => {
   const { auth } = useContext(AuthContext);
@@ -47,10 +48,24 @@ const OrderList = () => {
   } = useDisclosure();
 
   const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleString("en-IN");
-  };
+  const date = new Date(dateString);
+  return date.toLocaleString("en-IN", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+};
+ 
+ 
 
+const capitalize = (text = "") => {
+  return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+};
+
+ 
   // Fetch Orders
   const getOrders = async () => {
     setLoading(true);
@@ -101,11 +116,11 @@ const OrderList = () => {
         width={{ base: "100%", lg: "calc(100% - 260px)" }}
         ml={{ base: 0, lg: "260px" }}
         mb={5}
-        px={{ base:0, lg:6 }}
+        px={{ base: 0, lg: 6 }}
         minH="100vh"
       >
         {/* Mobile Navbar */}
-        <Box display={{ base: "block",  lg:"none" }}>
+        <Box display={{ base: "block", lg: "none" }}>
           <ResponsiveNavbar />
         </Box>
 
@@ -114,15 +129,23 @@ const OrderList = () => {
           <TopBar />
         </Box>
 
-        <Box p={4} bg="white" mt={4} borderRadius="0.75rem" boxShadow="lg" mx={{base:3,lg:0}}>
+        <Box
+          p={4}
+          bg="white"
+          mt={4}
+          borderRadius="0.75rem"
+          boxShadow="lg"
+          mx={{ base: 3, lg: 0 }}
+        >
           <Box overflowX="auto" w="100%">
-             <Text fontSize="2xl" fontWeight="600" mb={4}>
-                        Order List
-                      </Text>
-            
+            <Text fontSize="2xl" fontWeight="600" mb={4}>
+              Order List
+            </Text>
+
             <Table
               variant="simple"
               minW={{ base: "900px", md: "1200px", xl: "1400px" }}
+              className="productsTable"
             >
               <Thead bg="gray.100">
                 <Tr>
@@ -134,9 +157,8 @@ const OrderList = () => {
                   <Th minW="120px">Total</Th>
                   <Th minW="140px">Payment</Th>
                   <Th minW="140px">Status</Th>
-                  <Th minW="180px">Date</Th>
-                  <Th minW="120px">View</Th>
-                  <Th minW="120px">Update</Th>
+                  <Th minW="200px">Date</Th>
+                  <Th minW="120px">Action</Th>
                 </Tr>
               </Thead>
 
@@ -168,41 +190,38 @@ const OrderList = () => {
                     <Tr key={order.order_id}>
                       <Td>{index + 1}</Td>
                       <Td>{order.order_id}</Td>
-                      <Td>{order.user_name}</Td>
+                      <Td> {capitalize (order.user_name)} </Td>
                       <Td>{order.product_names}</Td>
                       <Td>{order.subtotal}</Td>
                       <Td>{order.total_amount}</Td>
-                      <Td>{order.payment_method}</Td>
-                      <Td>{order.order_status}</Td>
+                      <Td>{capitalize(order.payment_method)}</Td>
+                      <Td> {capitalize(order.order_status)}</Td>
                       <Td>{formatDate(order.created_at)}</Td>
-
                       <Td>
-                        <Flex gap={2} wrap="wrap">
+                        <Flex gap={2}>
                           <Button
                             size="sm"
-                            colorScheme="green"
+                            bgColor="white"
                             onClick={() => {
                               setSelectedOrderID(order.order_id);
                               setSelectedItems(order.items);
                               onViewOpen();
                             }}
                           >
-                            View
+                            <FiEye size={18} color="#2563eb" />
+                          </Button>
+
+                          <Button
+                            size="sm"
+                            bgColor="white"
+                            onClick={() => {
+                              setSelectedOrderID(order.order_id);
+                              onUpdateOrdersModalOpen();
+                            }}
+                          >
+                            <FiEdit size={18} color="#16a34a" />
                           </Button>
                         </Flex>
-                      </Td>
-
-                      <Td>
-                        <Button
-                          size="sm"
-                          colorScheme="blue"
-                          onClick={() => {
-                            setSelectedOrderID(order.order_id);
-                            onUpdateOrdersModalOpen();
-                          }}
-                        >
-                          Update
-                        </Button>
                       </Td>
                     </Tr>
                   ))

@@ -5,6 +5,7 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Text,
   Select,
   Textarea,
   Heading,
@@ -28,7 +29,7 @@ import TopBar from "../TopBar/TopBar";
 import ResponsiveNavbar from "../TopBar/ResponsiveNavbar";
 import { Config } from "../../utils/Config";
 import { Link } from "react-router-dom";
-
+import { FiUploadCloud } from "react-icons/fi";
 
 const AddProduct2 = () => {
   const toast = useToast();
@@ -173,7 +174,7 @@ const AddProduct2 = () => {
   /* ================= UI ================= */
 
   return (
-    <Box width="100%" bg="#f8f8fb"  pt={{base:"60px",lg:0}}>
+    <Box width="100%" bg="#f8f8fb" pt={{ base: "60px", lg: 0 }}>
       <Flex>
         <Box display={{ base: "none", lg: "block" }}>
           <LeftSidebar />
@@ -181,11 +182,11 @@ const AddProduct2 = () => {
 
         <Box
           width={{ base: "100%", lg: "calc(100% - 260px)" }}
-          ml={{ base: 0,  lg: "260px" }}
-          px={{ base: 0,  lg: 6 }}
+          ml={{ base: 0, lg: "260px" }}
+          px={{ base: 0, lg: 6 }}
           mb={5}
-    >
-          <Box display={{ base: "block",  lg: "none" }}>
+        >
+          <Box display={{ base: "block", lg: "none" }}>
             <ResponsiveNavbar />
           </Box>
           <Box display={{ base: "none", lg: "block"}} position="sticky" top="0px" left="0px" right="0px" bottom="0px" zIndex='11'  >
@@ -226,11 +227,12 @@ const AddProduct2 = () => {
             <SimpleGrid columns={[1, 1, 2]} spacing={6}>
               {/* LEFT */}
               <VStack spacing={4} align="stretch">
-                <FormControl mb="4px">
-                  <FormLabel fontSize="14px" fontWeight="bold">
+                <FormControl mb="4px" isRequired>
+                  <FormLabel fontSize="14px" fontWeight="bold" >
                     Product Name
                   </FormLabel>
                   <Input
+                   fontSize="14px"
                     name="product_name"
                     value={formData.product_name}
                     onChange={handleChange}
@@ -238,11 +240,12 @@ const AddProduct2 = () => {
                   />
                 </FormControl>
 
-                <FormControl mb="4px">
+                <FormControl mb="4px" isRequired>
                   <FormLabel fontSize="14px" fontWeight="bold">
                     Product Category
                   </FormLabel>
                   <Select
+                   fontSize="14px"
                     name="category_id"
                     value={formData.category_id}
                     onChange={handleCategoryChange}
@@ -256,7 +259,7 @@ const AddProduct2 = () => {
                   </Select>
                 </FormControl>
 
-                <FormControl mb="4px">
+                <FormControl mb="4px" isRequired>
                   <FormLabel fontSize="14px" fontWeight="bold">
                     Sub Category
                   </FormLabel>
@@ -266,6 +269,7 @@ const AddProduct2 = () => {
                     onChange={handleSubCategoryChange}
                     isDisabled={!formData.category_id}
                     placeholder="Select Sub Category"
+                    fontSize="14px"
                   >
                     {subCategories.map((sub) => (
                       <option key={sub.id} value={sub.id}>
@@ -275,11 +279,12 @@ const AddProduct2 = () => {
                   </Select>
                 </FormControl>
 
-                <FormControl mb="4px">
+                <FormControl mb="4px" isRequired>
                   <FormLabel fontSize="14px" fontWeight="bold">
                     Child Category
                   </FormLabel>
                   <Select
+                    fontSize="14px"
                     name="child_category_id"
                     value={formData.child_category_id}
                     onChange={handleChange}
@@ -294,11 +299,12 @@ const AddProduct2 = () => {
                   </Select>
                 </FormControl>
 
-                <FormControl mb="4px">
+                <FormControl mb="4px" isRequired>
                   <FormLabel fontSize="14px" fontWeight="bold">
                     Brand
                   </FormLabel>
                   <Input
+                   fontSize="14px"
                     name="brand"
                     value={formData.brand}
                     onChange={handleChange}
@@ -311,6 +317,7 @@ const AddProduct2 = () => {
                     Product Description
                   </FormLabel>
                   <Textarea
+                   fontSize="14px"
                     name="product_description"
                     value={formData.product_description}
                     onChange={handleChange}
@@ -321,7 +328,7 @@ const AddProduct2 = () => {
 
               {/* RIGHT */}
               <VStack spacing={4} align="stretch">
-                <FormControl mb="4px">
+                <FormControl mb="4px" isRequired>
                   <FormLabel fontSize="14px" fontWeight="bold">
                     Product Type
                   </FormLabel>
@@ -329,6 +336,7 @@ const AddProduct2 = () => {
                     name="product_type"
                     value={formData.product_type}
                     onChange={handleChange}
+                    fontSize="14px"
                   >
                     <option value="">Select Type</option>
                     <option value="solid">Solid</option>
@@ -342,6 +350,7 @@ const AddProduct2 = () => {
                   </FormLabel>
                   <InputGroup>
                     <Input
+                      fontSize="14px"
                       type="date"
                       name="mfg_date"
                       value={formData.mfg_date}
@@ -359,6 +368,7 @@ const AddProduct2 = () => {
                   </FormLabel>
                   <InputGroup>
                     <Input
+                     fontSize="14px"
                       type="date"
                       name="exp_date"
                       value={formData.exp_date}
@@ -370,15 +380,54 @@ const AddProduct2 = () => {
                   </InputGroup>
                 </FormControl>
 
-                <FormControl mb="4px">
-                  <FormLabel fontSize="14px" fontWeight="bold">
-                    Upload Image
-                  </FormLabel>
-                  <Input type="file" onChange={handleImage} />
-                </FormControl>
+               <FormControl mb="4px">
+  <FormLabel fontSize="14px" fontWeight="bold">
+    Upload Image
+  </FormLabel>
 
-                {preview && <Image src={preview} w="150px" borderRadius="md" />}
-              </VStack>
+  <Box
+    border="2px dashed"
+    borderColor="gray.300"
+    borderRadius="md"
+    p={6}
+     display="flex"
+     flexDirection="column"
+     alignItems="center"
+     justifyContent="center"
+    cursor="pointer"
+    _hover={{ borderColor: "blue.400" }}
+    onClick={() => document.getElementById("productImage").click()}
+  >
+    {preview ? (
+      <Image
+        src={preview}
+        mx="auto"
+        maxH="160px"
+        objectFit="contain"
+        
+      />
+    ) : (
+      <>
+        <FiUploadCloud  size={40} color="#4299E1"/>
+        <Text mt={2} fontSize="sm" color="gray.500">
+          Drop your image here or{" "}
+          <Text as="span" color="blue.500" fontWeight="bold">
+            click to browse
+          </Text>
+        </Text>
+      </>
+    )}
+
+    <Input
+      type="file"
+      id="productImage"
+      display="none"
+      accept="image/*"
+      onChange={handleImage}
+    />
+  </Box>
+</FormControl>
+</VStack>
             </SimpleGrid>
 
             <Flex justify="flex-end" mt={6}>

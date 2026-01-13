@@ -5,6 +5,8 @@ import {
   ModalContent,
   ModalHeader,
   ModalBody,
+  Flex,
+  Text,
   ModalFooter,
   ModalCloseButton,
   Button,
@@ -124,14 +126,16 @@ const ChildCategory = ({ isOpen, onClose }) => {
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Add Child Category</ModalHeader>
-        <ModalCloseButton />
-
+         <Flex bg="#5c94cF" color="white" px="16px" py="5px" justify="space-between" algin="center" borderTopRadius="md">
+          <Text fontWeight="bold"> Add Child Category</Text>
+               <ModalCloseButton position="static" />
+        </Flex>
         <ModalBody>
           {/* CATEGORY */}
-          <FormControl mb={3}>
-            <FormLabel>Category</FormLabel>
+          <FormControl mb="4px" isRequired>
+            <FormLabel fontSize="14px" fontWeight="bold">Category</FormLabel>
             <Select
+            fontSize="14px"
               placeholder="Select category"
               value={categoryId}
               onChange={handleCategoryChange}
@@ -145,9 +149,10 @@ const ChildCategory = ({ isOpen, onClose }) => {
           </FormControl>
 
           {/* SUB CATEGORY */}
-          <FormControl mb={3}>
-            <FormLabel>Sub Category</FormLabel>
+          <FormControl mb="4px" isRequired>
+            <FormLabel fontSize="14px" fontWeight="bold">Sub Category</FormLabel>
             <Select
+             fontSize="14px"
               placeholder="Select sub category"
               value={subCategoryId}
               onChange={(e) => setSubCategoryId(e.target.value)}
@@ -162,9 +167,10 @@ const ChildCategory = ({ isOpen, onClose }) => {
           </FormControl>
 
           {/* CHILD NAME */}
-          <FormControl mb={3}>
-            <FormLabel>Child Category Name</FormLabel>
+          <FormControl mb="4px" isRequired>
+            <FormLabel fontSize="14px" fontWeight="bold">Child Category Name</FormLabel>
             <Input
+             fontSize="14px"
               placeholder="Enter child category name"
               value={childName}
               onChange={(e) => setChildName(e.target.value)}
@@ -172,9 +178,10 @@ const ChildCategory = ({ isOpen, onClose }) => {
           </FormControl>
 
           {/* CHILD SLUG */}
-          <FormControl>
-            <FormLabel>Child Slug</FormLabel>
+          <FormControl mb="4px" isRequired>
+            <FormLabel fontSize="14px" fontWeight="bold">Child Slug</FormLabel>
             <Input
+             fontSize="14px"
               placeholder="Enter Your Slug"
               value={childSlug}
               onChange={(e) => setChildSlug(e.target.value)}
@@ -186,7 +193,10 @@ const ChildCategory = ({ isOpen, onClose }) => {
           <Button mr={3} onClick={onClose}>
             Cancel
           </Button>
-          <Button colorScheme="blue" onClick={handleSubmit}>
+          <Button 
+           bg="#5c94cF"
+          color="white"
+          _hover={{bgColor:"#2664a7"}}  onClick={handleSubmit}>
             Add
           </Button>
         </ModalFooter>

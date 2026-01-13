@@ -9,59 +9,68 @@ import {
   Button,
   Input,
   Text,
-  VStack,
+  Flex,
   HStack,
   Image,
   IconButton,
+  ModalFooter,
 } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Config } from "../../../utils/Config";
+import { FiUploadCloud } from "react-icons/fi";
 
 const UpdateDetailsModal = ({
   isUpdateDetailsModalOpen,
   onUpdateDetailsModalClose,
   productId,
-  data,getProductDetails
+  data,
+  getProductDetails,
 }) => {
-
   const existing = data?.details;
 
   const [images, setImages] = useState([]);
-  const [productOverview, setProductOverview] = useState(existing?.product_overview || []);
-  const [keyFeatures, setKeyFeatures] = useState(existing?.key_features_and_benefits || []);
-  const [expertAdvice, setExpertAdvice] = useState(existing?.expert_advice || []);
-  const [additionalInfo, setAdditionalInfo] = useState(existing?.additional_information || []);
+  const [preview, setPreview] = useState("");
 
-  React.useEffect(() => {
-  if (data?.details) {
-    const existing = data.details;
+  const [productOverview, setProductOverview] = useState([]);
+  const [keyFeatures, setKeyFeatures] = useState([]);
+  const [expertAdvice, setExpertAdvice] = useState([]);
+  const [additionalInfo, setAdditionalInfo] = useState([]);
 
-    setProductOverview(existing.product_overview || []);
-    setKeyFeatures(existing.key_features_and_benefits || []);
-    setExpertAdvice(existing.expert_advice || []);
-    setAdditionalInfo(existing.additional_information || []);
-  }
-}, [data, isUpdateDetailsModalOpen]);
-  // ---------------------- IMAGE UPLOAD ----------------------
+  // 🔁 Load existing data
+  useEffect(() => {
+    if (existing) {
+      setProductOverview(existing.product_overview || []);
+      setKeyFeatures(existing.key_features_and_benefits || []);
+      setExpertAdvice(existing.expert_advice || []);
+      setAdditionalInfo(existing.additional_information || []);
+    }
+  }, [existing, isUpdateDetailsModalOpen]);
+
+  // 📤 Image upload
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
+
     const mapped = files.map((file) => ({
       file,
-      preview: URL.createObjectURL(file)
+      preview: URL.createObjectURL(file),
     }));
+
     setImages((prev) => [...prev, ...mapped]);
+
+    if (mapped.length > 0) {
+      setPreview(mapped[0].preview);
+    }
   };
 
+  // ❌ Remove image
   const removeImage = (index) => {
     setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
-  // ---------------------- ADD TEXT ITEM ----------------------
-  const addItem = (setter) => {
-    setter((prev) => [...prev, { name: "" }]);
-  };
+  // ➕ Text handlers
+  const addItem = (setter) => setter((prev) => [...prev, { name: "" }]);
 
   const updateItem = (setter, index, value) => {
     setter((prev) => {
@@ -71,16 +80,14 @@ const UpdateDetailsModal = ({
     });
   };
 
-  const removeItem = (setter, index) => {
+  const removeItem = (setter, index) =>
     setter((prev) => prev.filter((_, i) => i !== index));
-  };
 
-  // ---------------------- API CALL ----------------------
+  // 🔄 Update API
   const handleUpdateProductDetails = async () => {
     try {
       const formData = new FormData();
 
-      // images
       images.forEach((img) => {
         formData.append("images", img.file);
       });
@@ -90,30 +97,31 @@ const UpdateDetailsModal = ({
       formData.append("expert_advice", JSON.stringify(expertAdvice));
       formData.append("additional_information", JSON.stringify(additionalInfo));
 
-      const response = await axios.put(
-        `${Config?.update_product_details}/${productId}`,
-        formData
+      await axios.put(
+        `${Config.update_product_details}/${productId}`,
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
       );
 
-      console.log(response.data);
-      onUpdateDetailsModalClose();
       getProductDetails();
-        
+      onUpdateDetailsModalClose();
     } catch (error) {
-      console.log(error, "Error updating product details");
+      console.log("Update Error:", error);
     }
   };
 
-  // ---------------------- RENDER INPUT GROUP ----------------------
+  // 🔁 Render text groups
   const renderGroup = (label, items, setter) => (
     <Box mb={4}>
-      <Text fontWeight={"600"} mb={2}>{label}</Text>
+      <Text fontWeight="600" mb={2}>
+        {label}
+      </Text>
 
       {items.map((item, index) => (
         <HStack key={index} mb={2}>
           <Input
-            placeholder={`Enter ${label}`}
             value={item.name}
+            placeholder={`Enter ${label}`}
             onChange={(e) => updateItem(setter, index, e.target.value)}
           />
           <IconButton
@@ -131,69 +139,107 @@ const UpdateDetailsModal = ({
   );
 
   return (
-    <Modal isOpen={isUpdateDetailsModalOpen} onClose={onUpdateDetailsModalClose} size="xl">
+    <Modal
+      isOpen={isUpdateDetailsModalOpen}
+      onClose={onUpdateDetailsModalClose}
+      size="xl"
+    >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Update Product Details</ModalHeader>
-        <ModalCloseButton />
+         <Flex bg="#5c94cF" color="white" px="16px" py="5px" justify="space-between" algin="center" borderTopRadius="md">
+          <Text fontWeight="bold">Update Product Details</Text>
+        <ModalCloseButton position="static" />
+        </Flex>
+        
         <ModalBody>
-
-          {/* EXISTING IMAGES DISPLAY */}
-          <Text fontWeight="600" mb={2}>Existing Images</Text>
+          {/* Existing images */}
+          <Text fontWeight="600" mb={2}>
+            Existing Images
+          </Text>
           <HStack spacing={3} mb={4}>
             {existing?.images?.map((img, i) => (
-              <Image
-                key={i}
-                src={img.src}
-                boxSize="60px"
-                borderRadius={6}
-                objectFit="contain"
-              />
+              <Image key={i} src={img.src} boxSize="60px" objectFit="contain" />
             ))}
           </HStack>
 
-          {/* UPLOAD NEW IMAGES */}
-          <Text fontWeight="600" mb={2}>Upload New Images</Text>
+          {/* Upload */}
+          <Input
+            type="file"
+            id="detailImages"
+            multiple
+            accept="image/*"
+            display="none"
+            onChange={handleImageUpload}
+          />
 
-          <Input type="file" multiple  name="images"  onChange={handleImageUpload} mb={3} />
+          <Box
+            border="2px dashed"
+            borderColor="gray.300"
+            borderRadius="md"
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            p={6}
+            cursor="pointer"
+            _hover={{ borderColor: "blue.400" }}
+            onClick={() => document.getElementById("detailImages").click()}
+          >
+            {preview ? (
+              <Image src={preview} maxH="160px" mx="auto" />
+            ) : (
+              <>
+                <FiUploadCloud size={40} color="#4299E1" />
+                <Text mt={2} fontSize="sm" color="#4299E1">
+                  Drop your image here or{" "}
+                  <Text as="span" color="blue.500" fontWeight="bold">
+                    click to browse
+                  </Text>
+                </Text>
+              </>
+            )}
+          </Box>
 
-          <HStack spacing={3} mb={4}>
+          {/* Preview */}
+          <HStack spacing={3} mt={4} wrap="wrap">
             {images.map((img, i) => (
               <Box key={i} position="relative">
-                <Image
-                  src={img.preview}
-                  boxSize="60px"
-                  borderRadius={6}
-                  objectFit="contain"
-                />
+                <Image src={img.preview} boxSize="70px" objectFit="contain" />
                 <IconButton
                   icon={<DeleteIcon />}
                   size="xs"
                   position="absolute"
-                  top="0"
-                  right="0"
+                  top="1"
+                  right="1"
+                  colorScheme="red"
                   onClick={() => removeImage(i)}
                 />
               </Box>
             ))}
           </HStack>
 
-          {/* INPUT GROUPS */}
+          {/* Text Sections */}
           {renderGroup("Product Overview", productOverview, setProductOverview)}
           {renderGroup("Key Features & Benefits", keyFeatures, setKeyFeatures)}
           {renderGroup("Expert Advice", expertAdvice, setExpertAdvice)}
-          {renderGroup("Additional Information", additionalInfo, setAdditionalInfo)}
-
+          {renderGroup(
+            "Additional Information",
+            additionalInfo,
+            setAdditionalInfo
+          )}
+              </ModalBody>
+              <ModalFooter>
           <Button
-            colorScheme="blue"
-            width="100%"
-            mt={4}
+           bg="#5c94cF"
+          color="white"
+          _hover={{bgColor:"#2664a7"}}
             onClick={handleUpdateProductDetails}
+            mx="auto"
           >
             Update Details
           </Button>
-
-        </ModalBody>
+      </ModalFooter>
+          
       </ModalContent>
     </Modal>
   );

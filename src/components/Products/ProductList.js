@@ -122,9 +122,20 @@ const ProductList = () => {
           boxShadow="lg"
           mx={{ base: 3, lg: 0 }}
         >
+          <Box display="flex" justifyContent="space-between" alignItems="center">
           <Text fontSize="2xl" fontWeight="600" mb={4}>
             Product List
           </Text>
+          <Button
+          p={4}
+           colorScheme="blue"
+            size="sm"
+            onClick={() => navigate("/add-product")}
+          >
+            Add Product
+          </Button>
+                    </Box>
+
 
           {/* ================= FILTERS ================= */}
           <Flex
@@ -322,7 +333,7 @@ const ProductList = () => {
               {/* ================= PAGINATION ================= */}
               <Flex
                 mt={6}
-                w={"100%"}
+                w="100%"
                 direction={{ base: "column", md: "row" }}
                 gap={{ base: 4, md: 0 }}
               >

@@ -25,9 +25,9 @@ import axios from "axios";
 import AddDetailsModal from "./DetailsPopup/AddDetailsModal";
 import UpdateDetailsModal from "./DetailsPopup/UpdateDetailsModal";
 import LeftSidebar from "../LeftSidebarLayout/LeftSidebar";
-import ResponsiveNavbar from "../TopBar/ResponsiveNavbar"
+import ResponsiveNavbar from "../TopBar/ResponsiveNavbar";
 import TopBar from "../TopBar/TopBar";
-import {GoHomeFill } from "react-icons/go";
+import { GoHomeFill } from "react-icons/go";
 import { Link } from "react-router-dom";
 
 const ProductDetails = () => {
@@ -44,12 +44,12 @@ const ProductDetails = () => {
 
   const handleAddDetailsModal = (id) => {
     onOpen();
-    setProductId(id)
+    setProductId(id);
   };
 
   const handleUpdateDetailsModal = (id) => {
     onUpdateDetailsModalOpen();
-    setProductId(id)
+    setProductId(id);
   };
 
   const getProductDetails = async () => {
@@ -72,8 +72,16 @@ const ProductDetails = () => {
   }, [id]);
   // Simple Section Wrapper (Admin Style)
   const Section = ({ title, children }) => (
-    <Box mt={10}>
-      <Heading size="md" mb={4} color="gray.700">
+    <Box
+      py={3}
+      width="100%"
+      bgColor="#f8f8f8"
+      height="auto"
+      borderRadius="lg"
+      boxShadow="md"
+      mb={4}
+    >
+      <Heading fontSize="14px" px={4} fontWeight="700" color="#111" mb={1}>
         {title}
       </Heading>
       <Box>{children}</Box>
@@ -82,229 +90,303 @@ const ProductDetails = () => {
 
   // Grid List Format for Text Items
   const GridList = ({ data }) => (
-    <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
+    <Stack spacing={0}>
       {data?.map((item, i) => (
-        <Card key={i} p={4} bg="white" shadow="sm" borderRadius="md">
+        <Box
+          key={i}
+          px={3}
+          py={1}
+          bg="transparent"
+          color="#575864;
+"
+          fontSize="14px"
+        >
           <Text>{item?.name}</Text>
-        </Card>
+        </Box>
       ))}
-    </SimpleGrid>
+    </Stack>
   );
 
   return (
     <>
-    <AddDetailsModal isOpen={isOpen} onClose={onClose} productId={productId} getProductDetails={getProductDetails}/>
-    <UpdateDetailsModal isUpdateDetailsModalOpen={isUpdateDetailsModalOpen} onUpdateDetailsModalClose={onUpdateDetailsModalClose}  getProductDetails={getProductDetails} productId={productId} data={data}/>
-      <Box w="100%"  bg="#f8f8f8" pt={{base:"60px",lg:0}}>
+      <AddDetailsModal
+        isOpen={isOpen}
+        onClose={onClose}
+        productId={productId}
+        getProductDetails={getProductDetails}
+      />
+      <UpdateDetailsModal
+        isUpdateDetailsModalOpen={isUpdateDetailsModalOpen}
+        onUpdateDetailsModalClose={onUpdateDetailsModalClose}
+        getProductDetails={getProductDetails}
+        productId={productId}
+        data={data}
+      />
+      <Box w="100%" bg="#f8f8f8" pt={{ base: "60px", lg: 0 }}>
         <Flex>
-        <Box display={{base:"none",lg:"flex"}}>
-            <LeftSidebar/>
-        </Box>
-        <Box w={{base:"100%" ,lg:"calc(100% - 260px)"}}
-          ml={{base:0,lg:"260px"}}
-          px={{base:0, lg:6 }}
-          mb={5}
-        >
-          <Box display={{base:"block",lg:"none"}}>
-           <ResponsiveNavbar/>
+          <Box display={{ base: "none", lg: "flex" }}>
+            <LeftSidebar />
           </Box>
-          <Box display={{base:"none",lg:"block"}} position="sticky" top="0px" left="0px" bottom="0px" zIndex="11">
-            <TopBar/>
-          </Box>
-          <Box bg="white" p={4} mt={4} boxShadow="lg" borderRadius="0.75rem" mx={{base:3,  lg:0}} >
-
-          {/* ------------------ PAGE TITLE ------------------ */}
-          <HStack justifyContent="space-between" mb={4}>
-            <Breadcrumb fontSize="13px">
-                         <BreadcrumbItem>
-                           <BreadcrumbLink as={Link} to="/">
-                           <GoHomeFill/>
-                           </BreadcrumbLink>
-                         </BreadcrumbItem>
-                         <BreadcrumbItem>
-                            <BreadcrumbLink as={Link} to="/product-list">
-                            Product List
-                            </BreadcrumbLink>
-                         </BreadcrumbItem>
-                         <BreadcrumbItem isCurrentPage>
-                         <BreadcrumbLink> Product Details</BreadcrumbLink>
-                         </BreadcrumbItem>
-                         </Breadcrumb>
-          <Heading size="md" fontWeight="600" mb={6}>
-            Product Details
-          </Heading>
-                  </HStack>
-
-          <HStack>
-            <Button onClick={()=>{handleUpdateDetailsModal(data?.id)}}>Edit Details</Button>
-            <Button onClick={()=>{handleAddDetailsModal(data?.id)}}>Add Details</Button>
-          </HStack>
-
-          {/* ------------------ TOP MAIN SECTION ------------------ */}
-          <Flex
-            gap={6}
-            flexDir={{ base: "column", md: "row" }}
-            align="flex-start">
-            {/* PRODUCT IMAGE */}
-            <Box w={{ base: "100%", md: "35%" }}>
-              <Card bg="white" p={4} borderRadius="lg" shadow="sm">
-                <Image
-                  src={data?.product_img}
-                  alt={data?.product_name}
-                  objectFit="contain"
-                  w="100%"
-                  h="300px"
-                  bg="#fafafa"
-                  borderRadius="md"
-                  p={4}
-                />
-              </Card>
+          <Box
+            w={{ base: "100%", lg: "calc(100% - 260px)" }}
+            ml={{ base: 0, lg: "260px" }}
+            px={{ base: 0, lg: 6 }}
+            mb={5}
+          >
+            <Box display={{ base: "block", lg: "none" }}>
+              <ResponsiveNavbar />
             </Box>
-
-            {/* PRODUCT BASIC DETAILS */}
-            <Box flex="1">
-              <Card bg="white" p={6} borderRadius="lg" shadow="sm">
-                <Stack spacing={3}>
-                  <Heading size="md">{data?.product_name}</Heading>
-
-                  
-
-                  <Text color="gray.600">{data?.product_description}</Text>
-
-                  <Text fontWeight="600" mt={2}>
-                    Type:{" "}
-                    <span style={{ color: "#2b6cb0" }}>
-                      {data?.product_type}
-                    </span>
-                  </Text>
-                </Stack>
-              </Card>
+            <Box
+              display={{ base: "none", lg: "block" }}
+              position="sticky"
+              top="0px"
+              left="0px"
+              bottom="0px"
+              zIndex="11"
+            >
+              <TopBar />
             </Box>
-          </Flex>
+            <Box
+              bg="white"
+              p={4}
+              mt={4}
+              boxShadow="lg"
+              borderRadius="0.75rem"
+              mx={{ base: 3, lg: 0 }}
+            >
+              {/* ------------------ PAGE TITLE ------------------ */}
+              <HStack justifyContent="space-between" mb={4}>
+                <Breadcrumb fontSize="13px">
+                  <BreadcrumbItem>
+                    <BreadcrumbLink as={Link} to="/">
+                      <GoHomeFill />
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbItem>
+                    <BreadcrumbLink as={Link} to="/product-list">
+                      Product List
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbItem isCurrentPage>
+                    <BreadcrumbLink> Product Details</BreadcrumbLink>
+                  </BreadcrumbItem>
+                </Breadcrumb>
+                <Heading size="md" fontWeight="600" mb={6}>
+                  Product Details
+                </Heading>
+              </HStack>
 
-          {/* ------------------ SINGLE PACK PRICING ------------------ */}
-          <Box mt={8}>
-            <Heading size="md" mb={3} color="gray.700">
-              Single Pack Pricing
-            </Heading>
+              <HStack>
+                <Button
+                  onClick={() => {
+                    handleUpdateDetailsModal(data?.id);
+                  }}
+                >
+                  Edit Details
+                </Button>
+                <Button
+                  onClick={() => {
+                    handleAddDetailsModal(data?.id);
+                  }}
+                >
+                  Add Details
+                </Button>
+              </HStack>
 
-            <SimpleGrid columns={{ base: 1, md: 2 }} spacing={5}>
-              {data?.single_packs?.map((item) => (
-                <Card
-                  key={item?.variant_id}
-                  bg="white"
-                  p={5}
-                  borderRadius="lg"
-                  shadow="sm"
-                  border="1px solid #e2e8f0">
-                  <Stack spacing={2}>
-                    <Text fontSize="lg" fontWeight="600">
-                      {item?.base_quantity_value} {item?.base_quantity_type}
-                    </Text>
-
-                    <Flex gap={3} align="center">
-                      <Text fontSize="xl" fontWeight="bold" color="green.600">
-                        ₹{item?.discounted_price}
-                      </Text>
-                      <Text
-                        textDecoration="line-through"
-                        color="gray.500"
-                        fontSize="sm">
-                        ₹{item?.actual_price}
-                      </Text>
-                    </Flex>
-
-                    <Badge colorScheme="green" width="fit-content">
-                      {item?.discount_percent}% OFF
-                    </Badge>
-                  </Stack>
-                </Card>
-              ))}
-            </SimpleGrid>
-          </Box>
-
-          {/* ------------------ MULTIPACK PRICING ------------------ */}
-          <Box mt={10}>
-            <Heading size="md" mb={3} color="gray.700">
-              Multipack Options
-            </Heading>
-
-            <SimpleGrid columns={{ base: 1, md: 2 }} spacing={5}>
-              {data?.multi_packs?.map((mp) => (
-                <Card
-                  key={mp?.multipack_id}
-                  bg="white"
-                  p={5}
-                  borderRadius="lg"
-                  shadow="sm"
-                  border="1px solid #e2e8f0">
-                  <Stack spacing={2}>
-                    <Text fontWeight="600" fontSize="lg">
-                      {mp?.pack_quantity} Packs × {mp?.base_quantity_value}{" "}
-                      {mp?.base_quantity_type}
-                    </Text>
-
-                    <Text color="gray.600">
-                      Total Quantity: {mp?.total_quantity_value}
-                    </Text>
-
-                    <Flex gap={3} align="center">
-                      <Text fontSize="xl" fontWeight="bold" color="purple.600">
-                        ₹{mp?.discounted_price}
-                      </Text>
-                      <Text
-                        textDecoration="line-through"
-                        color="gray.500"
-                        fontSize="sm">
-                        ₹{mp?.actual_price}
-                      </Text>
-                    </Flex>
-
-                    <Badge colorScheme="purple" width="fit-content">
-                      {mp?.discount_percentage}% OFF
-                    </Badge>
-                  </Stack>
-                </Card>
-              ))}
-            </SimpleGrid>
-          </Box>
-
-          {/* ------------------ PRODUCT DETAILS BLOCKS ------------------ */}
-          <Box mt={12}>
-            {/* ---- IMAGES ---- */}
-            <Section title="Product Images">
-              <SimpleGrid columns={{ base: 2, md: 4 }} spacing={5}>
-                {data?.details?.images?.map((img, i) => (
-                  <Card key={i} p={2} shadow="sm" bg="white" borderRadius="lg">
-                    <Image src={img.src} h="120px" objectFit="cover" />
+              {/* ------------------ TOP MAIN SECTION ------------------ */}
+              <Flex
+                gap={6}
+                flexDir={{ base: "column", md: "row" }}
+                align="flex-start"
+              >
+                {/* PRODUCT IMAGE */}
+                <Box w={{ base: "100%", md: "35%" }}>
+                  <Card bg="white" p={4} mt={3}>
+                    <Image
+                      src={data?.product_img}
+                      alt={data?.product_name}
+                      objectFit="contain"
+                      w="100%"
+                      h="300px"
+                      bg="#fafafa"
+                      p={4}
+                      boxShadow="sm"
+                    />
                   </Card>
-                ))}
-              </SimpleGrid>
-            </Section>
+                </Box>
 
-            {/* ---- OVERVIEW ---- */}
-            <Section title="Product Overview">
-              <GridList data={data?.details?.product_overview} />
-            </Section>
+                {/* PRODUCT BASIC DETAILS */}
+                <Box flex="1">
+                  <Card bg="white">
+                    <Stack spacing={3} px={3} py={1}>
+                      <Heading size="md">{data?.product_name}</Heading>
 
-            {/* ---- FEATURES ---- */}
-            <Section title="Key Features & Benefits">
-              <GridList data={data?.details?.key_features_and_benefits} />
-            </Section>
+                      <Text color="gray.600">{data?.product_description}</Text>
 
-            {/* ---- EXPERT ---- */}
-            <Section title="Expert Advice">
-              <GridList data={data?.details?.expert_advice} />
-            </Section>
+                      <Text fontWeight="600" mt={2}>
+                        Type:{" "}
+                        <span style={{ color: "#2b6cb0" }}>
+                          {data?.product_type}
+                        </span>
+                      </Text>
+                    </Stack>
+                  </Card>
+                </Box>
+              </Flex>
 
-            {/* ---- ADDITIONAL ---- */}
-            <Section title="Additional Information">
-              <GridList data={data?.details?.additional_information} />
-            </Section>
+              {/* ------------------ SINGLE PACK PRICING ------------------ */}
+              <Box mt={8}>
+                <Heading size="md" mb={3} color="gray.700">
+                  Single Pack Pricing
+                </Heading>
+
+                <Stack spacing={5}>
+                  {data?.single_packs?.map((item) => (
+                    <Card
+                      key={item?.variant_id}
+                      position="relative"
+                      bgColor="#e8f5e9"
+                      border="1px solid rgb(46, 125, 50)"
+                      p={5}
+                      w="100%"
+                      maxW="180px"
+                      height="100px"
+                      boxShadow="md"
+                    >
+                      <Stack spacing={2}>
+                        <Text fontSize="14px" fontWeight="700">
+                          {item?.base_quantity_value} {item?.base_quantity_type}
+                        </Text>
+
+                        <Flex gap={3} align="center">
+                          <Text fontSize="14px" fontWeight="700">
+                            ₹{item?.discounted_price}
+                          </Text>
+                          <Text
+                            textDecoration="line-through"
+                            fontSize="13px"
+                            color="gray.500"
+                          >
+                            ₹{item?.actual_price}
+                          </Text>
+                        </Flex>
+
+                        <Badge
+                          bgColor="#ffa726"
+                          color="white"
+                          width="fit-content"
+                          position="absolute"
+                          top="-1px"
+                          left="47px"
+                          borderBottomRadius="12px"
+                          p="0px 6px 2px"
+                          mb={4}
+                        >
+                          {item?.discount_percent}% OFF
+                        </Badge>
+                      </Stack>
+                    </Card>
+                  ))}
+                </Stack>
+              </Box>
+
+              {/* ------------------ MULTIPACK PRICING ------------------ */}
+              <Box mt={10} mb={4}>
+                <Heading size="md" mb={3} color="gray.700">
+                  Multipack Options
+                </Heading>
+
+                <Stack spacing={5}>
+                  {data?.multi_packs?.map((mp) => (
+                    <Card
+                      key={mp?.multipack_id}
+                      position="relative"
+                      bgColor="white"
+                      border="1px solid #e0e0e0"
+                      p={5}
+                      w="100%"
+                      maxW="250px"
+                      height="150px"
+                      boxShadow="md"
+                    >
+                      <Stack spacing={2}>
+                        <Text  fontSize="14px">
+                          {mp?.pack_quantity} Packs × {mp?.base_quantity_value}{" "}
+                          {mp?.base_quantity_type}
+                        </Text>
+
+                        <Text color="gray.600" fontSize="14px">
+                          Total Quantity: {mp?.total_quantity_value}
+                        </Text>
+
+                        <Flex gap={3} align="center">
+                          <Text
+                            fontSize="14px"
+                            fontWeight="bold"
+                          >
+                            ₹{mp?.discounted_price}
+                          </Text>
+                          <Text
+                            textDecoration="line-through"
+                            color="gray.500"
+                            fontSize="13px"
+                          >
+                            ₹{mp?.actual_price}
+                          </Text>
+                        </Flex>
+
+                        <Badge bgColor="#ffa726"
+                          color="white"
+                          width="fit-content"
+                          position="absolute"
+                          top="-1px"
+                          left="70px"
+                          borderBottomRadius="12px"
+                          p="0px 6px 2px"
+                          mb={4}>
+                          {mp?.discount_percentage}% OFF
+                        </Badge>
+                      </Stack>
+                    </Card>
+                  ))}
+                </Stack>
+              </Box>
+
+              {/* ------------------ PRODUCT DETAILS BLOCKS ------------------ */}
+              <Box>
+                {/* ---- IMAGES ---- */}
+                <Section title="Product Images">
+                  <SimpleGrid columns={{ base: 2, md: 4 }} spacing={2}>
+                    {data?.details?.images?.map((img, i) => (
+                      <Card key={i} p={2} shadow="sm" borderRadius="lg">
+                        <Image src={img.src} h="120px" objectFit="cover" />
+                      </Card>
+                    ))}
+                  </SimpleGrid>
+                </Section>
+
+                {/* ---- OVERVIEW ---- */}
+                <Section title="Product Overview">
+                  <Text data={data?.details?.product_overview} />
+                </Section>
+
+                {/* ---- FEATURES ---- */}
+                <Section title="Key Features & Benefits">
+                  <GridList data={data?.details?.key_features_and_benefits} />
+                </Section>
+
+                {/* ---- EXPERT ---- */}
+                <Section title="Expert Advice">
+                  <GridList data={data?.details?.expert_advice} />
+                </Section>
+
+                {/* ---- ADDITIONAL ---- */}
+                <Section title="Additional Information">
+                  <GridList data={data?.details?.additional_information} />
+                </Section>
+              </Box>
+            </Box>
           </Box>
-                    </Box>
-
-        </Box>
         </Flex>
       </Box>
     </>

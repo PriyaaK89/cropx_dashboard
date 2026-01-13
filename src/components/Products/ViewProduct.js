@@ -36,6 +36,7 @@ const ViewProduct = () => {
   const { id } = useParams();
   const [productData, setProductData] = useState(null);
   const [variantID, setVariantID] = useState(null);
+   const [productId, setProductID] = useState(null);
   const [multiPackId, setMultiPackId] = useState();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -133,7 +134,7 @@ const ViewProduct = () => {
       />
 
       {/* ===================== LAYOUT FIXED HERE ===================== */}
-      <Box width="100%" bg="#f8f8f8" pt={{base:"60px",lg:0}}>
+      <Box width="100%" bg="#f8f8f8" pt={{ base: "60px", lg: 0 }}>
         <Flex>
           <Box display={{ base: "none", lg: "block" }}>
             <LeftSidebar />
@@ -142,14 +143,22 @@ const ViewProduct = () => {
           {/* RIGHT MAIN AREA */}
           <Box
             w={{ base: "100%", lg: "calc(100% - 260px)" }}
-            ml={{ base: 0,  lg: "260px" }}
-            px={{ base: 0,  lg: 6 }}
+            ml={{ base: 0, lg: "260px" }}
+            px={{ base: 0, lg: 6 }}
             mb={5}
           >
             <Box display={{ base: "flex", lg: "block" }}>
               <ResponsiveNavbar />
             </Box>
-            <Box display={{ base: "none",  lg: "block" }} position="sticky" top="0px" bottom="0px" left="0px" right="0px" zIndex="11">
+            <Box
+              display={{ base: "none", lg: "block" }}
+              position="sticky"
+              top="0px"
+              bottom="0px"
+              left="0px"
+              right="0px"
+              zIndex="11"
+            >
               <TopBar />
             </Box>
 
@@ -159,7 +168,7 @@ const ViewProduct = () => {
               mt={4}
               boxShadow="lg"
               borderRadius="0.75rem"
-              mx={{ base: 3,  lg: 0 }}
+              mx={{ base: 3, lg: 0 }}
             >
               <HStack justifyContent="space-between" mb={4}>
                 <Breadcrumb fontSize="13px">
@@ -177,7 +186,6 @@ const ViewProduct = () => {
                     <BreadcrumbLink>View Product</BreadcrumbLink>
                   </BreadcrumbItem>
                 </Breadcrumb>
-                
               </HStack>
               {/* PRODUCT HEADER */}
               <Flex gap="30px" align="flex-start">
@@ -192,9 +200,7 @@ const ViewProduct = () => {
                 <Box>
                   <Heading size="lg">{product.product_name}</Heading>
                   <Flex gap="10px" mt="10px">
-                    <Badge colorScheme="green" fontSize="14px">
-                      {product.product_category}
-                    </Badge>
+                    {product.product_category}
                     <Badge colorScheme="blue" fontSize="14px">
                       {product.product_type}
                     </Badge>
@@ -263,9 +269,10 @@ const ViewProduct = () => {
                           size="sm"
                           width="100%"
                           colorScheme="teal"
-                          onClick={() =>
-                            onUpdateSinglePackVariantOpen(v.variant_id)
-                          }
+                          onClick={() =>{
+                             setVariantID(v.variant_id);
+                             onUpdateSinglePackVariantOpen();
+                          }}
                         >
                           Update Variant
                         </Button>
@@ -329,12 +336,12 @@ const ViewProduct = () => {
                           size="sm"
                           width="100%"
                           colorScheme="teal"
-                          onClick={() =>
-                            onUpdateMultiVariantOpen(
-                              m.multipack_id,
-                              m.variant_id
-                            )
-                          }
+                          onClick={() => {
+                            setVariantID(m.variant_id);
+                            setProductID(id);
+                            setMultiPackId(m.multipack_id)
+                            onUpdateMultiVariantOpen();
+                          }} 
                         >
                           Update Variant
                         </Button>

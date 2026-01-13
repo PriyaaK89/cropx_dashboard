@@ -1,24 +1,25 @@
-import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Button, Text, Flex, useToast, Spinner,} from "@chakra-ui/react";
+import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Button, Text, Flex, useToast, Spinner, } from "@chakra-ui/react";
 import React, { useContext, useState } from "react";
 import axios from "axios";
 import { Config } from "../../utils/Config";
 import { WarningTwoIcon } from "@chakra-ui/icons";
 import { AuthContext } from "../Context/AuthContext";
 
-const DeleteBannerModal = ({ isDeleteModalOpen, onDeleteModalClose, fetchBanner, selectedBannerId,}) => {
+const DeleteBannerModal = ({ isDeleteModalOpen, onDeleteModalClose, fetchBanner, selectedBannerId, }) => {
   const toast = useToast();
   const [loading, setLoading] = useState(false);
-  const {auth} = useContext(AuthContext);
+  const { auth } = useContext(AuthContext);
   const apiToken = auth?.token
   console.log(apiToken, "TokenindeleteBannerModel")
   const handleDelete = async () => {
     setLoading(true);
     try {
       const response = await axios.delete(
-        `${Config?.delete_banner}/${selectedBannerId}`,{
-          headers: {
-            Authorization: `Bearer ${apiToken}`
-          }}
+        `${Config?.delete_banner}/${selectedBannerId}`, {
+        headers: {
+          Authorization: `Bearer ${apiToken}`
+        }
+      }
       );
 
       if (response?.status === 200) {
@@ -46,18 +47,13 @@ const DeleteBannerModal = ({ isDeleteModalOpen, onDeleteModalClose, fetchBanner,
   return (
     <Modal isOpen={isDeleteModalOpen} onClose={onDeleteModalClose} isCentered>
       <ModalOverlay />
-      <ModalContent
-        borderRadius="20px"
-        p={4}
-        bg="white"
-        boxShadow="0px 10px 30px rgba(0,0,0,0.1)"
-      >
-        <ModalHeader textAlign="center" fontSize="xl" fontWeight="bold">
+      <ModalContent>
+       <Flex bg="red.600" color="white" px="16px" py="5px" justify="space-between" align="center" borderTopRadius="md">
+           <Text fontWeight="bold">
           Delete Banner
-        </ModalHeader>
-
-        <ModalCloseButton />
-
+        </Text>
+        <ModalCloseButton position="static"/>
+       </Flex>
         <ModalBody>
           <Flex direction="column" align="center" gap={4}>
             <WarningTwoIcon boxSize={16} color="red.500" />

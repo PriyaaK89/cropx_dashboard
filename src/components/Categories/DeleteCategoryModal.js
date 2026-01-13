@@ -56,16 +56,13 @@ const DeleteCategory = ({ isOpen, onClose, categoryId, fetchCategories }) => {
       <ModalOverlay />
 
       <ModalContent
-        borderRadius="20px"
-        p={4}
-        bg="white"
-        boxShadow="0px 10px 30px rgba(0,0,0,0.1)"
       >
-        <ModalHeader textAlign="center" fontSize="xl" fontWeight="bold">
+        <Flex bg="red.500" color="white" px="16px" py="5px" justify="space-between" algin="center" borderTopRadius="md">
+        <Text fontWeight="bold">
           Delete Category
-        </ModalHeader>
-
-        <ModalCloseButton />
+        </Text>
+        <ModalCloseButton position="static" />
+                 </Flex>
 
         <ModalBody>
           <Flex direction="column" align="center" gap={4}>

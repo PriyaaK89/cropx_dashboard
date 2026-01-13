@@ -7,71 +7,100 @@ import {
   Input,
   Select,
   Textarea,
-  Heading,
+  Text,
   VStack,
   useToast,
   SimpleGrid,
   Image,
-  InputGroup,
-  InputRightElement,
-  HStack,
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink
+  BreadcrumbLink,
+  InputGroup,
+  InputRightElement,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { CalendarIcon } from "@chakra-ui/icons";
 import axios from "axios";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+import { GoHomeFill } from "react-icons/go";
+import { CalendarIcon } from "@chakra-ui/icons";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 import LeftSidebar from "../LeftSidebarLayout/LeftSidebar";
 import TopBar from "../TopBar/TopBar";
 import ResponsiveNavbar from "../TopBar/ResponsiveNavbar";
 import { Config } from "../../utils/Config";
-import {Link} from "react-router-dom";
-import {GoHomeFill } from "react-icons/go";
+import { FiUploadCloud } from "react-icons/fi";
 
 
+// ================= SAFE DATE =================
+const safeDate = (dateStr) => {
+  if (!dateStr) return null;
+  const onlyDate = dateStr.slice(0, 10);
+  const y = Number(onlyDate.slice(0, 4));
+  const m = Number(onlyDate.slice(5, 7)) - 1;
+  const d = Number(onlyDate.slice(8, 10));
+  return new Date(y, m, d);
+};
+
+// ================= CUSTOM DATE INPUT =================
+const CustomDateInput = React.forwardRef(({ value, onClick, placeholder }, ref) => (
+  <InputGroup>
+    <Input
+      ref={ref}
+      value={value || ""}
+      placeholder={placeholder}
+      onClick={onClick}
+      cursor="pointer"
+      isReadOnly
+    />
+    <InputRightElement onClick={onClick} cursor="pointer">
+      <CalendarIcon color="gray.500" />
+    </InputRightElement>
+  </InputGroup>
+));
+CustomDateInput.displayName = "CustomDateInput";
+
+
+// ================= COMPONENT =================
 const UpdateProduct = () => {
   const { id } = useParams();
   const toast = useToast();
-  const navigate = useNavigate();
 
   const [categories, setCategories] = useState([]);
-  const [subCategories, setSubCategories] = useState([]);
-  const [childCategories, setChildCategories] = useState([]);
-
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState("");
 
   const [formData, setFormData] = useState({
     product_name: "",
     category_id: "",
-    sub_category_id: "",
-    child_category_id: "",
     brand: "",
     product_description: "",
     product_type: "",
-    mfg_date: "",
-    exp_date: "",
+    mfg_date: null,
+    exp_date: null,
   });
 
-  /* ================= FETCH DATA ================= */
+  // ================= IMAGE HANDLERS =================
+  const handleImage = (e) => {
+    const selected = e.target.files[0];
+    if (selected) {
+      setFile(selected);
+      setPreview(URL.createObjectURL(selected));
+    }
+  };
 
+  const handleResetImage = () => {
+    setPreview("");
+    setFile(null);
+    const input = document.getElementById("productImage");
+    if (input) input.value = "";
+  };
+
+  // ================= FETCH =================
   const fetchCategories = async () => {
     const res = await axios.get(Config.get_categories);
     setCategories(res?.data?.categories || []);
-  };
-
-  const fetchSubCategories = async (id) => {
-    const res = await axios.get(`${Config.get_sub_category}?category_id=${id}`);
-    setSubCategories(res?.data?.data || []);
-  };
-
-  const fetchChildCategories = async (id) => {
-    const res = await axios.get(
-      `${Config.get_child_category}?sub_category_id=${id}`
-    );
-    setChildCategories(res?.data?.data || []);
   };
 
   const fetchProduct = async () => {
@@ -79,212 +108,200 @@ const UpdateProduct = () => {
     const data = res?.data?.product;
 
     setFormData({
-      product_name: data.product_name,
-      category_id: data.category_id,
-      sub_category_id: data.sub_category_id,
-      child_category_id: data.child_category_id,
-      brand: data.brand,
-      product_description: data.product_description,
-      product_type: data.product_type,
-      mfg_date: data.mfg_date,
-      exp_date: data.exp_date,
+      product_name: data?.product_name || "",
+      category_id: data?.category_id || "",
+      brand: data?.brand || "",
+      product_description: data?.product_description || "",
+      product_type: data?.product_type || "",
+      mfg_date: safeDate(data?.mfg_date),
+      exp_date: safeDate(data?.exp_date),
     });
 
-    setPreview(data.product_img);
-    fetchSubCategories(data.category_id);
-    fetchChildCategories(data.sub_category_id);
+    setPreview(data?.product_img || "");
   };
 
   useEffect(() => {
     fetchCategories();
     fetchProduct();
-  }, []);
+  }, [id]);
 
-  /* ================= HANDLERS ================= */
-
-  const handleChange = (e) => {
+  // ================= HANDLERS =================
+  const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
 
-  const handleImage = (e) => {
-    const img = e.target.files[0];
-    setFile(img);
-    if (img) setPreview(URL.createObjectURL(img));
-  };
+  const handleDateChange = (date, name) =>
+    setFormData({ ...formData, [name]: date });
 
   const handleSubmit = async () => {
+    const payload = {
+      ...formData,
+      mfg_date: formData.mfg_date
+        ? formData.mfg_date.toISOString().split("T")[0]
+        : "",
+      exp_date: formData.exp_date
+        ? formData.exp_date.toISOString().split("T")[0]
+        : "",
+    };
+
     const fd = new FormData();
-    Object.keys(formData).forEach((key) => fd.append(key, formData[key]));
+    Object.keys(payload).forEach((k) => fd.append(k, payload[k]));
     if (file) fd.append("product_img", file);
 
     try {
       await axios.put(`${Config.update_product}/${id}`, fd);
-      toast({ title: "Product Updated", status: "success" });
-      // navigate("/product");
-    } catch (err) {
+      toast({ title: "Product Updated Successfully", status: "success" });
+    } catch {
       toast({ title: "Update Failed", status: "error" });
     }
   };
 
-  /* ================= UI ================= */
-
+  // ================= UI =================
   return (
-    <Box width="100%" bg="#f8f8fb" pt={{base:"60px",md:"60px",lg:0}}>
+    <Box bg="#f8f8fb" pt={{ base: "60px", lg: 0 }}>
       <Flex>
         <Box display={{ base: "none", lg: "block" }}>
           <LeftSidebar />
         </Box>
 
-        <Box
-          width={{ base: "100%", md: "calc(100% - 260px)" }}
-          ml={{ base: 0, lg: "260px" }}
-          px={{ base: 0, lg: 6 }}
-        >
+        <Box w={{ base: "100%", lg: "calc(100% - 260px)" }} ml={{ lg: "260px" }} px={6}>
           <Box display={{ base: "block", lg: "none" }}>
             <ResponsiveNavbar />
           </Box>
 
-          <Box display={{ base: "none", lg: "block" }} position="sticky" top="0px" bottom="0px" right="0px" zIndex="11">
+          <Box display={{ base: "none", lg: "block" }} position="sticky" top="0" zIndex={100}>
             <TopBar />
           </Box>
 
-          <Box bg="white" mt={4} p={4} borderRadius="0.75rem" boxShadow="lg" mx={{base:3,md:0,lg:0}}>
-           <HStack justifyContent="space-between" mb={4}>
-                         <Breadcrumb fontSize="13px">
-                         <BreadcrumbItem>
-                           <BreadcrumbLink as={Link} to="/">
-                           <GoHomeFill/>
-                           </BreadcrumbLink>
-                         </BreadcrumbItem>
-                         <BreadcrumbItem>
-                            <BreadcrumbLink as={Link} to="/product-list">
-                            Product List
-                            </BreadcrumbLink>
-                         </BreadcrumbItem>
-                         <BreadcrumbItem isCurrentPage>
-                         <BreadcrumbLink>Update Product</BreadcrumbLink>
-                         </BreadcrumbItem>
-                         </Breadcrumb>
-                         <Heading fontSize="sm" mb={4}>
-                           Update Product
-                         </Heading>
-                       </HStack>
-            
-            <SimpleGrid columns={[1, 2]} spacing={6}>
-              <VStack spacing={4}>
-                <FormControl mb={1}>
-                  <FormLabel fontSize="14px" fontWeight="bold">
-                    Product Name
-                  </FormLabel>
-                  <Input
-                    name="product_name"
-                    placeholder="Enter product name"
-                    value={formData.product_name}
-                    onChange={handleChange}
-                  />
+          <Box bg="white" mt={4} p={4} borderRadius="lg" boxShadow="md">
+            <Breadcrumb fontSize="13px">
+              <BreadcrumbItem>
+                <BreadcrumbLink as={Link} to="/">
+                  <GoHomeFill />
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbItem>
+                <BreadcrumbLink as={Link} to="/product-list">
+                  Product List
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbItem isCurrentPage>
+                <BreadcrumbLink>Update Product</BreadcrumbLink>
+              </BreadcrumbItem>
+            </Breadcrumb>
+
+            <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6} mt={5}>
+              <VStack align="stretch">
+                <FormControl mb="4px">
+                  <FormLabel fontSize="14px" fontWeight="bold">Product Name</FormLabel>
+                  <Input fontSize="14px" name="product_name" value={formData.product_name} onChange={handleChange} />
                 </FormControl>
 
-                <FormControl mb={1}>
-                  <FormLabel fontSize="14px" fontWeight="bold">
-                    Category
-                  </FormLabel>
-                  <Select
-                    name="category_id"
-                    value={formData.category_id}
-                    onChange={(e) => {
-                      handleChange(e);
-                      fetchSubCategories(e.target.value);
-                    }}
-                  >
-                    {categories.map((cat) => (
-                      <option key={cat.id} value={cat.id}>
-                        {cat.cate_name}
-                      </option>
+                <FormControl mb="4px">
+                  <FormLabel fontSize="14px" fontWeight="bold">Category</FormLabel>
+                  <Select fontSize="14px"  name="category_id" value={formData.category_id} onChange={handleChange}>
+                    <option value="">Select</option>
+                    {categories.map((c) => (
+                      <option key={c.id} value={c.id}>{c.cate_name}</option>
                     ))}
                   </Select>
                 </FormControl>
 
-                <FormControl mb={1}>
-                  <FormLabel fontSize="14px" fontWeight="bold">
-                    Brand
-                  </FormLabel>
-                  <Input
-                    name="brand"
-                    value={formData.brand}
-                    onChange={handleChange}
-                    placeholder="Enter brand name"
-                  />
-                </FormControl>
-
-                <FormControl mb={1}>
-                  <FormLabel fontSize="14px" fontWeight="bold">
-                    Description
-                  </FormLabel>
-                  <Textarea
-                    name="product_description"
-                    value={formData.product_description}
-                    onChange={handleChange}
-                    placeholder="Enter your description"
-                  />
+                <FormControl mb="4px">
+                  <FormLabel fontSize="14px" fontWeight="bold">Description</FormLabel>
+                  <Textarea fontSize="14px"  name="product_description" value={formData.product_description} onChange={handleChange} />
                 </FormControl>
               </VStack>
 
-              <VStack spacing={4}>
-                <FormControl mb={1}>
-                  <FormLabel fontSize="14px" fontWeight="bold">
-                    Product Type
-                  </FormLabel>
-                  <Select
-                    name="product_type"
-                    value={formData.product_type}
-                    onChange={handleChange}
-                  >
+              <VStack align="stretch">
+                <FormControl mb="4px">
+                  <FormLabel fontSize="14px" fontWeight="bold">Product Type</FormLabel>
+                  <Select fontSize="14px" name="product_type" value={formData.product_type} onChange={handleChange}>
+                    <option value="">Select</option>
                     <option value="solid">Solid</option>
                     <option value="liquid">Liquid</option>
                   </Select>
                 </FormControl>
 
-                <FormControl mb={1}>
-                  <FormLabel fontSize="14px" fontWeight="bold">
-                    MFG Date
-                  </FormLabel>
-                  <InputGroup>
-                    <Input
-                      type="date"
-                      name="mfg_date"
-                      value={formData.mfg_date}
-                      onChange={handleChange}
-                    />
-                    <InputRightElement cursor="pointer">
-                      <CalendarIcon />
-                    </InputRightElement>
-                  </InputGroup>
-                </FormControl>
-
-                <FormControl mb={1}>
-                  <FormLabel fontSize="14px" fontWeight="bold">
-                    EXP Date
-                  </FormLabel>
-                  <Input
-                    type="date"
-                    name="exp_date"
-                    value={formData.exp_date}
-                    onChange={handleChange}
+                <FormControl mb="4px">
+                  <FormLabel fontSize="14px" fontWeight="bold">MFG Date</FormLabel>
+                  <DatePicker
+                  fontSize="14px"
+                    selected={formData.mfg_date}
+                    onChange={(d) => handleDateChange(d, "mfg_date")}
+                    customInput={<CustomDateInput placeholder="YYYY-MM-DD" />}
+                    dateFormat="yyyy-MM-dd"
+                    withPortal
                   />
                 </FormControl>
 
-                <FormControl mb={1}>
-                  <FormLabel fontSize="14px" fontWeight="bold">
-                    Product Image
-                  </FormLabel>
-                  <Input type="file" onChange={handleImage} />
+                <FormControl mb="4px">
+                  <FormLabel fontSize="14px" fontWeight="bold">EXP Date</FormLabel>
+                  <DatePicker
+                  fontSize="14px"
+                    selected={formData.exp_date}
+                    onChange={(d) => handleDateChange(d, "exp_date")}
+                    customInput={<CustomDateInput placeholder="YYYY-MM-DD" />}
+                    dateFormat="yyyy-MM-dd"
+                    withPortal
+                  />
                 </FormControl>
 
-                {preview && <Image src={preview} w="150px" />}
+                <FormControl mb="4px">
+                  <FormLabel fontSize="14px" fontWeight="bold">Product Image</FormLabel>
+
+                  <Input
+                    type="file"
+                    id="productImage"
+                    display="none"
+                    accept="image/*"
+                    onChange={handleImage}
+                  />
+
+                  <Box
+                    border="2px dashed"
+                    p={6}
+                  borderColor="gray.300"
+                         borderRadius="md"
+                     display="flex"
+                     flexDirection="column"
+                     alignItems="center"
+                     justifyContent="center"
+                    cursor="pointer"
+                    position="relative"
+                        _hover={{ borderColor: "blue.400" }}
+
+                    onClick={() => !preview && document.getElementById("productImage").click()}
+                  >
+                    {preview ? (
+                      <>
+                        <Image src={preview} maxH="160px" mx="auto" />
+                        <Button
+                          size="sm"
+                          colorScheme="red"
+                          position="absolute"
+                          bottom={0}
+                          left="50%"
+                          transform="translate(-50%, -50%)"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleResetImage();
+                          }}
+                        >
+                          Reset Image
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        <FiUploadCloud  size={40} color="#4299E1" />
+                        <Text mt={2}>Click to upload image</Text>
+                      </>
+                    )}
+                  </Box>
+                </FormControl>
               </VStack>
             </SimpleGrid>
 
-            <Flex justify="flex-end" mt={6}>
+            <Flex justify="flex-end" mt={10}>
               <Button colorScheme="blue" onClick={handleSubmit}>
                 Update Product
               </Button>

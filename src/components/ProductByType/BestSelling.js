@@ -15,17 +15,18 @@ const BestSelling = ({ p, cardBg, priceColor, handleOpenModal }) => {
   const firstSingle = p.single_packs?.[0];
 
   const actualPrice = firstSingle
-    ? parseFloat(firstSingle.actual_price)
+    ? Number(firstSingle.actual_price)
     : null;
 
   const discountedPrice = firstSingle
-    ? parseFloat(firstSingle.discounted_price)
+    ? Number(firstSingle.discounted_price)
     : null;
 
   const discountPercent =
     actualPrice && discountedPrice
       ? Math.round(((actualPrice - discountedPrice) / actualPrice) * 100)
-      : null;
+      : 0;
+      if(discountPercent === 0) return null;
 
   return (
       <Box
