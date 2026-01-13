@@ -6,11 +6,19 @@ import {
   HStack,
   Badge,
   Icon,
+  Button
 } from "@chakra-ui/react";
 import { FaHeart, FaChevronDown } from "react-icons/fa";
 import { HiPercentBadge } from "react-icons/hi2";
 
-const BestSelling = ({ p, cardBg, priceColor, handleOpenModal }) => {
+const BestSelling = ({ p, cardBg, priceColor,
+  page,
+  setPage,
+  limit,
+  totalPages,
+  totalItems,
+
+   handleOpenModal }) => {
   //use FIRST pack only for price & discount
   const firstSingle = p.single_packs?.[0];
 
@@ -29,6 +37,7 @@ const BestSelling = ({ p, cardBg, priceColor, handleOpenModal }) => {
       if(discountPercent === 0) return null;
 
   return (
+    <>
       <Box
         bg={cardBg}
         rounded="2xl"
@@ -112,8 +121,14 @@ const BestSelling = ({ p, cardBg, priceColor, handleOpenModal }) => {
         
             </>
           )}
+          
         </Box>
+         
       </Box>
+      
+      </>
+   
+
   );
 };
 

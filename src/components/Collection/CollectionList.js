@@ -4,7 +4,8 @@ import TopBar from "../TopBar/TopBar";
 import CollectionFormModal from "./CollectionFormModal";
 import UpdateCollectionFormModal from "./UpdateCollectionFormModal";
 import DeleteCollectionModal from "./DeleteCollectionModal";
-
+import ImageViewModal from "./ImageViewModal";
+import { FiEye } from "react-icons/fi";
 import axios from "axios";
 import { Config } from "../../utils/Config";
 
@@ -23,6 +24,7 @@ import {
   Button,
   Flex,
   useDisclosure,
+  IconButton,
 } from "@chakra-ui/react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FiEdit } from "react-icons/fi";
@@ -37,8 +39,14 @@ const CollectionList = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(5);
   const [totalPages, setTotalPages] = useState(1);
+  const [previewImage, setPreviewImage] = useState(null);
 
   // Modal disclosures
+  const {
+    isOpen: isImageModalOpen,
+    onOpen: onImageModalOpen,
+    onClose: onImageModalClose
+  } = useDisclosure();
   const { isOpen, onOpen, onClose } = useDisclosure(); // Create collection
   const {
     isOpen: isCollectionFormModalOpen,
@@ -78,6 +86,10 @@ const CollectionList = () => {
     setDeleteId(item.id);
     onDeleteCollectionModalOpen();
   };
+  const handleImagePreview = (image) =>{
+    setPreviewImage(image);
+    onImageModalOpen()
+  }
 
   const handleUpdate = (item) => {
     setSelectedCollection(item);
@@ -87,6 +99,16 @@ const CollectionList = () => {
   return (
     <>
       <CollectionFormModal isOpen={isOpen} onClose={onClose} />
+      {
+        previewImage &&(
+           <ImageViewModal
+        isOpen={isImageModalOpen}
+         onClose={onImageModalClose}
+         previewImage={previewImage}
+       />
+        )
+      }
+       
       <UpdateCollectionFormModal
         isOpen={isCollectionFormModalOpen}
         onClose={onCollectionFormModalClose}
@@ -164,15 +186,29 @@ const CollectionList = () => {
                       <Tr key={item.id}>
                         <Td>{item.id}</Td>
                         <Td>
-                          <HStack spacing={3}>
-                            <Image
-                              src={item.image}
-                              alt={item.title}
-                              boxSize="50px"
-                              objectFit="cover"
-                              rounded="md"
-                            />
-                          </HStack>
+                           <Box position="relative" w="50px" h="50px">
+                             <Image 
+                               src={item.image}
+                               alt={item.title}
+                               boxSize="50px"
+                               objectFit="cover"
+                               rounded="md"
+                             />
+                                 {/* Overlay Icon */}
+                              <IconButton 
+                                icon={<FiEye/>}
+                                size="xs"
+                                position="absolute"
+                                top="-2%"
+                                left="90%"
+                                bg="blackAlpha.600"
+                                color="white"
+                                _hover={{bg:"blackAlpha.800"}}
+                                onClick={()=>handleImagePreview(item.image)}
+                                aria-label="Preview Image"
+                              />
+                           </Box>
+  
                         </Td>
                         <Td>{item.title}</Td>
                         <Td>{item.slug}</Td>

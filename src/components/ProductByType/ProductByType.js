@@ -18,6 +18,7 @@ const ProductByType = () => {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(6);
+  const [total,setTotal]= useState(0);
   const [totalPages, setTotalPages] = useState(1);
 
   const {
@@ -38,8 +39,19 @@ const ProductByType = () => {
   const fetchBestSelling = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(Config.best_selling);
-      setProducts(res.data.data);
+      const res = await axios.get(Config.best_selling,
+        {
+          params: {page,limit}
+        }
+      );
+      if(res.data.success){
+       setProducts(res.data.data);
+        setPage(res.data.pagination.page);
+         setLimit(res.data.pagination.limit);
+        setTotal(res.data.pagination.total);
+        setTotalPages(res.data.pagination.totalPages);
+
+      }
     } catch (error) {
       console.log("Error fetching Best Selling:", error);
     }
@@ -145,6 +157,10 @@ const ProductByType = () => {
                     cardBg={cardBg}
                     priceColor={priceColor}
                     handleOpenModal={handleOpenModal}
+                    page={page}
+                    setPage={page}
+                    totalItems={total}
+                    limit={limit}
                   />
                 ))}
             </Flex>
@@ -157,6 +173,7 @@ const ProductByType = () => {
               page={page}
               setPage={setPage}
               totalPages={totalPages}
+              totalItems={total}
               limit={limit}
               setLimit={setLimit}
               loading={loading}

@@ -11,12 +11,17 @@ const NewArrivals = ({
   page,
   setPage,
   totalPages,
+  totalItems,
   limit,
-  setLimit,
 }) => {
-
-  // SAFE total pages (NaN issue fix)
+  // // SAFE total pages (NaN issue fix)
   const safeTotalPages = Number(totalPages) || 1;
+  const paginationBtnStyle = {
+  fontWeight: "semibold",
+  _hover: { fontWeight: "semibold" },
+  _active: { fontWeight: "semibold" },
+  _focus: { fontWeight: "semibold" },
+};
 
   return (
     <>
@@ -39,67 +44,55 @@ const NewArrivals = ({
 
       {/* ================= PAGINATION ================= */}
       <Flex
-        w="100%"
         mt={6}
-        direction={{ base: "column", md: "row" }}
-        gap={4}
-        justify="space-between"
+        px={4}
+        py={3}
+        borderRadius="lg"
+        justifyContent="space-between"
         align="center"
+        flexWrap="wrap"
+        gap={3}
       >
-        {/* Page info + limit */}
-        <Flex align="center" gap={4}>
-          <Text>
-            Page {page} of {safeTotalPages}
-          </Text>
-
-          <Select
-            w="120px"
-            value={limit}
-            onChange={(e) => {
-              setLimit(Number(e.target.value));
-              setPage(1);
-            }}
-          >
-            <option value={10}>10</option>
-            <option value={20}>20</option>
-            <option value={30}>30</option>
-          </Select>
-        </Flex>
-
-        {/* Pagination buttons */}
-        <HStack>
-          {/* Previous */}
+        <Text fontSize="12px" color="gray.600">
+          Showing {(page - 1) * limit + 1} to{" "}
+          {Math.min(page * limit, totalItems)} of {totalItems} entries
+        </Text>
+        <HStack spacing={1}>
           <Button
-            isDisabled={page === 1}
-            onClick={() =>
-              setPage((prev) => Math.max(Number(prev) - 1, 1))
-            }
-          >
-            <PiLessThan />
-          </Button>
+            {...paginationBtnStyle}
 
-          {/* Page numbers */}
-          {Array.from({ length: safeTotalPages }).map((_, i) => (
+            size="12px"
+            variant="outline"
+            onClick={() => setPage(page - 1)}
+            px={2}
+            py={1}
+            isDisabled={page === 1}
+          >
+            
+            Previous
+          </Button>
+          {Array.from({ length: safeTotalPages }).map((_, index) => (
             <Button
-              key={i}
-              size="sm"
-              onClick={() => setPage(i + 1)}
-              colorScheme={page === i + 1 ? "blue" : "gray"}
+              key={index}
+              fontSize="sm"
+              colorScheme="blue"
+              variant={page === index + 1 ? "solid" : "outline"}
+              onClick={() => setPage(index + 1)}
             >
-              {i + 1}
+              {index + 1}
             </Button>
           ))}
-
-          {/* Next */}
           <Button
-            isDisabled={page === safeTotalPages}
-            onClick={() =>
-              setPage((prev) =>
-                Math.min(Number(prev) + 1, safeTotalPages)
-              )
-            }
+            {...paginationBtnStyle}
+
+            size="12px"
+            variant="outline"
+            isDisabled={page === totalPages}
+            onClick={() => setPage(page + 1)}
+           
+            p={1}
           >
-            <PiGreaterThan />
+            Next
           </Button>
         </HStack>
       </Flex>
