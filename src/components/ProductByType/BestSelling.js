@@ -6,11 +6,14 @@ import {
   HStack,
   Badge,
   Icon,
+  Button
 } from "@chakra-ui/react";
 import { FaHeart, FaChevronDown } from "react-icons/fa";
 import { HiPercentBadge } from "react-icons/hi2";
 
-const BestSelling = ({ p, cardBg, priceColor, handleOpenModal }) => {
+const BestSelling = ({ p, cardBg, priceColor,
+
+   handleOpenModal }) => {
   //use FIRST pack only for price & discount
   const firstSingle = p.single_packs?.[0];
 
@@ -26,10 +29,11 @@ const BestSelling = ({ p, cardBg, priceColor, handleOpenModal }) => {
     actualPrice && discountedPrice
       ? Math.round(((actualPrice - discountedPrice) / actualPrice) * 100)
       : 0;
-      if(discountPercent === 0) return null;
 
   return (
+    <>
       <Box
+      mt="1rem"
         bg={cardBg}
         rounded="2xl"
         shadow="sm" border="1px solid #eeeded"
@@ -39,15 +43,13 @@ const BestSelling = ({ p, cardBg, priceColor, handleOpenModal }) => {
         width="250px"
         _hover={{ transform: "scale(1.03)", shadow: "lg" }}
       >
-        {discountPercent && (
+        {discountPercent > 0 && (
           <Badge position="absolute" top={0} left={0} bg="#2c7d19" color="white" rounded="0px 0px 24px" px={3} py={1} fontSize="12px">
             {discountPercent}% OFF
           </Badge>
         )}
 
-        <Box position="absolute" top={2} right={2}>
-          <FaHeart color="gray" />
-        </Box>
+        
 
         <Image
           src={p.product_img}
@@ -112,8 +114,14 @@ const BestSelling = ({ p, cardBg, priceColor, handleOpenModal }) => {
         
             </>
           )}
+          
         </Box>
+         
       </Box>
+      
+      </>
+   
+
   );
 };
 

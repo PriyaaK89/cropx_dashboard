@@ -1,4 +1,11 @@
-import { Button, Box, Flex, useDisclosure, Spinner } from "@chakra-ui/react";
+import {
+  Button,
+  Box,
+  Flex,
+  Text,
+  useDisclosure,
+  Spinner,
+} from "@chakra-ui/react";
 import ResponsiveNavbar from "../TopBar/ResponsiveNavbar";
 import TopBar from "../TopBar/TopBar";
 import axios from "axios";
@@ -18,6 +25,7 @@ const ProductByType = () => {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(6);
+  const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
 
   const {
@@ -34,45 +42,36 @@ const ProductByType = () => {
   const cardBg = useColorModeValue("white", "gray.800");
   const priceColor = useColorModeValue("green.600", "green.300");
 
-  /* ================= FETCH BEST SELLING ================= */
-  const fetchBestSelling = async () => {
+  /* ================= FETCH DATA (COMMON) ================= */
+  const fetchProducts = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(Config.best_selling);
-      setProducts(res.data.data);
-    } catch (error) {
-      console.log("Error fetching Best Selling:", error);
-    }
-    setLoading(false);
-  };
+      const url =
+        activeTab === "best"
+          ? Config.best_selling
+          : Config.new_arrivals;
 
-  /* ================= FETCH NEW ARRIVALS ================= */
-  const fetchNewArrivals = async () => {
-    setLoading(true);
-    try {
-      const res = await axios.get(Config.new_arrivals, {
+      const res = await axios.get(url, {
         params: { page, limit },
       });
 
       if (res.data.success) {
-        setNewArrivals(res.data.data);
-        setTotalPages(res.data.totalPages);
+        activeTab === "best"
+          ? setProducts(res.data.data)
+          : setNewArrivals(res.data.data);
+
+        setTotal(res.data.pagination.total);
+        setTotalPages(res.data.pagination.totalPages);
       }
     } catch (error) {
-      console.log("Error fetching New Arrivals:", error);
+      console.log("Error fetching products:", error);
     }
     setLoading(false);
   };
 
   /* ================= USE EFFECT ================= */
   useEffect(() => {
-    if (activeTab === "best") {
-      fetchBestSelling();
-    }
-
-    if (activeTab === "new") {
-      fetchNewArrivals();
-    }
+    fetchProducts();
   }, [activeTab, page, limit]);
 
   return (
@@ -94,27 +93,19 @@ const ProductByType = () => {
         <Box display={{ base: "block", lg: "none" }}>
           <ResponsiveNavbar />
         </Box>
-        <Box
-          display={{ base: "none", lg: "block" }}
-          position="sticky"
-          top="0"
-          zIndex={100}
-        >
+        <Box display={{ base: "none", lg: "block" }} position="sticky" top="0">
           <TopBar />
         </Box>
 
-        <Box
-          mt={4}
-          bg="white"
-          p={4}
-          borderRadius="0.75rem"
-          boxShadow="lg"
-          mx={{ base: 3, lg: 0 }}
-        >
+        <Box mt={4} bg="white" p={4} borderRadius="lg" boxShadow="lg">
+          {/* Tabs */}
           <Flex justify="center" mb={4} gap="10px">
             <Button
               colorScheme={activeTab === "best" ? "green" : "gray"}
-              onClick={() => setActiveTab("best")}
+              onClick={() => {
+                setActiveTab("best");
+                setPage(1);
+              }}
             >
               Best Selling
             </Button>
@@ -129,16 +120,15 @@ const ProductByType = () => {
             </Button>
           </Flex>
 
-          {/* ================= TAB CONTENT ================= */}
+          {/* CONTENT */}
           {loading ? (
             <Flex justify="center" mt={10}>
               <Spinner size="xl" />
             </Flex>
-          ) : activeTab === "best" ? (
-            <Flex flexWrap="wrap" justifyContent="center" gap="2rem">
-              {products
-
-                .map((p) => (
+          ) : (
+            <>
+              <Flex flexWrap="wrap" justifyContent="center" gap="2rem">
+                {(activeTab === "best" ? products : newArrivals).map((p) => (
                   <BestSelling
                     key={p.id}
                     p={p}
@@ -147,20 +137,58 @@ const ProductByType = () => {
                     handleOpenModal={handleOpenModal}
                   />
                 ))}
-            </Flex>
-          ) : (
-            <NewArrivals
-              data={newArrivals}
-              cardBg={cardBg}
-              priceColor={priceColor}
-              handleOpenModal={handleOpenModal}
-              page={page}
-              setPage={setPage}
-              totalPages={totalPages}
-              limit={limit}
-              setLimit={setLimit}
-              loading={loading}
-            />
+              </Flex>
+
+              {/* PAGINATION (COMMON) */}
+              <Flex
+                mt={6}
+                px={4}
+                py={3}
+                justify="space-between"
+                align="center"
+                flexWrap="wrap"
+                gap={3}
+              >
+                <Text fontSize="12px" color="gray.600">
+                  Showing {(page - 1) * limit + 1} to{" "}
+                  {Math.min(page * limit, total)} of {total} entries
+                </Text>
+
+                <Flex gap={1}>
+                  <Button
+                   fontWeight="medium"
+                    size="sm"
+                    variant="outline"
+                    isDisabled={page === 1}
+                    onClick={() => setPage(page - 1)}
+                  >
+                    Previous
+                  </Button>
+
+                  {Array.from({ length: totalPages }).map((_, i) => (
+                    <Button
+                      key={i}
+                      size="sm"
+                      colorScheme="blue"
+                      variant={page === i + 1 ? "solid" : "outline"}
+                      onClick={() => setPage(i + 1)}
+                    >
+                      {i + 1}
+                    </Button>
+                  ))}
+
+                  <Button
+                    size="sm"
+                    fontWeight="medium"
+                    variant="outline"
+                    isDisabled={page === totalPages}
+                    onClick={() => setPage(page + 1)}
+                  >
+                    Next
+                  </Button>
+                </Flex>
+              </Flex>
+            </>
           )}
         </Box>
       </Box>

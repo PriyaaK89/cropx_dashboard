@@ -39,7 +39,7 @@ const ProductList = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
-
+  const [totalItems, setTotalItems] = useState(0);
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
   const [expiryFilter, setExpiryFilter] = useState("");
@@ -65,6 +65,7 @@ const ProductList = () => {
         setProducts(res.data.data);
         setFiltered(res.data.data);
         setTotalPages(res?.data?.totalPages);
+        setTotalItems(res.data.totalItems);
       }
     } catch (error) {
       console.log(error);
@@ -123,18 +124,18 @@ const ProductList = () => {
           mx={{ base: 3, lg: 0 }}
         >
           <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Text fontSize="2xl" fontWeight="600" mb={4}>
-            Product List
-          </Text>
-          <Button
-          p={4}
-           colorScheme="blue"
-            size="sm"
-            onClick={() => navigate("/add-product")}
-          >
-            Add Product
-          </Button>
-                    </Box>
+            <Text fontSize="2xl" fontWeight="600" mb={4}>
+              Product List
+            </Text>
+            <Button
+              p={4}
+              colorScheme="blue"
+              size="sm"
+              onClick={() => navigate("/add-product")}
+            >
+              Add Product
+            </Button>
+          </Box>
 
 
           {/* ================= FILTERS ================= */}
@@ -236,13 +237,13 @@ const ProductList = () => {
                         <Td>
                           <Badge
                             bg={
-                              item.single_packs.reduce((a, b) => a + b.stock_qty, 0 ) +
-                                item.multi_packs.reduce( (a, b) => a + b.stock_qty, 0 ) > 0
-                                  ? " #e7f5eb" : "#ffcece"}
+                              item.single_packs.reduce((a, b) => a + b.stock_qty, 0) +
+                                item.multi_packs.reduce((a, b) => a + b.stock_qty, 0) > 0
+                                ? " #e7f5eb" : "#ffcece"}
                             color={
-                              item.single_packs.reduce((a, b) => a + b.stock_qty, 0 ) +
-                                item.multi_packs.reduce( (a, b) => a + b.stock_qty, 0 ) > 0
-                                  ? " #5a6d5a" : "#623434"}
+                              item.single_packs.reduce((a, b) => a + b.stock_qty, 0) +
+                                item.multi_packs.reduce((a, b) => a + b.stock_qty, 0) > 0
+                                ? " #5a6d5a" : "#623434"}
                             px={3}
                             py={1}
                             rounded="lg"
@@ -258,15 +259,15 @@ const ProductList = () => {
                                 (a, b) => a + b.stock_qty,
                                 0
                               ) >
-                            0
+                              0
                               ? item.single_packs.reduce(
-                                  (a, b) => a + b.stock_qty,
-                                  0
-                                ) +
-                                item.multi_packs.reduce(
-                                  (a, b) => a + b.stock_qty,
-                                  0
-                                )
+                                (a, b) => a + b.stock_qty,
+                                0
+                              ) +
+                              item.multi_packs.reduce(
+                                (a, b) => a + b.stock_qty,
+                                0
+                              )
                               : "Out of Stock"}
                           </Badge>
                         </Td>
@@ -331,55 +332,45 @@ const ProductList = () => {
               </Box>
 
               {/* ================= PAGINATION ================= */}
-              <Flex
-                mt={6}
-                w="100%"
-                direction={{ base: "column", md: "row" }}
-                gap={{ base: 4, md: 0 }}
+              <Flex mt={6} px={4} py={3} bg="gray.50"
+                borderRadius="lg"
+                justifyContent="space-between"
+                align="center"
+                flexWrap="wrap"
+                gap={3}
               >
-                <Flex
-                  w="100%"
-                  justify={{ base: "space-between", md: "space-between" }}
-                  align="center"
-                >
-                  <Text fontSize="md">
-                    Page {page} Of {totalPages}
-                  </Text>
-                  <Select
-                    width="120px"
-                    value={limit}
-                    onChange={(e) => {
-                      setLimit(Number(e.target.value));
-                      setPage(1);
-                    }}
-                  >
-                    <option value={10}>10</option>
-                    <option value={20}>20</option>
-                    <option value={30}>30</option>
-                  </Select>
-                </Flex>
-                <Flex w="100%" justify="center" align="center">
-                  <HStack>
-                    <Button bg="blue.50" onClick={() => setPage(page - 1)}>
-                      <PiLessThan size={18} color="black" />
-                    </Button>
+                <Text fontSize="sm" color="gray.600">
+                  Showing {(page - 1) * limit + 1} to{" "}
+                  {Math.min(page * limit, totalItems)} of {totalItems} entries
+                </Text>
+                <HStack spacing={1}>
+                  <Button size="sm" variant="outline"
+                    onClick={() => setPage(page - 1)}
 
-                    {Array.from({ length: totalPages }).map((_, i) => (
-                      <Button
-                        key={i}
+                    isDisabled={page === 1}>
+                    Previous
+                  </Button>
+                  {
+                    Array.from({ length: totalPages }).map((_, index) => (
+                      <Button key={index}
                         size="sm"
-                        onClick={() => setPage(i + 1)}
-                        colorScheme={page === i + 1 ? "blue" : "gray"}
+                        colorScheme="blue"
+                        variant={page === index + 1 ? "solid" : "outline"}
+                        onClick={() => setPage(index + 1)}
                       >
-                        {i + 1}
+                        {index + 1}
                       </Button>
                     ))}
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    isDisabled={page === totalPages}
+                    onClick={() => setPage(page + 1)}
+                  >
+                    Next
+                  </Button>
 
-                    <Button onClick={() => setPage(page + 1)} bg="blue.50">
-                      <PiGreaterThan size={18} color="black" />
-                    </Button>
-                  </HStack>
-                </Flex>
+                </HStack>
               </Flex>
             </>
           )}
