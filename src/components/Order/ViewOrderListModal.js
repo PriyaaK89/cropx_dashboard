@@ -17,7 +17,6 @@ const ViewOrderListModal = ({
   isOpen,
   onClose,
   selectedItems = [],
-  orderId,
 }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xl" isCentered>

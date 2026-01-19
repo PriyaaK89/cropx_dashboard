@@ -14,7 +14,7 @@ import {
   Spinner,
   useDisclosure,
 } from "@chakra-ui/react";
-import { FiSearch, FiEye } from "react-icons/fi";
+import {FiEye } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -167,14 +167,16 @@ const CategoryList = () => {
           </Flex>
 
           {/* SEARCH */}
-          <Flex mb={4} p={2} align="center" maxW="300px">
-            <FiSearch />
+          <Flex mb={4} px={2} py="4px" align="center" maxW="300px" border="1px" borderColor="gray.400" rounded="lg" >
             <Input
               ml={2}
               variant="unstyled"
               placeholder="Search category..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              border="none"
+              outline="none"
+              py={1}
             />
           </Flex>
 

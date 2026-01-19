@@ -21,7 +21,6 @@ import {
   BreadcrumbLink,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { CalendarIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import LeftSidebar from "../LeftSidebarLayout/LeftSidebar";
 import { GoHomeFill } from "react-icons/go";
@@ -206,7 +205,7 @@ const AddProduct2 = () => {
             <HStack justifyContent="space-between" mb={4}>
               <Breadcrumb fontSize="13px">
                 <BreadcrumbItem>
-                  <BreadcrumbLink as={Link} to="/">
+                  <BreadcrumbLink as={Link} to="/" aria-label="Home">
                     <GoHomeFill />
                   </BreadcrumbLink>
                 </BreadcrumbItem>

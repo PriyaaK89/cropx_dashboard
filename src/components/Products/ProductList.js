@@ -26,8 +26,6 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { Config } from "../../utils/Config";
 import { useNavigate } from "react-router-dom";
 import DeleteProductModal from "./DeleteProductModal";
-import { PiGreaterThan } from "react-icons/pi";
-import { PiLessThan } from "react-icons/pi";
 import { FaInfoCircle } from "react-icons/fa";
 
 const ProductList = () => {

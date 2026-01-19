@@ -46,10 +46,7 @@ const TopBar = () => {
         {/* RIGHT AREA → Flags, Notification, User */}
         <Flex align="center" gap={6}>
           {/* Country Flag */}
-          <Box fontSize="25px" cursor="pointer">
-            🇩🇪
-          </Box>
-
+         
           {/* Notification Bell */}
           <Box position="relative">
             <IconButton

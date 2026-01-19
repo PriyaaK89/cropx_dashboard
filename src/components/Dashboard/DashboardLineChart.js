@@ -6,7 +6,6 @@ import {
   LinearScale,
   PointElement,
   LineElement,
-  BarElement,
   Tooltip,
   Legend,
 } from "chart.js";
@@ -16,11 +15,9 @@ ChartJS.register(
   LinearScale,
   PointElement,
   LineElement,
-  BarElement,
   Tooltip,
   Legend
 );
-
 
 const lineData = {
   labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
@@ -32,36 +29,37 @@ const lineData = {
       backgroundColor: "rgba(49, 130, 206, 0.2)",
       tension: 0.4,
       fill: true,
+      pointRadius: 3,          // ✅ lighter points
     },
   ],
 };
 
 const lineOptions = {
   responsive: true,
+  maintainAspectRatio: false,   // ✅ no layout shift
   plugins: {
-    legend: { position: "top" },
+    legend: { display: false }, // ✅ reduce render cost
   },
-     scales: {
-    x: {
-      grid: {
-        display: false, //  column lines remove
-      },
-    },
-    y: {
-      grid: {
-        display: false, // ❌ row lines remove
-      },
-    }, 
-},
+  scales: {
+    x: { grid: { display: false } },
+    y: { grid: { display: false } },
+  },
 };
 
- const DashboardLineChart = () => (
-  <Box bg="white" p={4} borderRadius="lg" boxShadow="md" mx={{base: 3, md: 3, lg: 0 }}
->
+const DashboardLineChart = () => (
+  <Box
+    bg="white"
+    p={4}
+    borderRadius="xl"
+    boxShadow="sm"
+    h="320px"                   // ✅ fixed height
+    mx={{ base: 3, md: 3, lg: 0 }}
+  >
     <Text fontSize="lg" fontWeight="bold" mb={3}>
       Users Growth
     </Text>
     <Line data={lineData} options={lineOptions} />
   </Box>
 );
+
 export default DashboardLineChart;
