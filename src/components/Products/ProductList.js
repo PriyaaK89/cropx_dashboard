@@ -27,6 +27,7 @@ import { Config } from "../../utils/Config";
 import { useNavigate } from "react-router-dom";
 import DeleteProductModal from "./DeleteProductModal";
 import { FaInfoCircle } from "react-icons/fa";
+import ExportButton from "../Button/ExportBtn";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -74,6 +75,25 @@ const ProductList = () => {
   useEffect(() => {
     getProducts();
   }, [page, limit, search, expiryFilter]);
+  const productHeader = [
+    "name",
+    "category",
+    "brand",
+    "type",
+    "stock",
+    "expiry"
+  ]
+   
+  const productExportData = filtered.map((item)=>({
+      name: item.product_name,
+      category: item.category.name,
+      brand: item.brand,
+      type: item.product_type,
+      stock: 
+      item.single_packs.reduce((a,b)=>a+b.stock_qty, 0) +
+      item.multi_packs.reduce((a,b)=>a+b.stock_qty, 0),
+      expiry: item.expiry_status,
+  }))
 
   /* ================= DELETE MODAL ================= */
   const handleDeleteModal = (id) => {
@@ -125,6 +145,9 @@ const ProductList = () => {
             <Text fontSize="2xl" fontWeight="600" mb={4}>
               Product List
             </Text>
+            <ExportButton data={productExportData} headers={productHeader}
+             fileName="products.cv"
+           />
             <Button
               p={4}
               colorScheme="blue"

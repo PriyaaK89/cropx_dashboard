@@ -12,6 +12,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import React from "react";
+import ExportButton from "../Button/ExportBtn"
 
 const RecentOrders = () => {
   const orders = [
@@ -24,8 +25,17 @@ const RecentOrders = () => {
     { no: "#00063", status: "Pending", customer: "Marie Curie", date: "2020-02-09", total: "$441.00" },
     { no: "#00012", status: "Completed", customer: "Konstantin Tsiolkovsky", date: "2020-01-01", total: "$12,961.00" },
   ];
-
-  // ✅ Correct status style (bg + color)
+ 
+  const orderHeaders = ["no","status","customer","date","total"];
+   const orderExportData = orders.map((item) => ({
+    no: item.no,
+    status: item.status,
+    customer: item.customer,
+    date: new Date(item.date).toLocaleDateString("en-GB"), // ✅ Excel ### issue fixed
+    total: item.total.replace("$", ""), // optional cleanup
+  }));
+  
+  //  Correct status style (bg + color)
   const statusStyle = (status) => {
     switch (status) {
       case "Pending":
@@ -43,10 +53,19 @@ const RecentOrders = () => {
 
   return (
     <Box bg="white" borderRadius="lg" boxShadow="md" p={4}>
-      <Text fontSize="16px" fontWeight="600" mb={3}>
+      <Flex justifyContent="space-between" alignItems="center" mb={2}>
+          <Text fontSize="16px" fontWeight="600" mb={3}>
         Recent orders
       </Text>
+       
+        <ExportButton
+          data={orderExportData}
+          headers={orderHeaders}
+          fileName="recent-orders.csv"
+        />
 
+      </Flex>
+      
       <Box overflowX="auto">
         <Table
          className="productsTable"

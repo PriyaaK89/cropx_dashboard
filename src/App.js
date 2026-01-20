@@ -5,6 +5,7 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import LoginPage from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import { AuthProvider } from "./components/Context/AuthContext";
+import Profile from "./components/TopBar/Profile";
 import Categories from "./pages/Categories";
 import AddCategory from "./components/Categories/AddCategory";
 import Products from "./pages/Products";
@@ -30,6 +31,7 @@ function App() {
             <Routes>
               <Route path="/" element={<LoginPage />} /> 
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/profile" element={<Profile />} />
               <Route path="/categories-list" element={<Categories />} />
               <Route path="/add-category" element={<AddCategory />} />
               <Route path="/view-category/:slug" element={<ViewCategory />} />
