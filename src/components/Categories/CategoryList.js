@@ -14,11 +14,10 @@ import {
   Spinner,
   useDisclosure,
 } from "@chakra-ui/react";
-import {FiEye } from "react-icons/fi";
+import { FiEye } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import axios from "axios";
 import { Link } from "react-router-dom";
-
 import TopBar from "../TopBar/TopBar";
 import ResponsiveNavbar from "../TopBar/ResponsiveNavbar";
 import { Config } from "../../utils/Config";
@@ -33,10 +32,8 @@ const CategoryList = () => {
   const [search, setSearch] = useState("");
 
   const [categoryId, setCategoryId] = useState("");
-
-  const [subCategoriesMap, setSubCategoriesMap] = useState({});
-  const [childCategoriesMap, setChildCategoriesMap] = useState({});
   const [selectedSubMap, setSelectedSubMap] = useState({});
+  const [selectedChildMap, setSelectedChildMap] = useState({});
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -58,44 +55,10 @@ const CategoryList = () => {
       const res = await axios.get(Config.get_categories);
       setCategories(res.data.categories || []);
       setFiltered(res.data.categories || []);
-
-      // first category ke liye sub category load
-      if (res.data.categories?.length > 0) {
-        getSubCategories(res.data.categories[0].id);
-      }
     } catch (err) {
       console.log(err);
     }
     setLoading(false);
-  };
-
-  const getSubCategories = async (catID) => {
-    try {
-      const res = await axios.get(
-        `${Config.get_sub_category}?category_id=${catID}`
-      );
-      setSubCategoriesMap((prev) => ({
-        ...prev,
-        [catID]: res.data?.data || [],
-      }));
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const getChildCategories = async (subId, catId) => {
-    try {
-      const res = await axios.get(
-        `${Config.get_child_category}?sub_category_id=${subId}`
-      );
-
-      setChildCategoriesMap((prev) => ({
-        ...prev,
-        [catId]: res.data?.data || [],
-      }));
-    } catch (err) {
-      console.log(err);
-    }
   };
 
   /* ================= EFFECTS ================= */
@@ -103,21 +66,43 @@ const CategoryList = () => {
   useEffect(() => {
     getCategories();
   }, []);
-  useEffect(() => {
-  filtered.forEach((item) => {
-    if (!subCategoriesMap[item.id]) {
-      getSubCategories(item.id);
-    }
-  });
-}, [filtered]);
 
-
- 
   /* ================= HANDLERS ================= */
 
   const handleDelete = (id) => {
     setCategoryId(id);
     onOpen();
+  };
+
+  const getViewParams = (item) => {
+    //  Child category selected
+    if (selectedChildMap[item.id]) {
+      const sub = item.sub_categories.find(
+        (s) => s.id === Number(selectedSubMap[item.id]),
+      );
+
+      const child = sub?.child_categories.find(
+        (c) => c.id === Number(selectedChildMap[item.id]),
+      );
+
+      if (child) {
+        return { cate: "child-category", slug: child.slug };
+      }
+    }
+
+    //  Sub category selected
+    if (selectedSubMap[item.id]) {
+      const sub = item.sub_categories.find(
+        (s) => s.id === Number(selectedSubMap[item.id]),
+      );
+
+      if (sub) {
+        return { cate: "sub-category", slug: sub.slug };
+      }
+    }
+
+    //  Default category
+    return { cate: "category", slug: item.slug };
   };
 
   return (
@@ -136,13 +121,19 @@ const CategoryList = () => {
         width={{ base: "100%", lg: "calc(100% - 260px)" }}
         ml={{ base: 0, lg: "260px" }}
         px={{ base: 0, lg: 6 }}
-        minH="100vh"
-      >
+        minH="100vh">
         {/* NAVBAR */}
         <Box display={{ base: "block", lg: "none" }}>
           <ResponsiveNavbar />
         </Box>
-        <Box display={{ base: "none", lg: "block" }} position="sticky" top="0px" bottom="0px" left="0px" right="0px" zIndex="11">
+        <Box
+          display={{ base: "none", lg: "block" }}
+          position="sticky"
+          top="0px"
+          bottom="0px"
+          left="0px"
+          right="0px"
+          zIndex="11">
           <TopBar />
         </Box>
 
@@ -167,7 +158,15 @@ const CategoryList = () => {
           </Flex>
 
           {/* SEARCH */}
-          <Flex mb={4} px={2} py="4px" align="center" maxW="300px" border="1px" borderColor="gray.400" rounded="lg" >
+          <Flex
+            mb={4}
+            px={2}
+            py="4px"
+            align="center"
+            maxW="300px"
+            border="1px"
+            borderColor="gray.400"
+            rounded="lg">
             <Input
               ml={2}
               variant="unstyled"
@@ -188,9 +187,8 @@ const CategoryList = () => {
             <Box overflowX="auto">
               <Table
                 variant="simple"
-                minW={{ base: "900px", md: "1100px",  xl: "1400px" }}
-                className="productsTable"
-              >
+                minW={{ base: "900px", md: "1100px", xl: "1400px" }}
+                className="productsTable">
                 <Thead bg="gray.100">
                   <Tr>
                     <Th minW="100px">Category Name</Th>
@@ -205,29 +203,27 @@ const CategoryList = () => {
                 </Thead>
 
                 <Tbody>
-                  {filtered.map((item) => (
+                  {filtered.map((item) => {
+                     const { cate, slug } = getViewParams(item);
+                     return(
+                      <>
                     <Tr key={item.id}>
                       {/* CATEGORY NAME + DROPDOWNS */}
                       <Td>
                         <Text fontWeight="500">{item.cate_name}</Text>
                       </Td>
                       <Td>
-                        {/* Sub Category */}
                         <select
                           style={{ width: "150px", padding: "6px" }}
                           value={selectedSubMap[item.id] || ""}
                           onChange={(e) => {
-                            const subId = e.target.value;
-
                             setSelectedSubMap((prev) => ({
                               ...prev,
-                              [item.id]: subId,
+                              [item.id]: e.target.value,
                             }));
-
-                            getChildCategories(subId, item.id);
-                          }}
-                        >
-                          {(subCategoriesMap[item.id] || []).map((sub) => (
+                          }}>
+                          <option value="">Select</option>
+                          {(item.sub_categories || []).map((sub) => (
                             <option key={sub.id} value={sub.id}>
                               {sub.name}
                             </option>
@@ -237,15 +233,27 @@ const CategoryList = () => {
 
                       {/* Child Category */}
                       <Td>
-                        {(childCategoriesMap[item.id] || []).length > 0 && (
-                          <select style={{ width: "150px", padding: "6px" }}>
-                            {(childCategoriesMap[item.id] || []).map(
-                              (child) => (
-                                <option key={child.id} value={child.id}>
-                                  {child.name}
-                                </option>
-                              )
-                            )}
+                        {selectedSubMap[item.id] && (
+                          <select
+                            style={{ width: "150px", padding: "6px" }}
+                            value={selectedChildMap[item.id] || ""}
+                            onChange={(e) =>
+                              setSelectedChildMap((prev) => ({
+                                ...prev,
+                                [item.id]: e.target.value,
+                              }))
+                            }>
+                            <option value="">Select</option>
+                            {(
+                              item.sub_categories?.find(
+                                (sub) =>
+                                  sub.id === Number(selectedSubMap[item.id]),
+                              )?.child_categories || []
+                            ).map((child) => (
+                              <option key={child.id} value={child.id}>
+                                {child.name}
+                              </option>
+                            ))}
                           </select>
                         )}
                       </Td>
@@ -253,25 +261,24 @@ const CategoryList = () => {
                       <Td>{item.description}</Td>
                       <Td>{new Date(item.created_at).toLocaleDateString()}</Td>
                       <Td>{item.show_in_menu === 1 ? "Yes" : "No"}</Td>
-                      <Td>{item.show_on_menu === 1 ? "Yes" : "No"}</Td>
+                      <Td>{item.show_on_home === 1 ? "Yes" : "No"}</Td>
 
                       {/* ACTIONS */}
                       <Td>
-                        <Link to="/view-category/${item.slug}">
-                          <Button size="sm" bg="white" mr={2}>
-                            <FiEye size={18} color="#2563eb" />
-                          </Button>
-                        </Link>
+                         <Link to={`/view-category/${cate}/${slug}`}>
+          <Button size="sm" bg="white" mr={2}>
+            <FiEye size={18} color="#2563eb" />
+          </Button>
+        </Link>
                         <Button
                           bg="white"
                           size="sm"
-                          onClick={() => handleDelete(item.id)}
-                        >
+                          onClick={() => handleDelete(item.id)}>
                           <RiDeleteBin6Line size={18} color="#dc2626" />
                         </Button>
                       </Td>
-                    </Tr>
-                  ))}
+                    </Tr></>)
+})}
                 </Tbody>
               </Table>
             </Box>

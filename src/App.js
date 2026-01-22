@@ -34,7 +34,7 @@ function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/categories-list" element={<Categories />} />
               <Route path="/add-category" element={<AddCategory />} />
-              <Route path="/view-category/:slug" element={<ViewCategory />} />
+              <Route path="/view-category/:cate/:slug" element={<ViewCategory />} />
               <Route path="/product-list" element={<Products />} />
               <Route path="/add-product" element={<AddProduct2 />} />
               <Route path="/product/:id" element={<ViewProduct />} />

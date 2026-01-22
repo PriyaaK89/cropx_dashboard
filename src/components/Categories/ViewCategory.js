@@ -6,27 +6,36 @@ import axios from "axios";
 import { Config } from "../../utils/Config";
 import { useEffect, useState } from "react";
 import BestSelling from "../ProductByType/BestSelling";
+import { useParams } from "react-router-dom";
 
 const ViewCategory = () => {
+const { cate, slug } = useParams();
+
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const fetchProducts = async () => {
-  setLoading(true);
-  try {
-    const res = await axios.get(Config.products_child_category);
-    setProducts(res.data.data || []);
-  } catch (error) {
-    console.log("Error fetching products:", error);
-  } finally {
-    setLoading(false);
-  }
-};
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [sort, setSort] = useState("");
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
 
+ const fetchProducts = async () => {
+    setLoading(true);
+    try {
+      const url = `${Config.Products_By_Slug}/${cate}/${slug}?page=${page}&limit=${limit}&sort=${sort}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
+      const res = await axios.get(url);
+      setProducts(res.data.data || []);
+    } catch (error) {
+      console.log("Error fetching products:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [cate, slug, page, limit, sort, minPrice, maxPrice]);
 
   return (
     <Box width="100%" bg="#f8f8fb" pt={{ base: "60px", lg: 0 }}>
