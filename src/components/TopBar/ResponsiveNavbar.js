@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import {
-  Box,
   Flex,
   IconButton,
   Text,
@@ -40,7 +39,7 @@ import { MdFilterList } from "react-icons/md";
 
 
 const MobileNavbar = () => {
-  const { auth, setAuth } = useContext(AuthContext); // ✅ FIX
+  const { auth} = useContext(AuthContext);
   const mail = auth?.email;
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -92,6 +91,7 @@ const MobileNavbar = () => {
         />
 
         <IconButton
+          aria-label="hamburger icon"
           icon={<HamburgerIcon />}
           variant="ghost"
           fontSize="22px"

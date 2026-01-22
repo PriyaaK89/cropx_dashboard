@@ -35,25 +35,26 @@ const StateCards = () => {
   ];
 
   return (
-    <SimpleGrid mx={{base:3,md:3,lg:0}} columns={{ base: 1, md: 2, lg: 3, xl: 4}} spacing={5} alignItems="stretch">
+    <SimpleGrid
+      mx={{ base: 3, md: 3, lg: 0 }}
+      columns={{ base: 1, md: 2, lg: 3, xl: 4 }}
+      spacing={5}
+    >
       {cards.map((card, index) => (
         <Box
           key={index}
           bg="white"
           p={5}
-          borderRadius="lg"
+          borderRadius="xl"
           boxShadow="sm"
-          minH="110px"
-          display="flex"
-          alignItems="center"
+          minH="120px"
         >
-          <Flex w="100%" justify="space-between" align="center">
+          <Flex justify="space-between" align="center">
             <Flex align="center" gap={4}>
               <Flex
                 bg={card.color}
                 w="42px"
                 h="42px"
-                p={3}
                 align="center"
                 justify="center"
                 borderRadius="full"
@@ -71,18 +72,15 @@ const StateCards = () => {
                 </Text>
               </Box>
             </Flex>
-          {/* Right Section */}
+
             <Text
               fontSize="sm"
-              fontWeight="medium"
-              color="green.500"
+              fontWeight="semibold"
+              color={card.percent === "0.00%" ? "gray.400" : "green.500"}
               whiteSpace="nowrap"
             >
-              ↑ {card.percent}
+              {card.percent}
             </Text>
-
-
-           
           </Flex>
         </Box>
       ))}

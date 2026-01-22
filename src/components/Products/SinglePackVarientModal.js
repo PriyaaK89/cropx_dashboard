@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, Flex,Text, ModalBody, ModalCloseButton, Button, FormControl, FormLabel, Input, Select, useToast, VStack, Box } from "@chakra-ui/react";
+import { Modal, ModalOverlay, ModalContent, ModalFooter, Flex,Text, ModalBody, ModalCloseButton, Button, FormControl, FormLabel, Input, Select, useToast, VStack} from "@chakra-ui/react";
 import axios from "axios";
 import { Config } from "../../utils/Config";
 

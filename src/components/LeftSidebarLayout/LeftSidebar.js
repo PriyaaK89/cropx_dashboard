@@ -74,8 +74,8 @@ const LeftSidebar = () => {
       boxShadow="xl"
       p="0"
     >
-      {/* Logo */}
-      <Box p="1rem 2rem">
+      {/* Logo  */}
+       <Box p="1rem 2rem">
         <Image src={logo} alt="logo" h="40px" />
       </Box>
 

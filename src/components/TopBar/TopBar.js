@@ -6,17 +6,20 @@ import {
   Input,
   Avatar,
   Text,
-  Badge,
-  IconButton,
 } from "@chakra-ui/react";
-import { SearchIcon, BellIcon } from "@chakra-ui/icons";
+import { SearchIcon } from "@chakra-ui/icons";
 import { useContext } from "react";
 import { AuthContext } from "../Context/AuthContext";
+import NotificationPopover from "./NotificationPopover";
+import { useNavigate } from "react-router-dom";
+
 const TopBar = () => {
   const { auth } = useContext(AuthContext);
   const mail = auth?.email;
+  const navigate = useNavigate();
+
   return (
-    <Box mt={5} overflowY="auto">
+    <Box mt={5}>
       <Flex
         display={{ base: "none", lg: "flex" }}
         w="100%"
@@ -28,9 +31,8 @@ const TopBar = () => {
         boxShadow="sm"
         borderBottom="1px solid #e2e8f0"
         borderRadius="0.75rem"
-       
       >
-        {/* LEFT AREA → Search */}
+        {/* LEFT → Search */}
         <InputGroup w="350px">
           <InputLeftElement pointerEvents="none">
             <SearchIcon color="gray.500" />
@@ -43,37 +45,18 @@ const TopBar = () => {
           />
         </InputGroup>
 
-        {/* RIGHT AREA → Flags, Notification, User */}
+        {/* RIGHT → Notification + User */}
         <Flex align="center" gap={6}>
-          {/* Country Flag */}
-          <Box fontSize="25px" cursor="pointer">
-            🇩🇪
-          </Box>
+          {/* Notification Icon */}
+          <NotificationPopover />
 
-          {/* Notification Bell */}
-          <Box position="relative">
-            <IconButton
-              icon={<BellIcon />}
-              variant="ghost"
-              fontSize="22px"
-              color="gray.600"
-            />
-            <Badge
-              position="absolute"
-              top="0"
-              right="0"
-              bg="red.500"
-              color="white"
-              rounded="full"
-              fontSize="0.7rem"
-              px={1}
-            >
-              3
-            </Badge>
-          </Box>
-
-          {/* User Info */}
-          <Flex align="center" gap={3}>
+          {/* User Profile */}
+          <Flex
+            align="center"
+            gap={3}
+            cursor="pointer"
+            onClick={() => navigate("/profile")}
+          >
             <Avatar
               size="sm"
               name="Priya Kumawat"
@@ -90,4 +73,5 @@ const TopBar = () => {
     </Box>
   );
 };
+
 export default TopBar;

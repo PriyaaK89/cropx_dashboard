@@ -16,6 +16,7 @@ import "../../../src/App.css";
 import ResponsiveNavbar from "../TopBar/ResponsiveNavbar";
 import TopBar from "../TopBar/TopBar";
 import { Config } from "../../utils/Config";
+import ExportButton from "../Button/ExportBtn";
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -38,6 +39,18 @@ const UserList = () => {
       setLoading(false);
     }
   };
+  const usersHeader = [
+   "userId",
+   "name",
+   "passwoard",
+   "role"     
+  ]
+  const usersExportData = users.map((item)=>({
+     userId:  item.id,
+     name:  item.name,
+     passwoard: item.passwoard,
+     role: item.role
+  }))
 
   useEffect(() => {
     getUsers();
@@ -64,11 +77,18 @@ const UserList = () => {
          
          
         <Flex justify="space-between" align="center" px={5} mt={5}>
+          
           <Text fontSize="2xl" fontWeight="600">
             User List
           </Text>
           <Text>Total Users : {users.length}</Text>
+          <ExportButton
+            data={usersExportData}
+            headers={usersHeader}
+            fileName="userslist.csv"
+          />
         </Flex>
+
 
         <Box overflowX="auto" px={4} w="100%">
           <Table

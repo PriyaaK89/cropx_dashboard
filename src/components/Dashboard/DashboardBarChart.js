@@ -4,8 +4,6 @@ import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  PointElement,
-  LineElement,
   BarElement,
   Tooltip,
   Legend,
@@ -14,13 +12,10 @@ import {
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  PointElement,
-  LineElement,
   BarElement,
   Tooltip,
   Legend
 );
-
 
 const barData = {
   labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
@@ -35,30 +30,30 @@ const barData = {
 
 const barOptions = {
   responsive: true,
+  maintainAspectRatio: false,   // ✅ prevent layout shift
   plugins: {
-    legend: { position: "top" },
+    legend: { display: false }, // ✅ lighter render
   },
   scales: {
-    x: {
-      grid:{
-        display: false
-      },
-    },
-    y: {
-      grid:{
-        display: false
-      }
-    }
-  }
+    x: { grid: { display: false } },
+    y: { grid: { display: false } },
+  },
 };
 
- const DashboardBarChart = () => (
-  <Box bg="white" p={4} borderRadius="0.75rem" boxShadow="lg" mx={{ base: 3, md: 3, lg: 0 }}
->
+const DashboardBarChart = () => (
+  <Box
+    bg="white"
+    p={4}
+    borderRadius="xl"
+    boxShadow="sm"
+    h="320px"          // ✅ fixed height for stability
+    mx={{ base: 3, md: 3, lg: 0 }}
+  >
     <Text fontSize="lg" fontWeight="bold" mb={3}>
       Monthly Users
     </Text>
     <Bar data={barData} options={barOptions} />
   </Box>
 );
- export default DashboardBarChart;
+
+export default DashboardBarChart;
