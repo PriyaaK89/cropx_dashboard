@@ -35,6 +35,6 @@ export const Config = {
   delete_collections: `${BASE_URL}collection`,
   best_selling: `${BASE_URL}products/best-selling`,
   new_arrivals: `${BASE_URL}products/new-arrivals`,
-  Products_By_Slug:`${BASE_URL}products/category/seeds`,
+  Products_By_Slug:`${BASE_URL}products`,
   upload_image: `${BASE_URL}upload-image`,
 };
