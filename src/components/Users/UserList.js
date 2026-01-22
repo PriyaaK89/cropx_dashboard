@@ -90,7 +90,7 @@ const UserList = () => {
         </Flex>
 
 
-        <Box overflowX="auto" px={4} w="100%">
+        <Box overflowX="auto" px={4} w="100%" mt={2}>
           <Table
             variant="simple"
             minW={{ base: "800px", md: "1000px", xl: "1200px" }}
@@ -98,10 +98,10 @@ const UserList = () => {
           >
             <Thead bg="gray.100">
               <Tr>
-                <Th minW="220px">Name</Th>
-                <Th minW="300px">Email</Th>
-                <Th minH="220px">Password</Th>
-                <Th minW="160px">Role</Th>
+                <Th minW="100px">Name</Th>
+                <Th minW="200px">Email</Th>
+                <Th minH="150px">Password</Th>
+                <Th minW="200px">Role</Th>
               </Tr>
             </Thead>
 

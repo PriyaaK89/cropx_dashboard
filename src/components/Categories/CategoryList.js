@@ -15,9 +15,11 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { FiEye } from "react-icons/fi";
+import { FiEye } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import ExportButton from "../Button/ExportBtn";
 import TopBar from "../TopBar/TopBar";
 import ResponsiveNavbar from "../TopBar/ResponsiveNavbar";
 import { Config } from "../../utils/Config";
@@ -177,7 +179,14 @@ const CategoryList = () => {
               outline="none"
               py={1}
             />
+            
           </Flex>
+          <ExportButton
+              data={categoriesExportData}
+              headers={categoriesHeader}
+              fileName="categories.csv"
+            />
+                     </Flex>
 
           {loading ? (
             <Flex justify="center" mt={10}>

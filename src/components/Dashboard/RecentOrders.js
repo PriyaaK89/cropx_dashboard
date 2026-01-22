@@ -12,7 +12,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import React from "react";
-import ExportButton from "../Button/ExportBtn"
+import ExportButton from "../Button/ExportBtn";
 
 const RecentOrders = () => {
   const orders = [
@@ -57,13 +57,12 @@ const RecentOrders = () => {
           <Text fontSize="16px" fontWeight="600" mb={3}>
         Recent orders
       </Text>
-       
-        <ExportButton
+           <ExportButton
           data={orderExportData}
           headers={orderHeaders}
           fileName="recent-orders.csv"
         />
-
+       
       </Flex>
       
       <Box overflowX="auto">

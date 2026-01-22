@@ -153,12 +153,7 @@ const ProductList = () => {
             <Text fontSize="2xl" fontWeight="600" mb={4}>
               Product List
             </Text>
-            <HStack>
-              <ExportButton
-                data={productExportData}
-                headers={productHeader}
-                fileName="products.csv"
-              />
+              
               <Button
                 p={4}
                 colorScheme="blue"
@@ -167,8 +162,11 @@ const ProductList = () => {
               >
                 Add Product
               </Button>
-            </HStack>
+
+            
           </Box>
+          
+         
 
           {/* ================= FILTERS ================= */}
           <Flex
@@ -176,6 +174,7 @@ const ProductList = () => {
             gap={4}
             flexWrap="wrap"
             direction={{ base: "column", md: "row" }}
+            alignItems="center"
           >
             <Input
               placeholder="Search product..."
@@ -197,7 +196,16 @@ const ProductList = () => {
               <option value="near_expiry">Near Expiry</option>
               <option value="up_to_date">Up To Date</option>
             </Select>
+            <Box ml={{base:"0",md:"auto"}}>
+               <ExportButton
+                data={productExportData}
+                headers={productHeader}
+                fileName="products.csv"
+              />
+            </Box>
+             
           </Flex>
+          
 
           {/* ================= TABLE ================= */}
           {loading ? (

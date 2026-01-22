@@ -16,7 +16,7 @@ import {
   Tbody,
   Tr,
   Th,
-  Td,
+  Td, 
   Spinner,
   Text,
   HStack,
