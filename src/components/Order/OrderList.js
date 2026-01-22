@@ -3,6 +3,7 @@ import axios from "axios";
 import TopBar from "../TopBar/TopBar";
 import ResponsiveNavbar from "../TopBar/ResponsiveNavbar";
 import { AuthContext } from "../Context/AuthContext";
+import ExportButton from "../Button/ExportBtn";
 import {
   Box,
   Table,
@@ -32,6 +33,31 @@ const OrderList = () => {
 
   const [selectedOrderID, setSelectedOrderID] = useState(null);
   const [selectedItems, setSelectedItems] = useState([]);
+  ;
+  console.log("orders", orders);
+  const ordersHeaders = [
+    "orderId",
+    "user",
+    "products",
+    "subTotal",
+    "total",
+    "payment",
+    "status",
+    "date",
+  ];
+
+  const orderExportData = orders.map((item) => ({
+    orderId: item.order_id,
+    user: item.user_name,
+    products: item.product_names,
+    subTotal: item.subtotal,
+    total: item.total_amount,
+    payment: item.payment_method,
+    status: item.order_status,
+    date: item.created_at,
+
+  }));
+
 
   // View Modal
   const {
@@ -48,24 +74,24 @@ const OrderList = () => {
   } = useDisclosure();
 
   const formatDate = (dateString) => {
-  const date = new Date(dateString);
-  return date.toLocaleString("en-IN", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-  });
-};
- 
- 
+    const date = new Date(dateString);
+    return date.toLocaleString("en-IN", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
 
-const capitalize = (text = "") => {
-  return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
-};
 
- 
+
+  const capitalize = (text = "") => {
+    return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+  };
+
+
   // Fetch Orders
   const getOrders = async () => {
     setLoading(true);
@@ -125,7 +151,7 @@ const capitalize = (text = "") => {
         </Box>
 
         {/* Desktop TopBar */}
-        <Box display={{ base:"none", lg:"block"}} position="sticky" top="0px" bottom="0px" left="0px" zIndex="11">
+        <Box display={{ base: "none", lg: "block" }} position="sticky" top="0px" bottom="0px" left="0px" zIndex="11">
           <TopBar />
         </Box>
 
@@ -138,10 +164,17 @@ const capitalize = (text = "") => {
           mx={{ base: 3, lg: 0 }}
         >
           <Box overflowX="auto" w="100%">
-            <Text fontSize="2xl" fontWeight="600" mb={4}>
-              Order List
-            </Text>
+            <Flex justifyContent="space-between" alignItems="center" mb={2}>
 
+              <Text fontSize="2xl" fontWeight="600" mb={4}>
+                Order List
+              </Text>
+              <ExportButton
+                data={orderExportData}
+                headers={ordersHeaders}
+                fileName="orderslist.csv"
+              />
+            </Flex>
             <Table
               variant="simple"
               minW={{ base: "900px", md: "1200px", xl: "1400px" }}
@@ -190,7 +223,7 @@ const capitalize = (text = "") => {
                     <Tr key={order.order_id}>
                       <Td>{index + 1}</Td>
                       <Td>{order.order_id}</Td>
-                      <Td> {capitalize (order.user_name)} </Td>
+                      <Td> {capitalize(order.user_name)} </Td>
                       <Td>{order.product_names}</Td>
                       <Td>{order.subtotal}</Td>
                       <Td>{order.total_amount}</Td>

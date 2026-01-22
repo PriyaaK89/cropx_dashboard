@@ -2,7 +2,6 @@ import {
   Box,
   Flex,
   Text,
-  Badge,
   Stack,
   Popover,
   PopoverTrigger,
@@ -11,6 +10,9 @@ import {
   PopoverArrow,
   PopoverCloseButton,
   IconButton,
+  Avatar,
+  Divider,
+  Badge,
 } from "@chakra-ui/react";
 import { BellIcon } from "@chakra-ui/icons";
 
@@ -18,28 +20,31 @@ const NotificationPopover = () => {
   const notifications = [
     {
       id: 1,
-      title: "Order Placed",
-      message: "Your order #1234 has been placed successfully",
-      type: "success",
+      name: "John Doe",
+      message: "has submitted a leave request for July 25–27",
+      time: "July 16, 2024 | 09:00 PM",
       isRead: false,
-      createdAt: "2 mins ago",
+      avatar: "https://i.pravatar.cc/150?img=1",
     },
     {
       id: 2,
-      title: "Payment Failed",
-      message: "Payment failed for order #9876",
-      type: "error",
+      name: "Michael Brown",
+      message: "contract is up for renewal on July 21, 2024",
+      time: "July 16, 2024 | 05:10 PM",
+      isRead: false,
+      avatar: "https://i.pravatar.cc/150?img=2",
+    },
+    {
+      id: 3,
+      name: "Emily Davis",
+      message: "has set up a meeting for July 20, 2024 at 3:00 PM",
+      time: "July 16, 2024 | 03:47 PM",
       isRead: true,
-      createdAt: "1 hour ago",
+      avatar: "https://i.pravatar.cc/150?img=3",
     },
   ];
 
-  const notificationStyle = {
-    success: { color: "green.500" },
-    error: { color: "red.500" },
-    warning: { color: "orange.400" },
-    info: { color: "blue.500" },
-  };
+  const unreadCount = notifications.filter((n) => !n.isRead).length;
 
   return (
     <Popover placement="bottom-end">
@@ -48,52 +53,83 @@ const NotificationPopover = () => {
           icon={<BellIcon />}
           variant="ghost"
           fontSize="22px"
-          color="gray.600"
+          position="relative"
           aria-label="Notifications"
-        />
+        >
+          {unreadCount > 0 && (
+            <Badge
+              position="absolute"
+              top="6px"
+              right="6px"
+              bg="red.500"
+              borderRadius="full"
+              w="8px"
+              h="8px"
+            />
+          )}
+        </IconButton>
       </PopoverTrigger>
 
-      <PopoverContent w="350px" boxShadow="lg">
+      <PopoverContent w="420px" boxShadow="xl" borderRadius="lg">
         <PopoverArrow />
         <PopoverCloseButton />
-        <PopoverBody>
-          <Text fontWeight="bold" mb={3}>
-            Notifications
-          </Text>
+        <PopoverBody p={0}>
+          {/* Header */}
+          <Box p={4}>
+            <Flex justify="space-between" align="center">
+              <Text fontSize="lg" fontWeight="600">
+                Notifications
+              </Text>
+              <Text fontSize="sm" color="blue.500" cursor="pointer">
+                Mark all as read
+              </Text>
+            </Flex>
 
-          <Stack spacing={3} maxH="350px" overflowY="auto">
-            {notifications.length > 0 ? (
-              notifications.map((item) => {
-                const style = notificationStyle[item.type];
-                return (
-                  <Box
-                    key={item.id}
-                    p={3}
-                    borderWidth="1px"
-                    borderRadius="md"
-                    bg={item.isRead ? "gray.50" : "blue.50"}
-                  >
-                    <Flex justify="space-between">
-                      <Text fontWeight="semibold" color={style.color}>
-                        {item.title}
-                      </Text>
-                      {!item.isRead && (
-                        <Badge colorScheme="blue">New</Badge>
-                      )}
-                    </Flex>
+            <Flex mt={2} gap={4} fontSize="sm">
+              <Text fontWeight="600">All</Text>
+              <Text color="gray.500">Unread ({unreadCount})</Text>
+            </Flex>
+          </Box>
 
-                    <Text fontSize="sm">{item.message}</Text>
-                    <Text fontSize="xs" color="gray.500">
-                      {item.createdAt}
+          <Divider />
+
+          {/* Notification List */}
+          <Stack maxH="400px" overflowY="auto" spacing={0}>
+            {notifications.map((item) => (
+              <Box
+                key={item.id}
+                p={4}
+                bg={item.isRead ? "white" : "gray.50"}
+                _hover={{ bg: "gray.100" }}
+              >
+                <Flex align="flex-start" gap={3}>
+                  <Avatar size="sm" src={item.avatar} />
+
+                  <Box flex="1">
+                    <Text fontSize="sm">
+                      <Text as="span" fontWeight="600">
+                        {item.name}
+                      </Text>{" "}
+                      {item.message}
+                    </Text>
+
+                    <Text fontSize="xs" color="gray.500" mt={1}>
+                      {item.time}
                     </Text>
                   </Box>
-                );
-              })
-            ) : (
-              <Text textAlign="center" color="gray.400">
-                No notifications
-              </Text>
-            )}
+
+                  {!item.isRead && (
+                    <Box
+                      w="8px"
+                      h="8px"
+                      bg="red.500"
+                      borderRadius="full"
+                      mt={2}
+                    />
+                  )}
+                </Flex>
+              </Box>
+            ))}
           </Stack>
         </PopoverBody>
       </PopoverContent>

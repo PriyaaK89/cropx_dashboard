@@ -31,7 +31,7 @@ const RecentOrders = () => {
     no: item.no,
     status: item.status,
     customer: item.customer,
-    date: new Date(item.date).toLocaleDateString("en-GB"), // ✅ Excel ### issue fixed
+    date: new Date(item.date).toLocaleDateString("en-GB"), //  Excel ### issue fixed
     total: item.total.replace("$", ""), // optional cleanup
   }));
   

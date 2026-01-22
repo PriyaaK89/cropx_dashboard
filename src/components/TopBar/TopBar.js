@@ -12,10 +12,11 @@ import { useContext } from "react";
 import { AuthContext } from "../Context/AuthContext";
 import NotificationPopover from "./NotificationPopover";
 import { useNavigate } from "react-router-dom";
+
 const TopBar = () => {
   const { auth } = useContext(AuthContext);
   const mail = auth?.email;
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
     <Box mt={5}>
@@ -45,12 +46,17 @@ const TopBar = () => {
         </InputGroup>
 
         {/* RIGHT → Notification + User */}
-        <Flex align="center" gap={6} cursor="pointer" onClick={()=>navigate("/profile")}>
-          {/* Notification */}
+        <Flex align="center" gap={6}>
+          {/* Notification Icon */}
           <NotificationPopover />
 
-          {/* User Info */}
-          <Flex align="center" gap={3}>
+          {/* User Profile */}
+          <Flex
+            align="center"
+            gap={3}
+            cursor="pointer"
+            onClick={() => navigate("/profile")}
+          >
             <Avatar
               size="sm"
               name="Priya Kumawat"

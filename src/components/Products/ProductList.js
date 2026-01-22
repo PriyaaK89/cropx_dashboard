@@ -77,23 +77,27 @@ const ProductList = () => {
   }, [page, limit, search, expiryFilter]);
   const productHeader = [
     "name",
-    "category",
-    "brand",
-    "type",
-    "stock",
-    "expiry"
-  ]
-   
-  const productExportData = filtered.map((item)=>({
-      name: item.product_name,
-      category: item.category.name,
-      brand: item.brand,
-      type: item.product_type,
-      stock: 
-      item.single_packs.reduce((a,b)=>a+b.stock_qty, 0) +
-      item.multi_packs.reduce((a,b)=>a+b.stock_qty, 0),
-      expiry: item.expiry_status,
-  }))
+     "category",
+     "sub_category",
+     "child_category",
+     "brand",
+     "type",
+     "stock",
+     "expiry_status"
+  ];
+
+  const productExportData = filtered.map((item) => ({
+    name: item.product_name,
+    category: item.category_name,
+    sub_category: item.sub_category,
+    child_category: item.child_category,
+    brand: item.brand,
+    type: item.product_type,
+    stock:
+      (item.single_packs || []).reduce((a, b) => a + b.stock_qty, 0) +
+      (item.multi_packs || []).reduce((a, b) => a + b.stock_qty, 0),
+     expiry_status: item.expiry_status
+  }));
 
   /* ================= DELETE MODAL ================= */
   const handleDeleteModal = (id) => {
@@ -141,23 +145,30 @@ const ProductList = () => {
           boxShadow="lg"
           mx={{ base: 3, lg: 0 }}
         >
-          <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
             <Text fontSize="2xl" fontWeight="600" mb={4}>
               Product List
             </Text>
-            <ExportButton data={productExportData} headers={productHeader}
-             fileName="products.cv"
-           />
-            <Button
-              p={4}
-              colorScheme="blue"
-              size="sm"
-              onClick={() => navigate("/add-product")}
-            >
-              Add Product
-            </Button>
+            <HStack>
+              <ExportButton
+                data={productExportData}
+                headers={productHeader}
+                fileName="products.csv"
+              />
+              <Button
+                p={4}
+                colorScheme="blue"
+                size="sm"
+                onClick={() => navigate("/add-product")}
+              >
+                Add Product
+              </Button>
+            </HStack>
           </Box>
-
 
           {/* ================= FILTERS ================= */}
           <Flex
@@ -258,13 +269,31 @@ const ProductList = () => {
                         <Td>
                           <Badge
                             bg={
-                              item.single_packs.reduce((a, b) => a + b.stock_qty, 0) +
-                                item.multi_packs.reduce((a, b) => a + b.stock_qty, 0) > 0
-                                ? " #e7f5eb" : "#ffcece"}
+                              item.single_packs.reduce(
+                                (a, b) => a + b.stock_qty,
+                                0,
+                              ) +
+                                item.multi_packs.reduce(
+                                  (a, b) => a + b.stock_qty,
+                                  0,
+                                ) >
+                              0
+                                ? " #e7f5eb"
+                                : "#ffcece"
+                            }
                             color={
-                              item.single_packs.reduce((a, b) => a + b.stock_qty, 0) +
-                                item.multi_packs.reduce((a, b) => a + b.stock_qty, 0) > 0
-                                ? " #5a6d5a" : "#623434"}
+                              item.single_packs.reduce(
+                                (a, b) => a + b.stock_qty,
+                                0,
+                              ) +
+                                item.multi_packs.reduce(
+                                  (a, b) => a + b.stock_qty,
+                                  0,
+                                ) >
+                              0
+                                ? " #5a6d5a"
+                                : "#623434"
+                            }
                             px={3}
                             py={1}
                             rounded="lg"
@@ -274,21 +303,21 @@ const ProductList = () => {
                           >
                             {item.single_packs.reduce(
                               (a, b) => a + b.stock_qty,
-                              0
+                              0,
                             ) +
                               item.multi_packs.reduce(
                                 (a, b) => a + b.stock_qty,
-                                0
+                                0,
                               ) >
-                              0
+                            0
                               ? item.single_packs.reduce(
-                                (a, b) => a + b.stock_qty,
-                                0
-                              ) +
-                              item.multi_packs.reduce(
-                                (a, b) => a + b.stock_qty,
-                                0
-                              )
+                                  (a, b) => a + b.stock_qty,
+                                  0,
+                                ) +
+                                item.multi_packs.reduce(
+                                  (a, b) => a + b.stock_qty,
+                                  0,
+                                )
                               : "Out of Stock"}
                           </Badge>
                         </Td>
@@ -299,14 +328,19 @@ const ProductList = () => {
                               item.expiry_status === "near_expiry"
                                 ? "#ffcece"
                                 : "#e7f5eb"
-                            } color={
-                              item.expiry_status === "near_expiry" ? "#623434" : "#5a6d5a"
+                            }
+                            color={
+                              item.expiry_status === "near_expiry"
+                                ? "#623434"
+                                : "#5a6d5a"
                             }
                             px={2}
                             py={1}
                             rounded="lg"
                           >
-                            {item.expiry_status === "near_expiry" ? "Near Expiry" : "Up to Date"}
+                            {item.expiry_status === "near_expiry"
+                              ? "Near Expiry"
+                              : "Up to Date"}
                           </Badge>
                         </Td>
 
@@ -353,7 +387,11 @@ const ProductList = () => {
               </Box>
 
               {/* ================= PAGINATION ================= */}
-              <Flex mt={6} px={4} py={3} bg="gray.50"
+              <Flex
+                mt={6}
+                px={4}
+                py={3}
+                bg="gray.50"
                 borderRadius="lg"
                 justifyContent="space-between"
                 align="center"
@@ -365,23 +403,25 @@ const ProductList = () => {
                   {Math.min(page * limit, totalItems)} of {totalItems} entries
                 </Text>
                 <HStack spacing={1}>
-                  <Button size="sm" variant="outline"
+                  <Button
+                    size="sm"
+                    variant="outline"
                     onClick={() => setPage(page - 1)}
-
-                    isDisabled={page === 1}>
+                    isDisabled={page === 1}
+                  >
                     Previous
                   </Button>
-                  {
-                    Array.from({ length: totalPages }).map((_, index) => (
-                      <Button key={index}
-                        size="sm"
-                        colorScheme="blue"
-                        variant={page === index + 1 ? "solid" : "outline"}
-                        onClick={() => setPage(index + 1)}
-                      >
-                        {index + 1}
-                      </Button>
-                    ))}
+                  {Array.from({ length: totalPages }).map((_, index) => (
+                    <Button
+                      key={index}
+                      size="sm"
+                      colorScheme="blue"
+                      variant={page === index + 1 ? "solid" : "outline"}
+                      onClick={() => setPage(index + 1)}
+                    >
+                      {index + 1}
+                    </Button>
+                  ))}
                   <Button
                     size="sm"
                     variant="outline"
@@ -390,7 +430,6 @@ const ProductList = () => {
                   >
                     Next
                   </Button>
-
                 </HStack>
               </Flex>
             </>
