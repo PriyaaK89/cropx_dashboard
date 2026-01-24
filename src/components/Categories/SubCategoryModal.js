@@ -10,7 +10,7 @@ import {
   FormControl,
   FormLabel,
   Text,
-  Flex,
+  Flex, 
   Select,
   Input,
   useToast,
@@ -109,18 +109,19 @@ const SubCategory = ({ isOpen, onClose }) => {
           justify="space-between"
           algin="center"
           borderTopRadius="md"
+
         >
           <Text fontWeight="bold">Add Sub Category</Text>
           <ModalCloseButton position="static" />
         </Flex>
         <ModalBody>
           {/* CATEGORY DROPDOWN */}
-          <FormControl mb="4px" isRequired>
-            <FormLabel fontSize="14px" fontWeight="bold">
+          <FormControl mb="2" isRequired>
+            <FormLabel fontSize="12px" fontWeight={500} mb="0.5">
               Select Category
             </FormLabel>
             <Select
-              fontSize="14px"
+              fontSize="12px"
               placeholder="Select category"
               value={categoryId}
               onChange={(e) => setCategoryId(e.target.value)}
@@ -134,36 +135,36 @@ const SubCategory = ({ isOpen, onClose }) => {
           </FormControl>
 
           {/* SUB CATEGORY INPUT  */}
-          <FormControl mb="4px" isRequired>
-            <FormLabel fontSize="14px" fontWeight="bold">
+          <FormControl mb="2" isRequired>
+            <FormLabel fontSize="12px" fontWeight={500} mb="0.5">
               Sub Category Name
             </FormLabel>
             <Input
-              fontSize="14px"
+              fontSize="12px"
               placeholder="Enter sub category name"
               value={subName}
               onChange={(e) => setSubName(e.target.value)}
             />
           </FormControl>
-          <FormControl mb="4px" isRequired>
-            <FormLabel fontSize="14px" fontWeight="bold">
+          <FormControl mb="2" isRequired>
+            <FormLabel fontSize="12px" fontWeight={500} mb="0.5">
               Sub Category Slug
             </FormLabel>
             <Input
               placeholder="sub-category-slug"
-              fontSize="14px"
+              fontSize="12px"
               value={subSlug}
               onChange={(e) => setSubSlug(e.target.value)}
             />
           </FormControl>
-          <FormControl mb="4px" isRequired>
-            <FormLabel fontSize="14px" fontWeight="bold">
+          <FormControl mb="2" isRequired>
+            <FormLabel fontSize="12px" fontWeight={500} mb="0.5">
               {" "}
               Sub Order Menu
             </FormLabel>
             <Input
               placeholder="sub-order-menu"
-              fontSize="14px"
+              fontSize="12px"
               value={menuOrder}
               onChange={(e) => setMenuOrder(e.target.value)}
             />

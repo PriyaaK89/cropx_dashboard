@@ -25,12 +25,17 @@ import { Config } from "../../utils/Config";
 import DeleteCategoryModal from "./DeleteCategoryModal";
 import SubCategory from "./SubCategoryModal";
 import ChildCategory from "./ChildCategoryModal";
+import ViewSubCategoryModal from "./ViewSubCategoryModal";
+
 
 const CategoryList = () => {
   const [categories, setCategories] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [isSubCategoryOpen, setIsSubCategoryOpen] = useState(false);
+    const [subCategories, setSubCategories]= useState([]);
+    const [subLoading, setSubLoading] = useState(false);
 
   const [categoryId, setCategoryId] = useState("");
   const [selectedSubMap, setSelectedSubMap] = useState({});
@@ -39,6 +44,7 @@ const CategoryList = () => {
   const [limit, setLimit] = useState(10);
   const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
+  
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -60,13 +66,15 @@ const CategoryList = () => {
       const res = await axios.get(Config.get_categories, {
         params: {
           page,
-          limit
+          limit,
+          search: search,
+         
         },
       });
       setCategories(res.data.categories || []);
       setFiltered(res.data.categories || []);
-      setTotalPages(res.data.totalPages || 0);
-      setTotal(res.data.total || 1);
+      setTotalPages(res.data.totalPages || 1);
+      setTotal(res.data.totalItems || 0);
       
     } catch (err) {
       console.log(err);
@@ -90,6 +98,7 @@ const CategoryList = () => {
     menu: Number(item.show_in_menu) === 1 ? "Yes" : "No",
     home: Number(item.show_on_home) === 1 ? "Yes" : "No",
   }));
+  
 
   /* ================= EFFECTS ================= */
 
@@ -99,18 +108,33 @@ const CategoryList = () => {
 
   useEffect(() => {
     setPage(1);
-    const result = categories.filter((item) =>
-      item.cate_name.toLowerCase().includes(search.toLowerCase())
-    );
+    getCategories()     
+  }, [search])
 
-    setFiltered(result);
-  }, [search, categories])
-
+  
   /* ================= HANDLERS ================= */
 
   const handleDelete = (id) => {
     setCategoryId(id);
     onOpen();
+  };
+   const fetchSubCategories = async (categoryId) => {
+    setSubLoading(true);
+    try {
+      const res = await axios.get(Config.get_sub_category,{
+        params: {
+          category_id: categoryId 
+        }
+      }
+      
+      );
+      setSubCategories(res.data.data || []);
+      setIsSubCategoryOpen(true);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setSubLoading(false);
+    }
   };
 
   const getViewParams = (item) => {
@@ -143,6 +167,15 @@ const CategoryList = () => {
     //  Default category
     return { cate: "category", slug: item.slug };
   };
+  const deleteSubCategory = async (id) => {
+  try {
+    await axios.delete(`${Config.delete_subcategory}/${id}`);
+    setSubCategories(prev => prev.filter(sub => sub.id !== id));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 
   return (
     <>
@@ -151,11 +184,18 @@ const CategoryList = () => {
         onClose={onClose}
         categoryId={categoryId}
         fetchCategories={getCategories}
+        onDeleteSubCategory={deleteSubCategory}
       />
+      <ViewSubCategoryModal
+  isOpen={isSubCategoryOpen}
+  onClose={() => setIsSubCategoryOpen(false)}
+  loading={subLoading}
+  subCategories={subCategories}
+  onDeleteSubCategory={deleteSubCategory}
+/>
 
       <SubCategory isOpen={isSubOpen} onClose={onSubClose} />
       <ChildCategory isOpen={isChildOpen} onClose={onChildClose} />
-
       <Box
         width={{ base: "100%", lg: "calc(100% - 260px)" }}
         ml={{ base: 0, lg: "260px" }}
@@ -316,11 +356,15 @@ const CategoryList = () => {
                               <FiEye size={18} color="#2563eb" />
                             </Button>
                           </Link>
+                         
                           <Button
                             bg="white"
                             size="sm"
                             onClick={() => handleDelete(item.id)}>
                             <RiDeleteBin6Line size={18} color="#dc2626" />
+                          </Button>
+                           <Button colorScheme="blue" fontSize="12px" onClick={()=>fetchSubCategories(item.id)}>
+                            View Sub Categories
                           </Button>
                         </Td>
                       </Tr>
@@ -330,7 +374,7 @@ const CategoryList = () => {
               </Table>
             </Box>
           )}
-        {/* pagination */}
+         {/* pagination */}
         <Flex
           mt={6}
           px={4}

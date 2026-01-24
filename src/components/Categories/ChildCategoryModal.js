@@ -131,10 +131,10 @@ const ChildCategory = ({ isOpen, onClose }) => {
         </Flex>
         <ModalBody>
           {/* CATEGORY */}
-          <FormControl mb="4px" isRequired>
-            <FormLabel fontSize="14px" fontWeight="bold">Category</FormLabel>
+          <FormControl mb="2px" isRequired>
+            <FormLabel fontSize="12px" fontWeight={500} >Category</FormLabel>
             <Select
-            fontSize="14px"
+            fontSize="12px"
               placeholder="Select category"
               value={categoryId}
               onChange={handleCategoryChange}
@@ -148,10 +148,10 @@ const ChildCategory = ({ isOpen, onClose }) => {
           </FormControl>
 
           {/* SUB CATEGORY */}
-          <FormControl mb="4px" isRequired>
-            <FormLabel fontSize="14px" fontWeight="bold">Sub Category</FormLabel>
+          <FormControl mb={2} isRequired >
+            <FormLabel fontSize="12px" fontWeight={500}>Sub Category</FormLabel>
             <Select
-             fontSize="14px"
+             fontSize="12px"
               placeholder="Select sub category"
               value={subCategoryId}
               onChange={(e) => setSubCategoryId(e.target.value)}
@@ -166,10 +166,10 @@ const ChildCategory = ({ isOpen, onClose }) => {
           </FormControl>
 
           {/* CHILD NAME */}
-          <FormControl mb="4px" isRequired>
-            <FormLabel fontSize="14px" fontWeight="bold">Child Category Name</FormLabel>
+          <FormControl mb={2} isRequired>
+            <FormLabel fontSize="12px" fontWeight={500}>Child Category Name</FormLabel>
             <Input
-             fontSize="14px"
+             fontSize="12px"
               placeholder="Enter child category name"
               value={childName}
               onChange={(e) => setChildName(e.target.value)}
@@ -177,10 +177,10 @@ const ChildCategory = ({ isOpen, onClose }) => {
           </FormControl>
 
           {/* CHILD SLUG */}
-          <FormControl mb="4px" isRequired>
-            <FormLabel fontSize="14px" fontWeight="bold">Child Slug</FormLabel>
+          <FormControl mb={2} isRequired>
+            <FormLabel fontSize="12px" fontWeight={500}>Child Slug</FormLabel>
             <Input
-             fontSize="14px"
+             fontSize="12px"
               placeholder="Enter Your Slug"
               value={childSlug}
               onChange={(e) => setChildSlug(e.target.value)}
