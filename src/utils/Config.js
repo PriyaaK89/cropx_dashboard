@@ -22,7 +22,7 @@ export const Config = {
   delete_banner: `${BASE_URL}banner/delete-banner`,
   delete_category: `${BASE_URL}category/delete-category`,
   get_users: `${BASE_URL}get-users`,
-  Delete_Single_variant: `${BASE_URL}product/variant`,
+  Delete_Single_variant: `${BASE_URL}product/variant`, 
   Order_List: `${BASE_URL}admin/order-list`,
   update_order_status: `${BASE_URL}api/update-order-status`,
   add_sub_category: `${BASE_URL}create-subCategory`,
@@ -37,4 +37,6 @@ export const Config = {
   new_arrivals: `${BASE_URL}products/new-arrivals`,
   Products_By_Slug:`${BASE_URL}products`,
   upload_image: `${BASE_URL}upload-image`,
+  delete_subcategory: `${BASE_URL}delete-subcategory`,
+  delete_child_category: `${BASE_URL}delete-child-category`
 };

@@ -17,6 +17,7 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   SimpleGrid,
+  Select
 } from "@chakra-ui/react";
 
 import { useState } from "react";
@@ -31,7 +32,7 @@ import { Config } from "../../utils/Config";
 
 const AddCategory = () => {
   const toast = useToast();
-   const [file, setFile]= useState(null);
+  const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
   const [form, setForm] = useState({
     cate_name: "",
@@ -52,13 +53,12 @@ const AddCategory = () => {
     if (img) setPreview(URL.createObjectURL(img));
   };
   const handleChange = (e) => {
-  const { name, value } = e.target;
-  setForm((prev) => ({
-    ...prev,
-    [name]: value,
-  }));
-};
-
+    const { name, value } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   /* ================= SUBMIT ================= */
 
@@ -115,13 +115,13 @@ const AddCategory = () => {
   /* ================= UI ================= */
 
   return (
-    <Box width="100%" bg="#f8f8fb" pt={{base:"60px",md:"60px",lg:0}}>
+    <Box width="100%" bg="#f8f8fb" pt={{ base: "60px", md: "60px", lg: 0 }}>
       <Flex>
         {/* SIDEBAR */}
         <Box display={{ base: "none", lg: "block" }}>
           <LeftSidebar />
         </Box>
- 
+
         {/* MAIN CONTENT */}
         <Box
           width={{ base: "100%", lg: "calc(100% - 260px)" }}
@@ -129,14 +129,30 @@ const AddCategory = () => {
           px={{ base: 0, lg: 6 }}
           mb={5}
         >
-          <Box display={{ base: "block",  lg: "none" }}>
+          <Box display={{ base: "block", lg: "none" }}>
             <ResponsiveNavbar />
           </Box>
-          <Box display={{ base: "none", lg: "block"}} position="sticky" top="0px" bottom="0px" left="0px" right="0px" zIndex="11">
+          <Box
+            display={{ base: "none", lg: "block" }}
+            position="sticky"
+            top="0px"
+            bottom="0px"
+            left="0px"
+            right="0px"
+            zIndex="11"
+          >
             <TopBar />
           </Box>
 
-          <Box bg="white" px={4} py={2} mt={4} boxShadow="lg" borderRadius="0.75rem" mx={{base:3,lg:0}}>
+          <Box
+            bg="white"
+            px={4}
+            py={2}
+            mt={4}
+            boxShadow="lg"
+            borderRadius="0.75rem"
+            mx={{ base: 3, lg: 0 }}
+          >
             {/* BREADCRUMB */}
             <HStack justify="space-between" mb={4}>
               <Breadcrumb fontSize="13px">
@@ -162,7 +178,7 @@ const AddCategory = () => {
             <Flex justify="center">
               <Box
                 bg="white"
-                w={{ base: "100%",lg: "700px" }}
+                w={{ base: "100%", lg: "700px" }}
                 p={6}
                 rounded="2xl"
                 boxShadow="sm"
@@ -170,90 +186,152 @@ const AddCategory = () => {
                 mt={2}
               >
                 <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
-                  <FormControl mb="4px" isRequired>
-                    <FormLabel co fontSize="14px" fontWeight="bold">Category Name</FormLabel>
-                    <Input fontSize="14px" name="cate_name" value={form.cate_name} onChange={handleChange} placeholder="Enter your category name" />
+                  <FormControl mb="3px" isRequired>
+                    <FormLabel fontSize="14px" fontWeight={500}>
+                      Category Name
+                    </FormLabel>
+                    <Input
+                      fontSize="14px"
+                      name="cate_name"
+                      value={form.cate_name}
+                      onChange={handleChange}
+                      placeholder="Enter your category name"
+                    />
                   </FormControl>
 
-                  <FormControl mb="4px" isRequired>
-                    <FormLabel fontSize="14px" fontWeight="bold">Slug</FormLabel>
-                    <Input fontSize="14px" name="slug" value={form.slug} onChange={handleChange} placeholder="Enter your slug" />
+                  <FormControl mb="3px" isRequired>
+                    <FormLabel fontSize="14px" fontWeight={500}>
+                      Slug
+                    </FormLabel>
+                    <Input
+                      fontSize="14px"
+                      name="slug"
+                      value={form.slug}
+                      onChange={handleChange}
+                      placeholder="Enter your slug"
+                    />
                   </FormControl>
 
-                  
-
-                  <FormControl mb="4px" isRequired>
-                    <FormLabel fontSize="14px" fontWeight="bold">Show In Menu (0 / 1)</FormLabel>
-                    <Input fontSize="14px" name="show_in_menu" value={form.show_in_menu} onChange={handleChange} placeholder="Enter 0 or 1" />
+                  <FormControl mb="3px" isRequired>
+                    <FormLabel fontSize="14px" fontWeight={500}>
+                      Show In Menu
+                    </FormLabel>
+                  <Select fontSize="14px"
+                  name="show_in_menu"
+                  value={form.show_in_menu}
+                  onChange={handleChange}
+                  placeholder="Select option"
+                >
+                  <option value="1">Yes</option>
+                  <option value="0">No</option>
+                  </Select>
                   </FormControl>
 
-                  <FormControl isRequired mb="4px">
-                    <FormLabel fontSize="14px" fontWeight="bold">Show On Home (0 / 1)</FormLabel>
-                    <Input fontSize="14px" name="show_on_home" value={form.show_on_home} onChange={handleChange} placeholder="Enter 0 Or 1" />
+                  <FormControl isRequired mb="3px">
+                    <FormLabel fontSize="14px" fontWeight={500}>
+                      Show On Home
+                    </FormLabel>
+                     <Select
+                     fontSize="14px"
+                      name="show_on_home"
+                      value={form.show_on_home}
+                      onChange={handleChange}
+                      placeholder="Select option"
+c                     >
+                      <option value="1">Yes</option>
+                      <option value="0">No</option>
+                     </Select>
                   </FormControl>
 
-                  <FormControl mb="4px">
-                    <FormLabel fontSize="14px" fontWeight="bold">Menu Order</FormLabel>
-                    <Input fontSize="14px" type="number" name="menu_order" value={form.menu_order} onChange={handleChange} placeholder="Enter your menu order" />
+                  <FormControl mb="3px">
+                    <FormLabel fontSize="14px" fontWeight={500}>
+                      Menu Order
+                    </FormLabel>
+                    <Input
+                      fontSize="14px"
+                      type="number"
+                      name="menu_order"
+                      value={form.menu_order}
+                      onChange={handleChange}
+                      placeholder="Enter your menu order"
+                    />
                   </FormControl>
 
-                  <FormControl mb="4px">
-                    <FormLabel fontSize="14px" fontWeight="bold">Home Order</FormLabel>
-                    <Input fontSize="14px" type="number" name="home_order" value={form.home_order} onChange={handleChange} placeholder="Enter your home order" />
+                  <FormControl mb="3px">
+                    <FormLabel fontSize="14px" fontWeight={500}>
+                      Home Order
+                    </FormLabel>
+                    <Input
+                      fontSize="14px"
+                      type="number"
+                      name="home_order"
+                      value={form.home_order}
+                      onChange={handleChange}
+                      placeholder="Enter your home order"
+                    />
                   </FormControl>
-                   <FormControl mb="4px" gridColumn={{ md: "span 2" }}>
-                    <FormLabel fontSize="14px" fontWeight="bold">Description</FormLabel>
-                    <Textarea fontSize="14px" name="description" value={form.description} onChange={handleChange} placeholder="Enter your description" />
+                  <FormControl mb="3px" gridColumn={{ md: "span 2" }}>
+                    <FormLabel fontSize="14px" fontWeight={500}>
+                      Description
+                    </FormLabel>
+                    <Textarea
+                      fontSize="14px"
+                      name="description"
+                      value={form.description}
+                      onChange={handleChange}
+                      placeholder="Enter your description"
+                    />
                   </FormControl>
 
                   {/* IMAGE */}
-                  <FormControl mb="4px" gridColumn={{ md: "span 2" }}>
-                    <FormLabel fontSize="14px" fontWeight="bold">Upload Image</FormLabel>
-                  
-                      <Box
-                        border="2px dashed"
-                        borderColor="gray.300"
-                        borderRadius="md"
-                        p={6}
-                         display="flex"
-                         flexDirection="column"
-                         alignItems="center"
-                         justifyContent="center"
-                        cursor="pointer"
-                        _hover={{ borderColor: "blue.400" }}
-                        onClick={() => document.getElementById("productImage").click()}
-                      >
-                        {preview ? (
-                          <Image
-                            src={preview}
-                            mx="auto"
-                            maxH="160px"
-                            objectFit="contain"
-                            
-                          />
-                        ) : (
-                          <>
-                            <FiUploadCloud  size={40} color="#4299E1"/>
-                            <Text mt={2} fontSize="sm" color="gray.500">
-                              Drop your image here or{" "}
-                              <Text as="span" color="blue.500" fontWeight="bold">
-                                click to browse
-                              </Text>
-                            </Text>
-                          </>
-                        )}
-                    
-                        <Input
-                          type="file"
-                          id="productImage"
-                          display="none"
-                          accept="image/*"
-                          onChange={handleImage}
-                        />
-                      </Box>
-                  </FormControl>
+                  <FormControl mb="3px" gridColumn={{ md: "span 2" }}>
+                    <FormLabel fontSize="14px" fontWeight={500}>
+                      Upload Image
+                    </FormLabel>
 
-                
+                    <Box
+                      border="2px dashed"
+                      borderColor="gray.300"
+                      borderRadius="md"
+                      p={6}
+                      display="flex"
+                      flexDirection="column"
+                      alignItems="center"
+                      justifyContent="center"
+                      cursor="pointer"
+                      _hover={{ borderColor: "blue.400" }}
+                      onClick={() =>
+                        document.getElementById("productImage").click()
+                      }
+                    >
+                      {preview ? (
+                        <Image
+                          src={preview}
+                          mx="auto"
+                          maxH="160px"
+                          objectFit="contain"
+                        />
+                      ) : (
+                        <>
+                          <FiUploadCloud size={40} color="#4299E1" />
+                          <Text mt={2} fontSize="sm" color="gray.500">
+                            Drop your image here or{" "}
+                            <Text as="span" color="blue.500" fontWeight="bold">
+                              click to browse
+                            </Text>
+                          </Text>
+                        </>
+                      )}
+
+                      <Input
+                        type="file"
+                        id="productImage"
+                        display="none"
+                        accept="image/*"
+                        onChange={handleImage}
+                      />
+                    </Box>
+                  </FormControl>
 
                   <Button
                     gridColumn={{ md: "span 2" }}

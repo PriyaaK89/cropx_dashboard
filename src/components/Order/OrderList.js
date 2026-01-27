@@ -163,18 +163,22 @@ const OrderList = () => {
           boxShadow="lg"
           mx={{ base: 3, lg: 0 }}
         >
-          <Box overflowX="auto" w="100%">
             <Flex justifyContent="space-between" alignItems="center" mb={2}>
 
               <Text fontSize="2xl" fontWeight="600" mb={4}>
                 Order List
               </Text>
-              <ExportButton
+              <Box>
+                   <ExportButton
                 data={orderExportData}
                 headers={ordersHeaders}
                 fileName="orderslist.csv"
               />
+              </Box>
+              
             </Flex>
+                      <Box overflowX="auto" w="100%">
+
             <Table
               variant="simple"
               minW={{ base: "900px", md: "1200px", xl: "1400px" }}
