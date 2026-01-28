@@ -37,6 +37,8 @@ const Login = () => {
 
   try {
     const response = await axios.post(`${Config?.Login_url}`, formdata);
+    console.log(response);
+    
 
     if (response.data.success) {
 

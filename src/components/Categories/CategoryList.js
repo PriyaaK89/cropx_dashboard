@@ -224,14 +224,42 @@ const CategoryList = () => {
             </Text>
 
             <Flex gap={3}>
-              <Button colorScheme="blue" onClick={onSubOpen}>
+              <Button variant="outline" border="1px"
+              borderRadius="8px"
+              color="#2275fc"
+              bg="white"
+              px={6}
+              py={5}
+              fontSize="14px"
+              fontWeight="500"
+               onClick={onSubOpen}
+               _hover={{bg:"#1357c4",color:"white"}}
+               >
                 + Sub Category
               </Button>
-              <Button colorScheme="blue" onClick={onChildOpen}>
+              <Button  variant="outline" border="1px"
+              borderRadius="8px"
+              color="#2275fc"
+              bg="white"
+              px={6}
+              py={5}
+              fontSize="14px"
+              fontWeight="500"
+               onClick={onSubOpen}
+               _hover={{bg:"#1357c4",color:"white"}} onClick={onChildOpen}>
                 + Child Category
               </Button>
               <Link to="/add-category">
-                <Button colorScheme="blue">+ Add Category</Button>
+                <Button  variant="outline" border="1px"
+              borderRadius="8px"
+              color="#2275fc"
+              bg="white"
+              px={6}
+              py={5}
+              fontSize="14px"
+              fontWeight="500"
+               onClick={onSubOpen}
+               _hover={{bg:"#1357c4",color:"white"}}>+ Add Category</Button>
               </Link>
             </Flex>
           </Flex>

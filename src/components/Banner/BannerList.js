@@ -109,15 +109,23 @@ const BannerList = () => {
             </Text>
 
             <Button
-              m={1}
-              leftIcon={<AddIcon />}
-              colorScheme="blue"
-              borderRadius="lg"
-              px={6}
+             variant="outline"
+  border="1px"
+  borderColor="#2275FC"
+  borderRadius="8px"
+  color="#2275FC"
+  mb={4}
+  bg="white"
+  px={6}
+  py={5}
+  fontSize="14px"
+  fontWeight="500"
+   _hover={{
+    bg: "#1357c4",
+    color: "white"}}
               onClick={handleBannerModal}
-              mb={4}
             >
-              Add Banner
+               + Add Banner
             </Button>
           </Flex>
 

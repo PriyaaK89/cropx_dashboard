@@ -1,5 +1,6 @@
 const BASE_URL = `${process.env.REACT_APP_BASE_URL}`;
-console.log(BASE_URL, "base_url");
+// const BASE_URL = `http://192.168.29.4:3000/`
+console.log(BASE_URL, "base_url123");
 
 export const Config = {
   Login_url: `${BASE_URL}admin/signin`,
@@ -8,7 +9,7 @@ export const Config = {
   add_product: `${BASE_URL}product/add-product`,
   add_product_details: `${BASE_URL}product/add-product-details`,
   update_product_details: `${BASE_URL}product/update-product-details`,
-  // update_product: `${BASE_URL}product/update-product`,
+  update_product: `${BASE_URL}product/update-product`,
   delete_product: `${BASE_URL}product/delete-product`,
   get_categories: `${BASE_URL}category/get-category`,
   add_categories: `${BASE_URL}category/add-category`,
