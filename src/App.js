@@ -24,7 +24,7 @@ import ViewCategory from "./components/Categories/ViewCategory";
 function App() {
   return (
     <>
-      <ChakraProvider>
+      <ChakraProvider >
         <AuthProvider>
           <Router>
             <ScrollToTop />

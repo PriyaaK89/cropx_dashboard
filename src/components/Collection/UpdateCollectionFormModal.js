@@ -47,6 +47,8 @@ const UpdateCollectionModal = ({
     const selected = e.target.files[0];
     if (selected) {
       setFile(selected);
+      setImage(selected)
+
       setPreview(URL.createObjectURL(selected));
     }
   };
@@ -78,7 +80,7 @@ const UpdateCollectionModal = ({
     formData.append("home_order", homeOrder);
     formData.append("show_on_home", showOnHome);
     if (image) {
-      formData.append("image", image);
+      formData.append("image", file);
     }
 
     try {

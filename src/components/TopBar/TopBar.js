@@ -6,14 +6,18 @@ import {
   Input,
   Avatar,
   Text,
+  IconButton,
+  useColorMode,
 } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
 import { useContext } from "react";
 import { AuthContext } from "../Context/AuthContext";
 import NotificationPopover from "./NotificationPopover";
 import { useNavigate } from "react-router-dom";
+import { LuMoon, LuSun } from "react-icons/lu";
 
 const TopBar = () => {
+  const { toggleColorMode, colorMode } = useColorMode();
   const { auth } = useContext(AuthContext);
   const mail = auth?.email;
   const navigate = useNavigate();
@@ -32,7 +36,7 @@ const TopBar = () => {
         borderBottom="1px solid #e2e8f0"
         borderRadius="0.75rem"
       >
-        {/* LEFT → Search */}
+        {/*  LEFT → Search */}
         <InputGroup w="350px">
           <InputLeftElement pointerEvents="none">
             <SearchIcon color="gray.500" />
@@ -45,12 +49,21 @@ const TopBar = () => {
           />
         </InputGroup>
 
-        {/* RIGHT → Notification + User */}
+        {/*  RIGHT */}
         <Flex align="center" gap={6}>
-          {/* Notification Icon */}
+          {/*  Notification */}
           <NotificationPopover />
 
-          {/* User Profile */}
+          {/*  Dark / Light Toggle */}
+          <IconButton
+            size="sm"
+            variant="outline"
+            aria-label="Toggle theme"
+            onClick={toggleColorMode}
+            icon={colorMode === "light" ? <LuMoon /> : <LuSun />}
+          />
+
+          {/*  User Profile */}
           <Flex
             align="center"
             gap={3}
