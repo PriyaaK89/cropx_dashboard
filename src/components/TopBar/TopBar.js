@@ -15,6 +15,7 @@ import { AuthContext } from "../Context/AuthContext";
 import NotificationPopover from "./NotificationPopover";
 import { useNavigate } from "react-router-dom";
 import { LuMoon, LuSun } from "react-icons/lu";
+import { useColorModeValue } from "@chakra-ui/react";
 
 const TopBar = () => {
   const { toggleColorMode, colorMode } = useColorMode();
@@ -28,12 +29,15 @@ const TopBar = () => {
         display={{ base: "none", lg: "flex" }}
         w="100%"
         h="70px"
-        bg="white"
+        // bg="white"
+        bg={useColorModeValue("white","#1E293B")}
+        borderBottom="1px solid"
+        borderColor={useColorModeValue("gray.200", "gray.700")}
         align="center"
         px={6}
         justify="space-between"
         boxShadow="sm"
-        borderBottom="1px solid #e2e8f0"
+        // borderBottom="1px solid #e2e8f0"
         borderRadius="0.75rem"
       >
         {/*  LEFT → Search */}
@@ -43,7 +47,7 @@ const TopBar = () => {
           </InputLeftElement>
           <Input
             placeholder="Search..."
-            bg="#f1f3f4"
+            bg={useColorModeValue("gray.100", "gray.700")}
             rounded="full"
             fontSize="sm"
           />

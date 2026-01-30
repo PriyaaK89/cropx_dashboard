@@ -1,34 +1,48 @@
-import { Box, Button, Flex, FormControl, FormLabel, Input, Select, Textarea, Heading, VStack, useToast, SimpleGrid, Image,} from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  FormControl,
+  FormLabel,
+  Input,
+  Select,
+  Textarea,
+  Heading,
+  VStack,
+  useToast,
+  SimpleGrid,
+  Image,
+} from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import LeftSidebar from "../LeftSidebarLayout/LeftSidebar";
 import TopBar from "../TopBar/TopBar";
 import { Config } from "../../utils/Config";
+import { useColorModeValue } from "@chakra-ui/react";
 
 const AddProduct = () => {
   const toast = useToast();
   const [categories, setCategories] = useState([]);
   const [categoryLoading, setCategoryLoading] = useState(false);
 
-   const fetchCategories = async () => {
-  setCategoryLoading(true);
-  try {
+  const fetchCategories = async () => {
+    setCategoryLoading(true);
+    try {
       const res = await axios.get(`${Config?.get_categories}`);
-    console.log(res,"res");
-    setCategories(res.data.categories || res.data); 
-  } catch (error) {
-    console.log("Category fetch error", error);
-  }
-  setCategoryLoading(false);
-};
-
+      console.log(res, "res");
+      setCategories(res.data.categories || res.data);
+    } catch (error) {
+      console.log("Category fetch error", error);
+    }
+    setCategoryLoading(false);
+  };
 
   const [formData, setFormData] = useState({
     product_name: "",
     product_category: "",
     sub_category: "",
     child_category: "",
-    brand : "",
+    brand: "",
     product_description: "",
     product_type: "",
     mfg_date: "",
@@ -80,196 +94,228 @@ const AddProduct = () => {
       });
     }
   };
-  useEffect (()=>{
-      fetchCategories()  
-  },[])
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+  const bgColor = useColorModeValue("white", "#1E293B");
+  const textColor = useColorModeValue("gray.800", "white");
 
   return (
-        <Box width="100%" backgroundColor="#f8f8fb" >
-    
-    <Flex justifyContent="space-between">
-    <Box>  <LeftSidebar /></Box>
-
-      <Box w="77.5%" minH="100vh" pl="1rem" mr="1rem">
-        <TopBar />
-
-        {/* Page Header */}
-          <Box bgColor="white" mt={4} p={4} borderRadius="0.75rem" boxShadow="lg">
-          <Heading fontSize="sm" mb={3}>
-            Add New Product
-          </Heading>
-
-        {/* Form Card */}
-        <Box
-         
-        >
-          <SimpleGrid columns={[1, 1, 2]} spacing={8}>
-            {/* Left Section */}
-            <VStack spacing={5} align="stretch">
-              <FormControl>
-                <FormLabel fontWeight="600" fontSize="14px">Product Name</FormLabel>
-                <Input
-                  fontSize="14px"
-                  name="product_name"
-                  value={formData.product_name}
-                  onChange={handleChange}
-                  placeholder="Enter product name"
-                  bg="#f1f4f9"
-                />
-              </FormControl>
-
-              <FormControl>
-                <FormLabel fontSize="14px" fontWeight="600">Product Category</FormLabel>
-                <Select name="product_category"
-                 value={formData.product_category}
-                 onChange={handleChange}
-                 bg="#f1f4f9"
-                 fontSize = "14px"
-                 placeholder={categoryLoading ? "Loading..." :"Select Category"}
-                >
-                {categories?.map((cat)=>{
-                   return <option key={cat.id} value={cat.id}>
-                      {cat.cate_name
-}
-                  </option>
-                })}
-                </Select>
-              </FormControl>
-              <FormControl>
-                <FormLabel fontSize="14px" fontWeight="600"> Sub Category</FormLabel>
-                  <Input 
-                    fontSize="14px"
-                     name="sub_category"
-                     value={formData.sub_category}
-                     onChange={handleChange}
-                     placeholder="enter your sub category"
-                     bg="#f1f4f9"
-                  />
-              </FormControl>
-               <FormControl>
-                <FormLabel fontSize="14px" fontWeight="600"> Child Category</FormLabel>
-                  <Input 
-                     fontSize="14px"
-                     name="child_category"
-                     value={formData.child_category}
-                     onChange={handleChange}
-                     placeholder="enter your category category"
-                     bg="#f1f4f9"
-                  />
-              </FormControl>
-              <FormControl>
-                <FormLabel fontSize="14px" fontWeight="600">
-                  Brand
-                  <Input fontSize="14px" name="brand" value={formData.brand} 
-                    onChange={handleChange}
-                    placeholder="Enter brand name"
-                    bg="#f1f4f9"
-                   />
-                </FormLabel>
-              </FormControl>
-
-              <FormControl>
-                <FormLabel fontSize="14px" fontWeight="600">Description</FormLabel>
-                <Textarea
-                  name="product_description"
-                  value={formData.product_description}
-                  onChange={handleChange}
-                  placeholder="Write product description"
-                  bg="#f1f4f9"
-                  fontSize="14px"
-                />
-              </FormControl>
-
-              <FormControl>
-                <FormLabel fontSize="14px" fontWeight="600">Product Type</FormLabel>
-                <Select
-                  name="product_type"
-                  value={formData.product_type}
-                  onChange={handleProductType}
-                  bg="#f1f4f9"
-                  fontSize="14px"
-                >
-                  <option value="">Select Type</option>
-                  <option value="solid">Solid</option>
-                  <option value="liquid">Liquid</option>
-                </Select>
-              </FormControl>
-  
-            </VStack>
-
-            {/* Right Section */}
-            <VStack spacing={5} align="stretch">
-              
-
-              <FormControl>
-                <FormLabel fontSize="14px" fontWeight="600">Mfg Date</FormLabel>
-                <Input
-                  type="date"
-                  name="mfg_date"
-                  fontSize="14px"
-                  value={formData.mfg_date}
-                  onChange={handleChange}
-                  bg="#f1f4f9"
-                />
-              </FormControl>
-
-              <FormControl>
-                <FormLabel fontSize="14px" fontWeight="600">Expiry Date</FormLabel>
-                <Input
-                  type="date"
-                  name="exp_date"
-                  value={formData.exp_date}
-                  onChange={handleChange}
-                  bg="#f1f4f9"
-                  fontSize="14px"
-                />
-              </FormControl>
-
-              <FormControl>
-                <FormLabel fontSize="14px" fontWeight="600">Upload Product Image</FormLabel>
-                <Input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImage}
-                  bg="#f1f4f9"
-                  py={1}
-                  fontSize="14px"
-                />
-              </FormControl>
-
-              {preview && (
-                <Box>
-                  <Image
-                    src={preview}
-                    alt="Preview"
-                    w="180px"
-                    h="180px"
-                    objectFit="cover"
-                    borderRadius="md"
-                    boxShadow="md"
-                  />
-                </Box>
-              )}
-            </VStack>
-          </SimpleGrid>
-
-          <Flex justify="flex-end" mt={10}>
-            <Button
-              colorScheme="blue"
-              size="lg"
-              px={10}
-              borderRadius="full"
-              onClick={handleSubmit}
-              boxShadow="0 4px 14px rgba(66,153,225,0.4)"
-            >
-              Add Product
-            </Button>
-          </Flex>
+    <Box width="100%" bg="#897985">
+      <Flex justifyContent="space-between">
+        <Box>
+          {" "}
+          <LeftSidebar />
         </Box>
-      </Box>
-                  </Box>
-    </Flex>
 
+        <Box w="77.5%" minH="100vh" pl="1rem" mr="1rem">
+          <TopBar />
+
+          {/* Page Header */}
+          <Box
+            bg={bgColor}
+            color={textColor}
+            mt={4}
+            p={4}
+            borderRadius="0.75rem"
+            boxShadow="lg"
+          >
+            <Heading fontSize="sm" mb={3}>
+              Add New Product
+            </Heading>
+
+            {/* Form Card */}
+            <Box>
+              <SimpleGrid columns={[1, 1, 2]} spacing={8}>
+                {/* Left Section */}
+                <VStack spacing={5} align="stretch">
+                  <FormControl>
+                    <FormLabel fontWeight="600" fontSize="14px">
+                      Product Name
+                    </FormLabel>
+                    <Input
+                      fontSize="14px"
+                      name="product_name"
+                      value={formData.product_name}
+                      onChange={handleChange}
+                      placeholder="Enter product name"
+                      bg="#f1f4f9"
+                    />
+                  </FormControl>
+
+                  <FormControl>
+                    <FormLabel fontSize="14px" fontWeight="600">
+                      Product Category
+                    </FormLabel>
+                    <Select
+                      name="product_category"
+                      value={formData.product_category}
+                      onChange={handleChange}
+                      bg="#f1f4f9"
+                      fontSize="14px"
+                      placeholder={
+                        categoryLoading ? "Loading..." : "Select Category"
+                      }
+                    >
+                      {categories?.map((cat) => {
+                        return (
+                          <option key={cat.id} value={cat.id}>
+                            {cat.cate_name}
+                          </option>
+                        );
+                      })}
+                    </Select>
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel fontSize="14px" fontWeight="600">
+                      {" "}
+                      Sub Category
+                    </FormLabel>
+                    <Input
+                      fontSize="14px"
+                      name="sub_category"
+                      value={formData.sub_category}
+                      onChange={handleChange}
+                      placeholder="enter your sub category"
+                      bg="#f1f4f9"
+                    />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel fontSize="14px" fontWeight="600">
+                      {" "}
+                      Child Category
+                    </FormLabel>
+                    <Input
+                      fontSize="14px"
+                      name="child_category"
+                      value={formData.child_category}
+                      onChange={handleChange}
+                      placeholder="enter your category category"
+                      bg="#f1f4f9"
+                    />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel fontSize="14px" fontWeight="600">
+                      Brand
+                      <Input
+                        fontSize="14px"
+                        name="brand"
+                        value={formData.brand}
+                        onChange={handleChange}
+                        placeholder="Enter brand name"
+                        bg="#f1f4f9"
+                      />
+                    </FormLabel>
+                  </FormControl>
+
+                  <FormControl>
+                    <FormLabel fontSize="14px" fontWeight="600">
+                      Description
+                    </FormLabel>
+                    <Textarea
+                      name="product_description"
+                      value={formData.product_description}
+                      onChange={handleChange}
+                      placeholder="Write product description"
+                      bg="#f1f4f9"
+                      fontSize="14px"
+                    />
+                  </FormControl>
+
+                  <FormControl>
+                    <FormLabel fontSize="14px" fontWeight="600">
+                      Product Type
+                    </FormLabel>
+                    <Select
+                      name="product_type"
+                      value={formData.product_type}
+                      onChange={handleProductType}
+                      bg="#f1f4f9"
+                      fontSize="14px"
+                    >
+                      <option value="">Select Type</option>
+                      <option value="solid">Solid</option>
+                      <option value="liquid">Liquid</option>
+                    </Select>
+                  </FormControl>
+                </VStack>
+
+                {/* Right Section */}
+                <VStack spacing={5} align="stretch">
+                  <FormControl>
+                    <FormLabel fontSize="14px" fontWeight="600">
+                      Mfg Date
+                    </FormLabel>
+                    <Input
+                      type="date"
+                      name="mfg_date"
+                      fontSize="14px"
+                      value={formData.mfg_date}
+                      onChange={handleChange}
+                      bg="#f1f4f9"
+                    />
+                  </FormControl>
+
+                  <FormControl>
+                    <FormLabel fontSize="14px" fontWeight="600">
+                      Expiry Date
+                    </FormLabel>
+                    <Input
+                      type="date"
+                      name="exp_date"
+                      value={formData.exp_date}
+                      onChange={handleChange}
+                      bg="#f1f4f9"
+                      fontSize="14px"
+                    />
+                  </FormControl>
+
+                  <FormControl>
+                    <FormLabel fontSize="14px" fontWeight="600">
+                      Upload Product Image
+                    </FormLabel>
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImage}
+                      bg="#f1f4f9"
+                      py={1}
+                      fontSize="14px"
+                    />
+                  </FormControl>
+
+                  {preview && (
+                    <Box>
+                      <Image
+                        src={preview}
+                        alt="Preview"
+                        w="180px"
+                        h="180px"
+                        objectFit="cover"
+                        borderRadius="md"
+                        boxShadow="md"
+                      />
+                    </Box>
+                  )}
+                </VStack>
+              </SimpleGrid>
+
+              <Flex justify="flex-end" mt={10}>
+                <Button
+                  colorScheme="blue"
+                  size="lg"
+                  px={10}
+                  borderRadius="full"
+                  onClick={handleSubmit}
+                  boxShadow="0 4px 14px rgba(66,153,225,0.4)"
+                >
+                  Add Product
+                </Button>
+              </Flex>
+            </Box>
+          </Box>
+        </Box>
+      </Flex>
     </Box>
   );
 };

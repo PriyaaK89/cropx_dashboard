@@ -36,6 +36,8 @@ const ArrayInputBlock = ({ title, list, setter }) => {
   const handleRemove = (index) => {
     setter((prev) => prev.filter((_, i) => i !== index));
   };
+  
+
 
   return (
     <Box mb={5} p={3} border="1px solid #e2e8f0" rounded="lg">

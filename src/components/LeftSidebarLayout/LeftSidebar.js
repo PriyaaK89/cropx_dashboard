@@ -13,13 +13,11 @@ import { Image } from "@chakra-ui/react";
 import logo from "../../assets/logo.jpeg";
 import { FaBoxOpen, FaTags } from "react-icons/fa";
 import { MdCategory, MdOutlineProductionQuantityLimits } from "react-icons/md";
-
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Context/AuthContext";
-
 import { FiHome, FiLogOut, FiLayers } from "react-icons/fi";
 import { MdArrowDropDown, MdArrowLeft } from "react-icons/md";
-
+import { useColorModeValue } from "@chakra-ui/react";
 import { FaUser, FaThList } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
 import { BsCollection } from "react-icons/bs";
@@ -64,8 +62,8 @@ const LeftSidebar = () => {
   return (
     <Box
       w="251px"
-      bg="#fff"
-      color="black"
+    bg={useColorModeValue("white", "#1E293B")}
+   color={useColorModeValue("gray.800", "white")}
       h="93.6vh"
       position="fixed"
       left={4}

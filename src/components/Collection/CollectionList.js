@@ -8,6 +8,7 @@ import ImageViewModal from "./ImageViewModal";
 import { FiEye } from "react-icons/fi";
 import axios from "axios";
 import { Config } from "../../utils/Config";
+import { useColorModeValue } from "@chakra-ui/react";
 
 import {
   Box,
@@ -116,7 +117,9 @@ const CollectionList = () => {
     description: item.description
     }
   })
-
+  const bgColor = useColorModeValue("white","#1E293B");
+  const textColor = useColorModeValue("gray.800","white");
+  const rowHoverBg = useColorModeValue("gray.50","gray.700")
   return (
     <>
       <CollectionFormModal isOpen={isOpen} onClose={onClose} />
@@ -160,7 +163,8 @@ const CollectionList = () => {
         {/* Collection Table */}
         <Box
           mt={4}
-          bg="white"
+          bg={bgColor}
+          textColor={textColor}
           p={4}
           borderRadius="0.75rem"
           boxShadow="lg"
@@ -173,7 +177,7 @@ const CollectionList = () => {
             <Button  variant="outline" border="1px"
               borderRadius="8px"
               color="#2275fc"
-              bg="white"
+              bg={bgColor}
               px={6}
               py={5}
               fontSize="14px"
@@ -222,7 +226,7 @@ const CollectionList = () => {
 
                   <Tbody>
                     {collections.map((item) => (
-                      <Tr key={item.id}>
+                      <Tr key={item.id} _hover={{bg: rowHoverBg}}>
                         <Td>{item.id}</Td>
                         <Td>
                            <Box position="relative" w="50px" h="50px">
@@ -260,12 +264,12 @@ const CollectionList = () => {
                             <Button
                               size="sm"
                               onClick={() => handleUpdate(item)}
-                              bgColor="white"
+                              bgColor={bgColor}
                             >
                               <FiEdit size={18} color="#16a34a" />
                             </Button>
                             <Button
-                            bgColor="white"
+                            bgColor={bgColor}
                               size="sm"
                               onClick={() => handleDelete(item)}
                             >

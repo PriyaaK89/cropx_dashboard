@@ -29,21 +29,20 @@
     color: #6E7079;
     font-size: 14px;
     font-family: 'InterRegular';
-    border-bottom: 2px solid #f3f3f3;
-    border-top: 2px solid #f3f3f3;
+    /* border-bottom: 1px solid #7190c2; */
     padding: 4px 20px;
     height: 40px;
 
 }
 .productsTable tbody{
-  border-left: 1px solid #f3f3f3;
-  border-right: 1px solid #f3f3f3;
+  /* border-left: 1px solid #1E293B; */
+  /* border-right: 1px solid #1E293B; */
 }
 
 .productsTable Thead Tr Th{
   padding: 4px 20px;
-  border-top: 1px solid #E1E2E9;
-  border-bottom: 1px solid #E1E2E9;
+  /* border-top: 1px solid #E1E2E9; */
+  /* border-bottom: 1px solid #E1E2E9; */
 
 }
 .productsTable Thead{

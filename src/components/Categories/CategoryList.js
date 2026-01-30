@@ -26,6 +26,7 @@ import DeleteCategoryModal from "./DeleteCategoryModal";
 import SubCategory from "./SubCategoryModal";
 import ChildCategory from "./ChildCategoryModal";
 import ViewSubCategoryModal from "./ViewSubCategoryModal";
+import { useColorModeValue } from "@chakra-ui/react";
 
 
 const CategoryList = () => {
@@ -175,7 +176,9 @@ const CategoryList = () => {
     console.log(err);
   }
 };
-
+   const bgColor = useColorModeValue("white", "#1E293B");
+    const textColor = useColorModeValue("gray.800", "white");
+     const rowHoverBg = useColorModeValue("gray.50", "gray.700")
 
   return (
     <>
@@ -217,7 +220,7 @@ const CategoryList = () => {
         </Box>
 
         {/* CONTENT */}
-        <Box bg="white" p={4} mt={4} borderRadius="lg" boxShadow="lg">
+        <Box bg={bgColor} textColor={textColor} p={4} mt={4} borderRadius="lg" boxShadow="lg">
           <Flex justify="space-between" mb={5} flexWrap="wrap" gap={3}>
             <Text fontSize="2xl" fontWeight="600">
               Category List
@@ -321,7 +324,7 @@ const CategoryList = () => {
                   {filtered.map((item) => {
                     const { cate, slug } = getViewParams(item);
                     return (
-                      <Tr key={item.id}>
+                      <Tr key={item.id} _hover={{bg:rowHoverBg}}>
                         {/* CATEGORY NAME + DROPDOWNS */}
                         <Td>
                           <Text fontWeight="500">{item.cate_name}</Text>
@@ -380,13 +383,13 @@ const CategoryList = () => {
                         {/* ACTIONS */}
                         <Td>
                           <Link to={`/view-category/${cate}/${slug}`}>
-                            <Button size="sm" bg="white" mr={2}>
+                            <Button size="sm" bg={bgColor} mr={2}>
                               <FiEye size={18} color="#2563eb" />
                             </Button>
                           </Link>
                          
                           <Button
-                            bg="white"
+                            bg={bgColor}
                             size="sm"
                             onClick={() => handleDelete(item.id)}>
                             <RiDeleteBin6Line size={18} color="#dc2626" />

@@ -10,7 +10,17 @@ const config = {
   initialColorMode : "light",
   useSystemColorMode : false,
 }
-const theme = extendTheme({config});
+const theme = extendTheme({
+   config, 
+   styles: {
+    global: (props) =>({
+      body: {
+        bg: props.colorMode === "dark" ? "gray.900" : "gray.50",
+        color: props.colorMode === "dark" ? "gray.100" : "gray.800"
+      },
+    })
+   }
+});
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

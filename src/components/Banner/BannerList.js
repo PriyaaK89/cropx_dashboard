@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { Config } from "../../utils/Config";
+import {useColorModeValue } from "@chakra-ui/react";
 import {
   Box,
   Image,
@@ -64,6 +65,9 @@ const BannerList = () => {
     setSelectedBannerId(id);
     onDeleteModalOpen();
   };
+  const bgColor = useColorModeValue("white","#1E293B");
+  const textColor = useColorModeValue("gray.800","white");
+  const rowHoverBg = useColorModeValue("gray.50","gray.700");
 
   return (
     <>
@@ -96,7 +100,7 @@ const BannerList = () => {
         </Box>
 
         {/* OUTER CARD */}
-        <Box p={4} mt={4} boxShadow="sm" bg="white" borderRadius="0.75rem" mx={{base:3,md:3,lg:0}}>
+        <Box p={4} mt={4} boxShadow="sm" bg={bgColor}  textColor={textColor} borderRadius="0.75rem" mx={{base:3,md:3,lg:0}}>
           {/* HEADER SECTION */}
           <Flex
             justify="space-between"
@@ -144,7 +148,7 @@ const BannerList = () => {
                 <Flex
                   key={data?.banner_id}
                   p={4}
-                  bg="#f8f8fb"
+                  bg={bgColor}
                   borderRadius="lg"
                   boxShadow="md"
                   mb={4}
@@ -152,7 +156,7 @@ const BannerList = () => {
                   justify="space-between"
                   direction={{ base: "column", md: "row" }}
                   gap={{ base: 4, md: 6 }}
-                  hover={{ boxShadow: "lg", transform: "scale(1.01)" }}
+                  _hover={{ bg: rowHoverBg, boxShadow: "lg", transform: "scale(1.01)" }}
                   transition="0.2s"
                 >
                   {/* IMAGE */}

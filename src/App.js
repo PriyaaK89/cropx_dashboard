@@ -1,6 +1,5 @@
 import logo from "./logo.svg";
 import "./App.css";
-import { ChakraProvider } from "@chakra-ui/react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import LoginPage from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
@@ -24,7 +23,6 @@ import ViewCategory from "./components/Categories/ViewCategory";
 function App() {
   return (
     <>
-      <ChakraProvider >
         <AuthProvider>
           <Router>
             <ScrollToTop />
@@ -48,7 +46,6 @@ function App() {
             </Routes>
           </Router>
         </AuthProvider>
-      </ChakraProvider>
     </>
   );
 }

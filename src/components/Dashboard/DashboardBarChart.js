@@ -1,5 +1,6 @@
 import { Bar } from "react-chartjs-2";
-import { background, Box, Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
+import { useColorModeValue } from "@chakra-ui/react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -58,7 +59,8 @@ const barOptions = {
 
 const DashboardBarChart = () => (
   <Box
-    bg="white"
+  bg={useColorModeValue("white", "#1E293B")}
+  color={useColorModeValue("gray.800", "white")}
     p={4}
     borderRadius="xl"
     boxShadow="sm"

@@ -4,6 +4,8 @@ import TopBar from "../TopBar/TopBar";
 import ResponsiveNavbar from "../TopBar/ResponsiveNavbar";
 import { AuthContext } from "../Context/AuthContext";
 import ExportButton from "../Button/ExportBtn";
+import { useColorModeValue } from "@chakra-ui/react";
+
 import {
   Box,
   Table,
@@ -120,6 +122,9 @@ const OrderList = () => {
       getOrders();
     }
   }, [apiToken]);
+   const bgColor = useColorModeValue("white", "#1E293B");
+    const textColor = useColorModeValue("gray.800", "white");
+     const rowHoverBg = useColorModeValue("gray.50", "gray.700")
 
   return (
     <>
@@ -157,7 +162,8 @@ const OrderList = () => {
 
         <Box
           p={4}
-          bg="white"
+          bg={bgColor}
+          textColor={textColor}
           mt={4}
           borderRadius="0.75rem"
           boxShadow="lg"
@@ -224,7 +230,7 @@ const OrderList = () => {
                   </Tr>
                 ) : (
                   orders.map((order, index) => (
-                    <Tr key={order.order_id}>
+                    <Tr key={order.order_id} _hover={{bg:rowHoverBg}}>
                       <Td>{index + 1}</Td>
                       <Td>{order.order_id}</Td>
                       <Td> {capitalize(order.user_name)} </Td>
@@ -238,7 +244,7 @@ const OrderList = () => {
                         <Flex gap={2}>
                           <Button
                             size="sm"
-                            bgColor="white"
+                            bgColor={bgColor}
                             onClick={() => {
                               setSelectedOrderID(order.order_id);
                               setSelectedItems(order.items);
@@ -250,7 +256,7 @@ const OrderList = () => {
 
                           <Button
                             size="sm"
-                            bgColor="white"
+                            bgColor={bgColor}
                             onClick={() => {
                               setSelectedOrderID(order.order_id);
                               onUpdateOrdersModalOpen();
