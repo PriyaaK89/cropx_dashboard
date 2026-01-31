@@ -20,6 +20,7 @@ import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { Config } from "../../utils/Config";
 import { AuthContext } from "../Context/AuthContext";
+import { useColorModeValue } from "@chakra-ui/react";
 
 /* ---------------- ORDER STEPS ---------------- */
 const steps = [
@@ -39,7 +40,8 @@ const UpdateOrderModal = ({
   const [localStatus, setLocalStatus] = useState(currentStatus);
   const [selectedStatus, setSelectedStatus] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const bgColor = useColorModeValue("#2664a7", "#1E293B");
+  const textColor = useColorModeValue("white", "gray.100");
   const { auth } = useContext(AuthContext);
   const apiToken = auth?.token;
   const toast = useToast();
@@ -141,8 +143,8 @@ const UpdateOrderModal = ({
       <ModalContent>
         {/* ---------- Header ---------- */}
         <Flex
-          bg="#5c94cf"
-          color="white"
+          bg={bgColor}
+          color={textColor}
           px="16px"
           py="8px"
           justify="space-between"
@@ -216,7 +218,7 @@ const UpdateOrderModal = ({
                   mb={2}
                   variant="outline"
                   isDisabled={isDisabled}
-                  bg={selectedStatus === status ? "blue.100" : "white"}
+                  bg={selectedStatus === status ? "blue.100" : {bgColor}}
                   onClick={() => handleStatusClick(status)}
                 >
                   {status}
@@ -232,8 +234,8 @@ const UpdateOrderModal = ({
             Cancel
           </Button>
           <Button
-            bg="#5c94cf"
-            color="white"
+            bg={bgColor}
+            color={textColor}
             onClick={handleUpdateStatus}
             isLoading={loading}
             _hover={{ bg: "#2664a7" }}

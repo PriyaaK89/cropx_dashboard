@@ -17,6 +17,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { Config } from "../../utils/Config";
+import { useColorModeValue } from "@chakra-ui/react";
 
 const SubCategory = ({ isOpen, onClose }) => {
   const [subCategories, setSubCategories] = useState([]);
@@ -25,6 +26,9 @@ const SubCategory = ({ isOpen, onClose }) => {
   const [subSlug, setSubSlug] = useState("");
   const [menuOrder, setMenuOrder] = useState();
   const toast = useToast();
+   const bgColor = useColorModeValue("#2664a7", "#1E293B");
+   const textColor = useColorModeValue("white","gray.100");
+        
 
   // 🔹 GET CATEGORY LIST
   const fetchCategories = async () => {
@@ -102,8 +106,8 @@ const SubCategory = ({ isOpen, onClose }) => {
       <ModalOverlay />
       <ModalContent>
         <Flex
-          bg="#5c94cF"
-          color="white"
+          bg={bgColor}
+          color={textColor}
           px="16px"
           py="5px"
           justify="space-between"
@@ -176,8 +180,8 @@ const SubCategory = ({ isOpen, onClose }) => {
             Cancel
           </Button>
           <Button
-            bg="#5c94cF"
-            color="white"
+            bg={bgColor}
+            color={textColor}
             _hover={{ bgColor: "#2664a7" }}
             onClick={handleSubmit}
           >

@@ -10,7 +10,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { Image } from "@chakra-ui/react";
-import logo from "../../assets/logo.jpeg";
+import logo from "../../assets/logo.png";
 import { FaBoxOpen, FaTags } from "react-icons/fa";
 import { MdCategory, MdOutlineProductionQuantityLimits } from "react-icons/md";
 import { Link, useLocation, useNavigate } from "react-router-dom";

@@ -17,6 +17,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { Config } from "../../utils/Config";
+import { useColorModeValue } from "@chakra-ui/react";
 
 const ChildCategory = ({ isOpen, onClose }) => {
   const toast = useToast();
@@ -30,6 +31,10 @@ const ChildCategory = ({ isOpen, onClose }) => {
 
   const [childName, setChildName] = useState("");
   const [childSlug, setChildSlug] = useState("");
+
+  const bgColor = useColorModeValue("#2664a7", "#1E293B");
+  const textColor = useColorModeValue("white","gray.100");
+        
 
   //  GET CATEGORIES
   const fetchCategories = async () => {
@@ -125,7 +130,7 @@ const ChildCategory = ({ isOpen, onClose }) => {
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
-         <Flex bg="#5c94cF" color="white" px="16px" py="5px" justify="space-between" algin="center" borderTopRadius="md">
+         <Flex bg={bgColor} color={textColor} px="16px" py="5px" justify="space-between" algin="center" borderTopRadius="md">
           <Text fontWeight="bold"> Add Child Category</Text>
                <ModalCloseButton position="static" />
         </Flex>
@@ -193,8 +198,8 @@ const ChildCategory = ({ isOpen, onClose }) => {
             Cancel
           </Button>
           <Button 
-           bg="#5c94cF"
-          color="white"
+           bg={bgColor}
+          color={textColor}
           _hover={{bgColor:"#2664a7"}}  onClick={handleSubmit}>
             Add
           </Button>

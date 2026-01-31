@@ -171,7 +171,7 @@ const OrderList = () => {
         >
             <Flex justifyContent="space-between" alignItems="center" mb={2}>
 
-              <Text fontSize="2xl" fontWeight="600" mb={4}>
+              <Text fontSize="2xl" textColor={textColor} fontWeight="600" mb={4}>
                 Order List
               </Text>
               <Box>

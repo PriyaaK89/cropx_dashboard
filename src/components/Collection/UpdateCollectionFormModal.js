@@ -23,6 +23,7 @@ import {
 import axios from "axios";
 import { Config } from "../../utils/Config";
 import { FiUploadCloud } from "react-icons/fi";
+import { useColorModeValue } from "@chakra-ui/react";
 
 const UpdateCollectionModal = ({
   isOpen,
@@ -40,6 +41,9 @@ const UpdateCollectionModal = ({
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
+   const bgColor = useColorModeValue("#2664a7", "#1E293B");
+   const textColor = useColorModeValue("white", "gray.100");
+    
 
   console.log(editData?.id, "SelectedData");
   const toast = useToast();
@@ -115,7 +119,7 @@ const UpdateCollectionModal = ({
     <Modal isOpen={isOpen} onClose={onClose} size="lg" isCentered>
       <ModalOverlay />
       <ModalContent>
-        <Flex bg="#5c94cf" color="white" px="16px" py="5px" justifyContent="space-between" alignItems="center" borderTopRadius="md">
+        <Flex bgColor={bgColor} color={textColor} px="16px" py="5px" justifyContent="space-between" alignItems="center" borderTopRadius="md">
           <Text fontWeight="bold">Update Collection</Text>
         <ModalCloseButton position="static" />
         </Flex>
@@ -260,7 +264,7 @@ const UpdateCollectionModal = ({
           <Button variant="ghost" mr={3} onClick={onClose}>
             Cancel
           </Button>
-          <Button bgColor="#5c94cf" _hover={{bgColor:"#2664a7"}} color="white" onClick={handleUpdate} isLoading={loading}>
+          <Button bgColor={bgColor} _hover={{bgColor:"#2664a7"}} color={textColor} onClick={handleUpdate} isLoading={loading}>
             Update
           </Button>
         </ModalFooter>

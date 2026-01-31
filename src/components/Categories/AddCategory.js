@@ -1,3 +1,4 @@
+
 import {
   Box,
   Button,
@@ -29,6 +30,7 @@ import TopBar from "../TopBar/TopBar";
 import ResponsiveNavbar from "../TopBar/ResponsiveNavbar";
 import { Link } from "react-router-dom";
 import { Config } from "../../utils/Config";
+import { useColorModeValue } from "@chakra-ui/react";
 
 const AddCategory = () => {
   const toast = useToast();
@@ -111,11 +113,15 @@ const AddCategory = () => {
       });
     }
   };
+   const pageBg = useColorModeValue("gray.50", "#0E1629");
+    const cardBg = useColorModeValue("white", "#1E293B");
+    const textColor = useColorModeValue("gray.800", "gray.100");
+    const labelColor = useColorModeValue("gray.700", "gray.300");
 
   /* ================= UI ================= */
 
   return (
-    <Box width="100%" bg="#f8f8fb" pt={{ base: "60px", md: "60px", lg: 0 }}>
+    <Box width="100%" bg={pageBg} pt={{ base: "60px", md: "60px", lg: 0 }}>
       <Flex>
         {/* SIDEBAR */}
         <Box display={{ base: "none", lg: "block" }}>
@@ -145,7 +151,8 @@ const AddCategory = () => {
           </Box>
 
           <Box
-            bg="white"
+            bg={cardBg}
+            textColor={textColor}
             px={4}
             py={2}
             mt={4}
@@ -177,21 +184,21 @@ const AddCategory = () => {
             {/* FORM */}
             <Flex justify="center">
               <Box
-                bg="white"
+                bg={cardBg}
                 w={{ base: "100%", lg: "700px" }}
                 p={6}
                 rounded="2xl"
                 boxShadow="sm"
-                border="1px solid #e2e8f0"
+                border="1px solid #c0c9d5"
                 mt={2}
               >
                 <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
-                  <FormControl mb="3px" isRequired>
-                    <FormLabel fontSize="14px" fontWeight={500}>
+                  <FormControl textColor={labelColor} mb="3px" isRequired>
+                    <FormLabel  fontSize="12px" fontWeight={500}>
                       Category Name
                     </FormLabel>
                     <Input
-                      fontSize="14px"
+                      fontSize="12px"
                       name="cate_name"
                       value={form.cate_name}
                       onChange={handleChange}
@@ -199,12 +206,12 @@ const AddCategory = () => {
                     />
                   </FormControl>
 
-                  <FormControl mb="3px" isRequired>
-                    <FormLabel fontSize="14px" fontWeight={500}>
+                  <FormControl textColor={labelColor} mb="3px" isRequired>
+                    <FormLabel fontSize="12px" fontWeight={500}>
                       Slug
                     </FormLabel>
                     <Input
-                      fontSize="14px"
+                      fontSize="12px"
                       name="slug"
                       value={form.slug}
                       onChange={handleChange}
@@ -212,11 +219,11 @@ const AddCategory = () => {
                     />
                   </FormControl>
 
-                  <FormControl mb="3px" isRequired>
-                    <FormLabel fontSize="14px" fontWeight={500}>
+                  <FormControl textColor={labelColor} mb="3px" isRequired>
+                    <FormLabel fontSize="12px" fontWeight={500}>
                       Show In Menu
                     </FormLabel>
-                  <Select fontSize="14px"
+                  <Select fontSize="12px"
                   name="show_in_menu"
                   value={form.show_in_menu}
                   onChange={handleChange}
@@ -228,11 +235,11 @@ const AddCategory = () => {
                   </FormControl>
 
                   <FormControl isRequired mb="3px">
-                    <FormLabel fontSize="14px" fontWeight={500}>
+                    <FormLabel textColor={labelColor} fontSize="12px" fontWeight={500}>
                       Show On Home
                     </FormLabel>
                      <Select
-                     fontSize="14px"
+                     fontSize="12px"
                       name="show_on_home"
                       value={form.show_on_home}
                       onChange={handleChange}
@@ -244,11 +251,11 @@ c                     >
                   </FormControl>
 
                   <FormControl mb="3px">
-                    <FormLabel fontSize="14px" fontWeight={500}>
+                    <FormLabel textColor={labelColor} fontSize="12px" fontWeight={500}>
                       Menu Order
                     </FormLabel>
                     <Input
-                      fontSize="14px"
+                      fontSize="12px"
                       type="number"
                       name="menu_order"
                       value={form.menu_order}
@@ -258,11 +265,11 @@ c                     >
                   </FormControl>
 
                   <FormControl mb="3px">
-                    <FormLabel fontSize="14px" fontWeight={500}>
+                    <FormLabel textColor={labelColor} fontSize="12px" fontWeight={500}>
                       Home Order
                     </FormLabel>
                     <Input
-                      fontSize="14px"
+                      fontSize="12px"
                       type="number"
                       name="home_order"
                       value={form.home_order}
@@ -271,11 +278,11 @@ c                     >
                     />
                   </FormControl>
                   <FormControl mb="3px" gridColumn={{ md: "span 2" }}>
-                    <FormLabel fontSize="14px" fontWeight={500}>
+                    <FormLabel textColor={labelColor} fontSize="12px" fontWeight={500}>
                       Description
                     </FormLabel>
                     <Textarea
-                      fontSize="14px"
+                      fontSize="12px"
                       name="description"
                       value={form.description}
                       onChange={handleChange}
@@ -285,7 +292,7 @@ c                     >
 
                   {/* IMAGE */}
                   <FormControl mb="3px" gridColumn={{ md: "span 2" }}>
-                    <FormLabel fontSize="14px" fontWeight={500}>
+                    <FormLabel textColor={labelColor} fontSize="12px" fontWeight={500}>
                       Upload Image
                     </FormLabel>
 

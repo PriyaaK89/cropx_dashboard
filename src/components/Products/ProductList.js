@@ -48,6 +48,10 @@ const ProductList = () => {
 
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
+   const bgColor = useColorModeValue("white", "#1E293B");
+  const textColor = useColorModeValue("gray.800", "white");
+   const rowHoverBg = useColorModeValue("gray.50", "gray.700")
+
 
   // Modal disclosures
 
@@ -121,9 +125,7 @@ const ProductList = () => {
     onOpen();
   };
 
-  const bgColor = useColorModeValue("white", "#1E293B");
-  const textColor = useColorModeValue("gray.800", "white");
-   const rowHoverBg = useColorModeValue("gray.50", "gray.700")
+ 
   
   return (
     <>
@@ -178,7 +180,7 @@ const ProductList = () => {
             justifyContent="space-between"
             alignItems="center"
           >
-            <Text fontSize="2xl" fontWeight="600" mb={4}>
+            <Text fontSize="2xl"  fontWeight="600" mb={4}>
               Product List
             </Text>
 

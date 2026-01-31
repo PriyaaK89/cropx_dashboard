@@ -15,6 +15,7 @@ import {
   Badge,
 } from "@chakra-ui/react";
 import { BellIcon } from "@chakra-ui/icons";
+import { useColorModeValue } from "@chakra-ui/react";
 
 const NotificationPopover = () => {
   const notifications = [
@@ -44,18 +45,23 @@ const NotificationPopover = () => {
     },
   ];
 
+  const cardBg = useColorModeValue("white", "#1E293B");
+  const textColor = useColorModeValue("gray.800", "gray.100");
+  const rowHoverBg = useColorModeValue("gray.50", "gray.700");
+
   const unreadCount = notifications.filter((n) => !n.isRead).length;
 
   return (
     <Popover placement="bottom-end">
       <PopoverTrigger>
-        <IconButton
-          icon={<BellIcon />}
-          variant="ghost"
-          fontSize="22px"
-          position="relative"
-          aria-label="Notifications"
-        >
+        <Box position="relative">
+          <IconButton
+            icon={<BellIcon />}
+            variant="ghost"
+            fontSize="22px"
+            aria-label="Notifications"
+          />
+
           {unreadCount > 0 && (
             <Badge
               position="absolute"
@@ -67,12 +73,13 @@ const NotificationPopover = () => {
               h="8px"
             />
           )}
-        </IconButton>
+        </Box>
       </PopoverTrigger>
 
       <PopoverContent w="420px" boxShadow="xl" borderRadius="lg">
         <PopoverArrow />
         <PopoverCloseButton />
+
         <PopoverBody p={0}>
           {/* Header */}
           <Box p={4}>
@@ -87,7 +94,7 @@ const NotificationPopover = () => {
 
             <Flex mt={2} gap={4} fontSize="sm">
               <Text fontWeight="600">All</Text>
-              <Text color="gray.500">Unread ({unreadCount})</Text>
+              <Text>Unread ({unreadCount})</Text>
             </Flex>
           </Box>
 
@@ -99,8 +106,9 @@ const NotificationPopover = () => {
               <Box
                 key={item.id}
                 p={4}
-                bg={item.isRead ? "white" : "gray.50"}
-                _hover={{ bg: "gray.100" }}
+                color={textColor}
+                bg={item.isRead ? "transparent" : cardBg}
+                _hover={{ bg: rowHoverBg }}
               >
                 <Flex align="flex-start" gap={3}>
                   <Avatar size="sm" src={item.avatar} />
@@ -113,7 +121,7 @@ const NotificationPopover = () => {
                       {item.message}
                     </Text>
 
-                    <Text fontSize="xs" color="gray.500" mt={1}>
+                    <Text fontSize="xs" mt={1} color="gray.500">
                       {item.time}
                     </Text>
                   </Box>

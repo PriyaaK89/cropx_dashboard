@@ -77,7 +77,7 @@ const UserList = () => {
         <TopBar />
       </Box>
 
-      <Box p={4} bg={bgColor} textColor={textColor} mt={4} borderRadius="0.75rem" boxShadow="lg" mx={{base:3,lg:0}}>
+      <Box p={4}  bg={bgColor} textColor={textColor} mt={4} borderRadius="0.75rem" boxShadow="lg" mx={{base:3,lg:0}}>
          
          
         <Flex justify="space-between" align="center" px={5} mt={5}>
