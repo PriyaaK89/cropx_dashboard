@@ -34,7 +34,8 @@ const ChildCategory = ({ isOpen, onClose }) => {
 
   const bgColor = useColorModeValue("#2664a7", "#1E293B");
   const textColor = useColorModeValue("white","gray.100");
-        
+   const bgHover = useColorModeValue("#1e6abb", "#172336");
+      
 
   //  GET CATEGORIES
   const fetchCategories = async () => {
@@ -200,7 +201,7 @@ const ChildCategory = ({ isOpen, onClose }) => {
           <Button 
            bg={bgColor}
           color={textColor}
-          _hover={{bgColor:"#2664a7"}}  onClick={handleSubmit}>
+          _hover={{bgColor:bgHover}}  onClick={handleSubmit}>
             Add
           </Button>
         </ModalFooter>

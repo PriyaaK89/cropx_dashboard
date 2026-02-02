@@ -43,6 +43,8 @@ const UpdateCollectionModal = ({
   const [loading, setLoading] = useState(false);
    const bgColor = useColorModeValue("#2664a7", "#1E293B");
    const textColor = useColorModeValue("white", "gray.100");
+  const bgHover = useColorModeValue("#1e6abb", "#172336");
+   
     
 
   console.log(editData?.id, "SelectedData");
@@ -264,7 +266,7 @@ const UpdateCollectionModal = ({
           <Button variant="ghost" mr={3} onClick={onClose}>
             Cancel
           </Button>
-          <Button bgColor={bgColor} _hover={{bgColor:"#2664a7"}} color={textColor} onClick={handleUpdate} isLoading={loading}>
+          <Button bgColor={bgColor} _hover={{bgColor:bgHover}} color={textColor} onClick={handleUpdate} isLoading={loading}>
             Update
           </Button>
         </ModalFooter>

@@ -28,8 +28,8 @@ const SubCategory = ({ isOpen, onClose }) => {
   const toast = useToast();
    const bgColor = useColorModeValue("#2664a7", "#1E293B");
    const textColor = useColorModeValue("white","gray.100");
-        
-
+    const bgHover = useColorModeValue("#1e6abb", "#172336");
+    
   // 🔹 GET CATEGORY LIST
   const fetchCategories = async () => {
     try {
@@ -182,7 +182,7 @@ const SubCategory = ({ isOpen, onClose }) => {
           <Button
             bg={bgColor}
             color={textColor}
-            _hover={{ bgColor: "#2664a7" }}
+            _hover={{ bgColor: bgHover }}
             onClick={handleSubmit}
           >
             Add

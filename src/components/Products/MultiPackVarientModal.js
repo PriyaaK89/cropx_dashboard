@@ -18,6 +18,7 @@ import {
 import axios from "axios";
 import React, { useState } from "react";
 import { Config } from "../../utils/Config";
+import { useColorModeValue } from "@chakra-ui/react";
 
 const MultiPackVariantModal = ({
   isMultiVariantOpen, onMultiVariantClose, productId, variantID, fetchDetails }) => {
@@ -28,6 +29,9 @@ const MultiPackVariantModal = ({
   unit_price: "",
   discount_percentage: "",
 });
+ const bgColor = useColorModeValue("#2664a7", "#1E293B");
+    const textColor = useColorModeValue("white","gray.100");
+    const bgHover = useColorModeValue("#1e6abb", "#172336");
 
   // Handle input changes
   const handleChange = (field, value) => {
@@ -92,7 +96,7 @@ const MultiPackVariantModal = ({
     <Modal isOpen={isMultiVariantOpen} onClose={onMultiVariantClose} isCentered>
       <ModalOverlay/>
       <ModalContent>
-      <Flex bg="#5c94cF" color="white" px="16px" py="5px" justify="space-between" algin="center" borderTopRadius="md">
+      <Flex bg={bgColor} color={textColor} px="16px" py="5px" justify="space-between" algin="center" borderTopRadius="md">
         <Text fontWeight="bold">
           Add Multi Pack Variant
         </Text>
@@ -105,7 +109,7 @@ const MultiPackVariantModal = ({
 
             {/* Pack Quantity */}
             <FormControl>
-              <FormLabel fontWeight="600">Pack Quantity</FormLabel>
+              <FormLabel fontSize="12px" fontWeight="600">Pack Quantity</FormLabel>
               <NumberInput
                 min={1}
                 value={formData.pack_quantity}
@@ -117,7 +121,7 @@ const MultiPackVariantModal = ({
 
             {/* Unit Price */}
             <FormControl>
-              <FormLabel fontWeight="600">Unit Price (₹)</FormLabel>
+              <FormLabel fontSize="12px" fontWeight="600">Unit Price (₹)</FormLabel>
               <NumberInput min={1} value={formData.unit_price} onChange={(val) => handleChange("unit_price", val)} size='sm'>
                 <NumberInputField placeholder="Enter price per pack" />
               </NumberInput>
@@ -125,7 +129,7 @@ const MultiPackVariantModal = ({
 
             {/* Discount */}
             <FormControl>
-              <FormLabel fontWeight="600">Discount (%)</FormLabel>
+              <FormLabel fontSize="12px" fontWeight="600">Discount (%)</FormLabel>
               <NumberInput min={0} max={90} value={formData.discount_percentage} onChange={(val) => handleChange("discount_percentage", val)} size='sm'>
                 <NumberInputField placeholder="Enter discount %" />
               </NumberInput>
@@ -137,7 +141,7 @@ const MultiPackVariantModal = ({
                 Cancel
               </Button>
 
-              <Button bgColor="#5c94cF" color="white" _hover={{bgColor:"#2664a7"}} onClick={handleSubmit}>
+              <Button bgColor={bgColor} color={textColor} _hover={{bgColor:bgHover}} onClick={handleSubmit}>
                 Add Multi Pack
               </Button>
             </Flex>

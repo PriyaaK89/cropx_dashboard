@@ -42,6 +42,8 @@ const UpdateOrderModal = ({
   const [loading, setLoading] = useState(false);
   const bgColor = useColorModeValue("#2664a7", "#1E293B");
   const textColor = useColorModeValue("white", "gray.100");
+     const bgHover = useColorModeValue("#1e6abb", "#172336");
+  
   const { auth } = useContext(AuthContext);
   const apiToken = auth?.token;
   const toast = useToast();
@@ -238,7 +240,7 @@ const UpdateOrderModal = ({
             color={textColor}
             onClick={handleUpdateStatus}
             isLoading={loading}
-            _hover={{ bg: "#2664a7" }}
+            _hover={{ bg: bgHover }}
             isDisabled={localStatus === "DELIVERED"}
           >
             Update
