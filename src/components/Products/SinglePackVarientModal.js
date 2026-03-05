@@ -2,10 +2,15 @@ import React, { useState } from "react";
 import { Modal, ModalOverlay, ModalContent, ModalFooter, Flex,Text, ModalBody, ModalCloseButton, Button, FormControl, FormLabel, Input, Select, useToast, VStack} from "@chakra-ui/react";
 import axios from "axios";
 import { Config } from "../../utils/Config";
+import { useColorModeValue } from "@chakra-ui/react";
+
 
 const SinglePackVarientModal = ({ isOpen, onClose, productId, productType, fetchDetails }) => {
   const toast = useToast();
   const [loading, setLoading] = useState(false);
+  const bgColor = useColorModeValue("#2664a7", "#1E293B");
+   const textColor = useColorModeValue("white","gray.100");
+   const bgHover = useColorModeValue("#1e6abb", "#172336");
 
   const quantityOptions = productType === "solid" ? ["gm", "kg"] : productType === "liquid" ? ["ml", "liter"] : [];
 
@@ -52,7 +57,7 @@ const SinglePackVarientModal = ({ isOpen, onClose, productId, productType, fetch
     <Modal isOpen={isOpen} onClose={onClose} size="md" motionPreset="slideInBottom">
       <ModalOverlay />
       <ModalContent> 
-        <Flex bg="#5c94cf" color="white" px="16px" py="5px" justify="space-between" align="center" borderTopRadius="md">
+        <Flex bg={bgColor} color={textColor} px="16px" py="5px" justify="space-between" align="center" borderTopRadius="md">
           <Text fontWeight="bold">Add Variant</Text>
           <ModalCloseButton position="static" />
         </Flex>
@@ -135,16 +140,16 @@ const SinglePackVarientModal = ({ isOpen, onClose, productId, productType, fetch
 
         <ModalFooter borderTop="1px solid #f1f1f1" mt={4}>
           <Button
-           bgColor="#5c94cF"
-            color="white"
+           bgColor={bgColor}
+            color={textColor}
             borderRadius="lg"
-            _hover={{bgColor:"#2664a7"}}
+            _hover={{bgColor:bgHover}}
             isLoading={loading}
             onClick={submitVariant}
             mx="auto"
           >
             Save Variant
-          </Button>
+          </Button> 
         </ModalFooter>
       </ModalContent>
     </Modal>

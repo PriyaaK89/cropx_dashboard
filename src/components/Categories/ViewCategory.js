@@ -7,6 +7,7 @@ import { Config } from "../../utils/Config";
 import { useEffect, useState } from "react";
 import BestSelling from "../ProductByType/BestSelling";
 import { useParams } from "react-router-dom";
+import { useColorModeValue } from "@chakra-ui/react";
 
 const ViewCategory = () => {
   // const { cate, slug } = useParams();
@@ -14,7 +15,10 @@ const ViewCategory = () => {
   console.log("useParams:", params);
 
   const { cate, slug } = params;
-  
+   const bgColor = useColorModeValue("white", "#1E293B");
+   const textColor = useColorModeValue("gray.800", "white");
+    const pageBg = useColorModeValue("gray.50", "#0E1629");
+    
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -61,7 +65,7 @@ const ViewCategory = () => {
   }, [cate, slug, page, limit, sort, minPrice, maxPrice, rating, stock]);
 
   return (
-    <Box width="100%" bg="#f8f8fb" pt={{ base: "60px", lg: 0 }}>
+    <Box width="100%" bg={pageBg} pt={{ base: "60px", lg: 0 }}>
       <Flex>
         <Box display={{ base: "none", lg: "block" }}>
           <LeftSidebar />
@@ -87,7 +91,8 @@ const ViewCategory = () => {
           </Box>
 
           <Box
-            bg="white"
+            bg={bgColor}
+            textColor={textColor}
             p={4}
             boxShadow="lg"
             borderRadius="0.75rem"
@@ -191,8 +196,8 @@ const ViewCategory = () => {
                   <BestSelling
                     key={p.id}
                     p={p}
-                    cardBg="white"
-                    priceColor="green.600"
+                    cardBg={pageBg}
+                    priceColor={textColor}
                   />
                 ))}
               </Flex>

@@ -17,6 +17,7 @@ import {
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Config } from "../../utils/Config";
+import { useColorModeValue } from "@chakra-ui/react";
 
 const UpdateSingleVariantModal = ({
   isUpdateSinglePackVariantOpen,
@@ -28,6 +29,10 @@ const UpdateSingleVariantModal = ({
 }) => {
   console.log(variants, "variants");
   const toast = useToast();
+   const bgColor = useColorModeValue("#2664a7", "#1E293B");
+     const textColor = useColorModeValue("white","gray.100");
+    const bgHover = useColorModeValue("#1e6abb", "#172336");
+         
 
   const [formData, setFormData] = useState({
     product_id: productId,
@@ -116,7 +121,7 @@ const UpdateSingleVariantModal = ({
       size="lg">
       <ModalOverlay />
       <ModalContent>
-        <Flex bg="#5c94cF" color="white" px="16px" py="5px" justify="space-between" align="center" borderTopRadius="md">
+        <Flex bg={bgColor} color={textColor} px="16px" py="5px" justify="space-between" align="center" borderTopRadius="md">
            <Text fontWeight="bold">Update Single Variant</Text>
         <ModalCloseButton position="static" />
         </Flex>
@@ -220,7 +225,7 @@ const UpdateSingleVariantModal = ({
           <Button variant="ghost" onClick={onUpdateSinglePackVariantClose}>
             Cancel
           </Button>
-          <Button bg="#5c94cF" color="white" _hover={{bgColor:"#2664a7"}} ml={3} onClick={handleUpdateSingleVariant}>
+          <Button bg={bgColor} color={textColor} _hover={{bgColor:bgHover}} ml={3} onClick={handleUpdateSingleVariant}>
             Update Variant
           </Button>
         </ModalFooter>

@@ -15,12 +15,11 @@ import {
 import React from "react";
 import { useColorModeValue } from "@chakra-ui/react";
 
-const ImageViewModal = ({ isOpen, onClose, previewImage }) => {
+const ProductImageViewModal = ({ isOpen, onClose, previewImage }) => {
      const bgColor = useColorModeValue("#2664a7", "#1E293B");
-      const textColor = useColorModeValue("white","gray.100");
-     const btnBg = useColorModeValue("#E53E3E","#c42424");
-     const hoverBg = useColorModeValue("#ee3838","#d41717")
-       
+           const textColor = useColorModeValue("white","gray.100");
+          const btnBg = useColorModeValue("#E53E3E","#c42424");
+          const hoverBg = useColorModeValue("#ee3838","#d41717")
     return (
         <Modal isOpen={isOpen} onClose={onClose} size="sm" isCentered>
             <ModalOverlay />
@@ -49,12 +48,12 @@ const ImageViewModal = ({ isOpen, onClose, previewImage }) => {
 
                 </ModalBody>
                 <ModalFooter justifyContent="center">
-                    <Button bg={btnBg} textColor={textColor} _hover={{hoverBg}} onClick={onClose}>Close</Button>
+                    <Button bg={btnBg} textColor={textColor} _hover={{bg:hoverBg}} onClick={onClose}>Close</Button>
                 </ModalFooter>
             </ModalContent>
         </Modal>
     );
 };
 
-export default ImageViewModal;
+export default ProductImageViewModal;
 

@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { EditIcon } from "@chakra-ui/icons";
 import { useState, useRef } from "react";
+import { useColorModeValue } from "@chakra-ui/react";
 
 import LeftSidebar from "../LeftSidebarLayout/LeftSidebar";
 import ResponsiveNavbar from "../TopBar/ResponsiveNavbar";
@@ -29,9 +30,12 @@ const Profile = () => {
       setProfileImage(imageURL);
     }
   };
+   const pageBg = useColorModeValue("gray.50", "#0E1629");
+    const cardBg = useColorModeValue("white", "#1E293B");
+    const textColor = useColorModeValue("gray.800", "gray.100");
 
   return (
-    <Box w="100%" minH="98vh" bg="#f8f8f8" pt={{ base: "60px", lg: 0 }}>
+    <Box w="100%" minH="98vh" bg={pageBg} pt={{ base: "60px", lg: 0 }}>
       <Flex>
         {/* LEFT SIDEBAR */}
         <Box display={{ base: "none", lg: "block" }}>
@@ -63,7 +67,8 @@ const Profile = () => {
           {/* PROFILE CARD */}
           <Box
             mt={4}
-            bg="white"
+            bg={cardBg}
+            textColor={textColor}
             p={6}
             borderRadius="0.75rem"
             boxShadow="lg"

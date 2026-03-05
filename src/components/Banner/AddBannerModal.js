@@ -18,10 +18,14 @@ import axios from "axios";
 import { Config } from "../../utils/Config";
 import { AuthContext } from "../Context/AuthContext";
 import { FiUploadCloud } from "react-icons/fi";
+import { useColorModeValue } from "@chakra-ui/react";
 
 const AddBannerModal = ({ isOpen, onClose, fetchBanner }) => {
   const [bannerFile, setBannerFile] = useState(null);
   const [loading, setLoading] = useState(false);
+  const bgColor = useColorModeValue("#2664a7", "#1E293B");
+  const textColor = useColorModeValue("white","gray.100");
+      
 
   const { auth } = useContext(AuthContext);
   const apiToken = auth?.token;
@@ -89,7 +93,7 @@ const AddBannerModal = ({ isOpen, onClose, fetchBanner }) => {
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
-        <Flex bg="#5c94cf" color="white" px="16px" py="5px"  justifyContent="space-between" alignItems="center" borderTopRadius="md">
+        <Flex bg={bgColor} color={textColor} px="16px" py="5px"  justifyContent="space-between" alignItems="center" borderTopRadius="md">
             <Text fontWeight="bold">Add Banner</Text>
         <ModalCloseButton position="static"/>
         </Flex>
@@ -141,8 +145,8 @@ const AddBannerModal = ({ isOpen, onClose, fetchBanner }) => {
 
           {/* SUBMIT BUTTON */}
           <Button
-          bgColor="#5c94cf"
-          color="white"
+          bgColor={bgColor}
+          color={textColor}
 
             width="100%"
             onClick={handleAddBanner}

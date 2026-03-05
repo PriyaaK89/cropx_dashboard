@@ -36,7 +36,7 @@ const BestSelling = ({ p, cardBg, priceColor,
       mt="1rem"
         bg={cardBg}
         rounded="2xl"
-        shadow="sm" border="1px solid #eeeded"
+        shadow="sm" border="1px solid #ccc"
         overflow="hidden"
         position="relative"
         transition="all 0.3s"
