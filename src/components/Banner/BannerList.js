@@ -162,7 +162,7 @@ const BannerList = () => {
                   {/* IMAGE */}
                   <Box w={{ base: "100%",  lg: "75%" }}>
                     <Image
-                      src={data?.banner_img}
+                      src={data?.banner_image}
                       borderRadius="md"
                       w="100%"
                       maxH={{ base: "180px", md: "220px", lg: "260px" }}

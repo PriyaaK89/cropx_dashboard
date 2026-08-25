@@ -37,7 +37,6 @@ const UpdateCollectionModal = ({
   const [showInMenu, setShowInMenu] = useState("");
   const [homeOrder, setHomeOrder] = useState("");
   const [showOnHome, setShowOnHome] = useState("");
-  const [image, setImage] = useState(null);
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -53,8 +52,6 @@ const UpdateCollectionModal = ({
     const selected = e.target.files[0];
     if (selected) {
       setFile(selected);
-      setImage(selected)
-
       setPreview(URL.createObjectURL(selected));
     }
   };
@@ -74,6 +71,7 @@ const UpdateCollectionModal = ({
       setHomeOrder(editData.home_order);
       setShowOnHome(Number(editData.show_on_home));
       setPreview(editData.image);
+      setFile(null); // reset any stale selected file from a previous edit session
     }
   }, [editData]);
 
@@ -85,7 +83,7 @@ const UpdateCollectionModal = ({
     formData.append("show_in_menu", showInMenu);
     formData.append("home_order", homeOrder);
     formData.append("show_on_home", showOnHome);
-    if (image) {
+    if (file) {
       formData.append("image", file);
     }
 
@@ -205,33 +203,21 @@ const UpdateCollectionModal = ({
             </GridItem>
             <GridItem colSpan={2}>
               <FormControl mb="4px">
-                <FormLabel fontSize="14px" fontWeight="bold">
-                  Image
-                </FormLabel>
+                <FormLabel fontSize="14px" fontWeight="bold"> Image </FormLabel>
                 <Input
                   type="file"
                   id="productImage"
                   display="none"
                   accept="image/*"
-                  onChange={handleImage}
-                />
+                  onChange={handleImage}/>
 
-                <Box
-                  border="2px dashed"
-                  p={4}
-                  borderColor="gray.300"
-                  borderRadius="md"
-                  display="flex"
-                  flexDirection="column"
+                <Box border="2px dashed" p={4}
+                  borderColor="gray.300" borderRadius="md"
+                  display="flex" flexDirection="column"
                   alignItems="center"
-                  justifyContent="center"
-                  cursor="pointer"
-                  position="relative"
-                  _hover={{ borderColor: "blue.400" }}
-                  onClick={() =>
-                    !preview && document.getElementById("productImage").click()
-                  }
-                >
+                  justifyContent="center" cursor="pointer"
+                  position="relative" _hover={{ borderColor: "blue.400" }}
+                  onClick={() => !preview && document.getElementById("productImage").click() } >
                   {preview ? (
                     <>
                       <Image src={preview} maxH="160px" mx="auto" />
@@ -242,11 +228,8 @@ const UpdateCollectionModal = ({
                         bottom={0}
                         left="50%"
                         transform="translate(-50%, -50%)"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleResetImage();
-                        }}
-                      >
+                        onClick={(e) => { e.stopPropagation();
+                          handleResetImage(); }} >
                         Reset Image
                       </Button>
                     </>
