@@ -30,16 +30,16 @@ const lineData = {
       backgroundColor: "rgba(49, 130, 206, 0.2)",
       tension: 0.4,
       fill: true,
-      pointRadius: 3,          // ✅ lighter points
+      pointRadius: 3,          //  lighter points
     },
   ],
 };
 
 const lineOptions = {
   responsive: true,
-  maintainAspectRatio: false,   // ✅ no layout shift
+  maintainAspectRatio: false,   //  no layout shift
   plugins: {
-    legend: { display: false }, // ✅ reduce render cost
+    legend: { display: false }, //  reduce render cost
   },
   scales: {
     x: { grid: { display: false } },
@@ -54,7 +54,7 @@ const DashboardLineChart = () => (
     p={4}
     borderRadius="xl"
     boxShadow="sm"
-    h="320px"                   // ✅ fixed height
+    h="320px"                   //  fixed height
     mx={{ base: 3, md: 3, lg: 0 }}
   >
     <Text fontSize="lg" fontWeight="bold" mb={3}>

@@ -47,9 +47,9 @@ const barData = {
 
 const barOptions = {
   responsive: true,
-  maintainAspectRatio: false,   // ✅ prevent layout shift
+  maintainAspectRatio: false,   //  prevent layout shift
   plugins: {
-    legend: { display: false }, // ✅ lighter render
+    legend: { display: false }, //  lighter render
   },
   scales: {
     x: { grid: { display: false } },
@@ -64,7 +64,7 @@ const DashboardBarChart = () => (
     p={4}
     borderRadius="xl"
     boxShadow="sm"
-    h="320px"          // ✅ fixed height for stability
+    h="320px"          //  fixed height for stability
     mx={{ base: 3, md: 3, lg: 0 }}
   >
     <Text fontSize="lg" fontWeight="bold" mb={3}>

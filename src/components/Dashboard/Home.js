@@ -18,7 +18,7 @@ const Home = () => {
     <Box
       w={{ base: "100%", lg: "calc(100% - 260px)" }}
       ml={{ base: 0, lg: "260px" }}
-      px={{ base: 3, lg: 6 }}     // ✅ better mobile padding
+      px={{ base: 3, lg: 6 }}     //  better mobile padding
       mb={5}
       minH="100vh"
     >

@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { LuMoon, LuSun, LuMinimize } from "react-icons/lu";
 import { CiMaximize2 } from "react-icons/ci";
 import { useToast } from "@chakra-ui/react";
+import userImg from "../../assets/user-profile.jpg";
 
 const TopBar = () => {
   const { toggleColorMode, colorMode } = useColorMode();
@@ -25,11 +26,11 @@ const TopBar = () => {
   const mail = auth?.email;
   const navigate = useNavigate();
 
-  // ✅ Fullscreen state
+  //  Fullscreen state
   const [isFullscreen, setIsFullscreen] = useState(false);
   const toast = useToast();
 
-  // ✅ Toggle fullscreen
+  //  Toggle fullscreen
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen();
@@ -46,7 +47,7 @@ const TopBar = () => {
     }
   };
 
-  // ✅ Listen fullscreen change (ESC / browser exit)
+  //  Listen fullscreen change (ESC / browser exit)
   useEffect(() => {
     const handleFullscreenChange = () => {
       setIsFullscreen(!!document.fullscreenElement);
@@ -123,7 +124,7 @@ const TopBar = () => {
             <Avatar
               size="sm"
               name="User"
-              src={userProfileImg}
+              src={userImg}
             />
             <Box lineHeight="1.1">
               <Text fontSize="xs" color="gray.500">

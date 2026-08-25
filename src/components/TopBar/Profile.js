@@ -15,7 +15,7 @@ import { useColorModeValue } from "@chakra-ui/react";
 import LeftSidebar from "../LeftSidebarLayout/LeftSidebar";
 import ResponsiveNavbar from "../TopBar/ResponsiveNavbar";
 import TopBar from "./TopBar";
-import userProfileImg from "../../assets/user-profile.jpg"
+import userProfileImg from "../../assets/user-profile.jpg";
 
 const Profile = () => {
   const [profileImage, setProfileImage] = useState(

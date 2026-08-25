@@ -25,18 +25,18 @@ const ViewSubCategoryModal = ({
   subCategories,
   onDeleteSubCategory,
 }) => {
-  // ✅ Hooks always at top
+  //  Hooks always at top
   const [childMap, setChildMap] = useState({});
   const [childLoading, setChildLoading] = useState({});
 
-  // ✅ Dark / Light theme colors
+  //  Dark / Light theme colors
   const headerBg = useColorModeValue("#2664a7", "#1E293B");
   const headerText = useColorModeValue("white", "gray.100");
   const bodyBg = useColorModeValue("white", "#0E1629");
   const rowBg = useColorModeValue("gray.50", "#1A202C");
   const textColor = useColorModeValue("gray.800", "gray.200");
 
-  // ✅ Fetch child categories
+  //  Fetch child categories
   const fetchChildCategories = async (subId) => {
     setChildLoading((prev) => ({ ...prev, [subId]: true }));
 
@@ -56,7 +56,7 @@ const ViewSubCategoryModal = ({
     }
   };
 
-  // ✅ Delete child category
+  //  Delete child category
   const deleteChildCategory = async (id, subId) => {
     try {
       await axios.delete(`${Config.delete_child_category}/${id}`);
