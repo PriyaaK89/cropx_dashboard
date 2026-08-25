@@ -12,6 +12,7 @@ import { useContext } from "react";
 import { AuthContext } from "../Context/AuthContext";
 import NotificationPopover from "./NotificationPopover";
 import { useNavigate } from "react-router-dom";
+import userProfileImg from "../../assets/user-profile.jpg"
 
 const TopBar = () => {
   const { auth } = useContext(AuthContext);
@@ -59,8 +60,8 @@ const TopBar = () => {
           >
             <Avatar
               size="sm"
-              name="Priya Kumawat"
-              src="https://i.pravatar.cc/150?img=5"
+              name="User"
+              src={userProfileImg}
             />
             <Box lineHeight="1.1">
               <Text fontSize="xs" color="gray.500">

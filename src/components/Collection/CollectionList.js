@@ -37,7 +37,7 @@ const CollectionList = () => {
 
   // Pagination states
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(5);
+  const [limit, setLimit] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [previewImage, setPreviewImage] = useState(null);
 

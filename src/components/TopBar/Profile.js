@@ -14,10 +14,11 @@ import { useState, useRef } from "react";
 import LeftSidebar from "../LeftSidebarLayout/LeftSidebar";
 import ResponsiveNavbar from "../TopBar/ResponsiveNavbar";
 import TopBar from "./TopBar";
+import userProfileImg from "../../assets/user-profile.jpg"
 
 const Profile = () => {
   const [profileImage, setProfileImage] = useState(
-    "https://i.pravatar.cc/300?img=5"
+    userProfileImg
   );
 
   const fileInputRef = useRef(null);
