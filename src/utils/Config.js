@@ -1,5 +1,6 @@
 const BASE_URL = `${process.env.REACT_APP_BASE_URL}`;
-console.log(BASE_URL, "base_url");
+// const BASE_URL = `http://192.168.29.4:3000/`
+console.log(BASE_URL, "base_url123");
 
 export const Config = {
   Login_url: `${BASE_URL}admin/signin`,
@@ -8,7 +9,7 @@ export const Config = {
   add_product: `${BASE_URL}product/add-product`,
   add_product_details: `${BASE_URL}product/add-product-details`,
   update_product_details: `${BASE_URL}product/update-product-details`,
-  // update_product: `${BASE_URL}product/update-product`,
+  update_product: `${BASE_URL}product/update-product`,
   delete_product: `${BASE_URL}product/delete-product`,
   get_categories: `${BASE_URL}category/get-category`,
   add_categories: `${BASE_URL}category/add-category`,
@@ -22,7 +23,7 @@ export const Config = {
   delete_banner: `${BASE_URL}banner/delete-banner`,
   delete_category: `${BASE_URL}category/delete-category`,
   get_users: `${BASE_URL}get-users`,
-  Delete_Single_variant: `${BASE_URL}product/variant`,
+  Delete_Single_variant: `${BASE_URL}product/variant`, 
   Order_List: `${BASE_URL}admin/order-list`,
   update_order_status: `${BASE_URL}api/update-order-status`,
   add_sub_category: `${BASE_URL}create-subCategory`,
@@ -36,5 +37,7 @@ export const Config = {
   best_selling: `${BASE_URL}products/best-selling`,
   new_arrivals: `${BASE_URL}products/new-arrivals`,
   Products_By_Slug:`${BASE_URL}products`,
-  // upload_image: `${BASE_URL}upload-image`,
+  upload_image: `${BASE_URL}upload-image`,
+  delete_subcategory: `${BASE_URL}delete-subcategory`,
+  delete_child_category: `${BASE_URL}delete-child-category`
 };

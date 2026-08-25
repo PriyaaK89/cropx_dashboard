@@ -10,13 +10,14 @@ import {
   FormControl,
   FormLabel,
   Text,
-  Flex,
+  Flex, 
   Select,
   Input,
   useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { Config } from "../../utils/Config";
+import { useColorModeValue } from "@chakra-ui/react";
 
 const SubCategory = ({ isOpen, onClose }) => {
   const [subCategories, setSubCategories] = useState([]);
@@ -25,7 +26,10 @@ const SubCategory = ({ isOpen, onClose }) => {
   const [subSlug, setSubSlug] = useState("");
   const [menuOrder, setMenuOrder] = useState();
   const toast = useToast();
-
+   const bgColor = useColorModeValue("#2664a7", "#1E293B");
+   const textColor = useColorModeValue("white","gray.100");
+    const bgHover = useColorModeValue("#1e6abb", "#172336");
+    
   // 🔹 GET CATEGORY LIST
   const fetchCategories = async () => {
     try {
@@ -102,25 +106,26 @@ const SubCategory = ({ isOpen, onClose }) => {
       <ModalOverlay />
       <ModalContent>
         <Flex
-          bg="#5c94cF"
-          color="white"
+          bg={bgColor}
+          color={textColor}
           px="16px"
           py="5px"
           justify="space-between"
           algin="center"
           borderTopRadius="md"
+
         >
           <Text fontWeight="bold">Add Sub Category</Text>
           <ModalCloseButton position="static" />
         </Flex>
         <ModalBody>
           {/* CATEGORY DROPDOWN */}
-          <FormControl mb="4px" isRequired>
-            <FormLabel fontSize="14px" fontWeight="bold">
+          <FormControl mb="2" isRequired>
+            <FormLabel fontSize="12px" fontWeight={500} mb="0.5">
               Select Category
             </FormLabel>
             <Select
-              fontSize="14px"
+              fontSize="12px"
               placeholder="Select category"
               value={categoryId}
               onChange={(e) => setCategoryId(e.target.value)}
@@ -134,36 +139,36 @@ const SubCategory = ({ isOpen, onClose }) => {
           </FormControl>
 
           {/* SUB CATEGORY INPUT  */}
-          <FormControl mb="4px" isRequired>
-            <FormLabel fontSize="14px" fontWeight="bold">
+          <FormControl mb="2" isRequired>
+            <FormLabel fontSize="12px" fontWeight={500} mb="0.5">
               Sub Category Name
             </FormLabel>
             <Input
-              fontSize="14px"
+              fontSize="12px"
               placeholder="Enter sub category name"
               value={subName}
               onChange={(e) => setSubName(e.target.value)}
             />
           </FormControl>
-          <FormControl mb="4px" isRequired>
-            <FormLabel fontSize="14px" fontWeight="bold">
+          <FormControl mb="2" isRequired>
+            <FormLabel fontSize="12px" fontWeight={500} mb="0.5">
               Sub Category Slug
             </FormLabel>
             <Input
               placeholder="sub-category-slug"
-              fontSize="14px"
+              fontSize="12px"
               value={subSlug}
               onChange={(e) => setSubSlug(e.target.value)}
             />
           </FormControl>
-          <FormControl mb="4px" isRequired>
-            <FormLabel fontSize="14px" fontWeight="bold">
+          <FormControl mb="2" isRequired>
+            <FormLabel fontSize="12px" fontWeight={500} mb="0.5">
               {" "}
               Sub Order Menu
             </FormLabel>
             <Input
               placeholder="sub-order-menu"
-              fontSize="14px"
+              fontSize="12px"
               value={menuOrder}
               onChange={(e) => setMenuOrder(e.target.value)}
             />
@@ -175,9 +180,9 @@ const SubCategory = ({ isOpen, onClose }) => {
             Cancel
           </Button>
           <Button
-            bg="#5c94cF"
-            color="white"
-            _hover={{ bgColor: "#2664a7" }}
+            bg={bgColor}
+            color={textColor}
+            _hover={{ bgColor: bgHover }}
             onClick={handleSubmit}
           >
             Add

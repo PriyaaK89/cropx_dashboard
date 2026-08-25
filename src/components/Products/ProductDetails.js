@@ -29,6 +29,8 @@ import ResponsiveNavbar from "../TopBar/ResponsiveNavbar";
 import TopBar from "../TopBar/TopBar";
 import { GoHomeFill } from "react-icons/go";
 import { Link } from "react-router-dom";
+import { useColorModeValue } from "@chakra-ui/react";
+
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -71,17 +73,21 @@ const ProductDetails = () => {
     getProductDetails();
   }, [id]);
   // Simple Section Wrapper (Admin Style)
+  const pageBg = useColorModeValue("gray.50", "#0E1629");
+  const cardBg = useColorModeValue("white", "#1E293B");
+  const textColor = useColorModeValue("gray.800", "gray.100");
   const Section = ({ title, children }) => (
     <Box
       py={3}
       width="100%"
-      bgColor="#f8f8f8"
+      bgColor={cardBg}
+      textColor={textColor}
       height="auto"
       borderRadius="lg"
       boxShadow="md"
       mb={4}
     >
-      <Heading fontSize="14px" px={4} fontWeight="700" color="#111" mb={1}>
+      <Heading fontSize="14px" px={4} fontWeight="700" color={textColor} mb={1}>
         {title}
       </Heading>
       <Box>{children}</Box>
@@ -122,7 +128,7 @@ const ProductDetails = () => {
         productId={productId}
         data={data}
       />
-      <Box w="100%" bg="#f8f8f8" pt={{ base: "60px", lg: 0 }}>
+      <Box w="100%" bg={pageBg} pt={{ base: "60px", lg: 0 }}>
         <Flex>
           <Box display={{ base: "none", lg: "flex" }}>
             <LeftSidebar />
@@ -147,7 +153,8 @@ const ProductDetails = () => {
               <TopBar />
             </Box>
             <Box
-              bg="white"
+              bg={cardBg}
+              textColor={textColor}
               p={4}
               mt={4}
               boxShadow="lg"
@@ -201,14 +208,14 @@ const ProductDetails = () => {
               >
                 {/* PRODUCT IMAGE */}
                 <Box w={{ base: "100%", md: "35%" }}>
-                  <Card bg="white" p={4} mt={3}>
+                  <Card bg={cardBg} p={4} mt={3}>
                     <Image
                       src={data?.product_img}
                       alt={data?.product_name}
                       objectFit="contain"
                       w="100%"
                       h="300px"
-                      bg="#fafafa"
+                      bg={cardBg}
                       p={4}
                       boxShadow="sm"
                     />
@@ -217,13 +224,13 @@ const ProductDetails = () => {
 
                 {/* PRODUCT BASIC DETAILS */}
                 <Box flex="1">
-                  <Card bg="white">
+                  <Card bg={cardBg}>
                     <Stack spacing={3} px={3} py={1}>
-                      <Heading size="md">{data?.product_name}</Heading>
+                      <Heading textColor={textColor} size="md">{data?.product_name}</Heading>
 
-                      <Text color="gray.600">{data?.product_description}</Text>
+                      <Text color={textColor}>{data?.product_description}</Text>
 
-                      <Text fontWeight="600" mt={2}>
+                      <Text textColor={textColor} fontWeight="600" mt={2}>
                         Type:{" "}
                         <span style={{ color: "#2b6cb0" }}>
                           {data?.product_type}
@@ -236,7 +243,7 @@ const ProductDetails = () => {
 
               {/* ------------------ SINGLE PACK PRICING ------------------ */}
               <Box mt={8}>
-                <Heading size="md" mb={3} color="gray.700">
+                <Heading textColor={textColor} size="md" mb={3} color={textColor}>
                   Single Pack Pricing
                 </Heading>
 
@@ -245,7 +252,7 @@ const ProductDetails = () => {
                     <Card
                       key={item?.variant_id}
                       position="relative"
-                      bgColor="#e8f5e9"
+                      bgColor={cardBg}
                       border="1px solid rgb(46, 125, 50)"
                       p={5}
                       w="100%"
@@ -254,18 +261,18 @@ const ProductDetails = () => {
                       boxShadow="md"
                     >
                       <Stack spacing={2}>
-                        <Text fontSize="14px" fontWeight="700">
+                        <Text textColor={textColor} fontSize="14px" fontWeight="700">
                           {item?.base_quantity_value} {item?.base_quantity_type}
                         </Text>
 
                         <Flex gap={3} align="center">
-                          <Text fontSize="14px" fontWeight="700">
+                          <Text fontSize="14px" fontWeight="700" textColor={textColor}>
                             ₹{item?.discounted_price}
                           </Text>
                           <Text
                             textDecoration="line-through"
                             fontSize="13px"
-                            color="gray.500"
+                            color={textColor}
                           >
                             ₹{item?.actual_price}
                           </Text>
@@ -273,7 +280,7 @@ const ProductDetails = () => {
 
                         <Badge
                           bgColor="#ffa726"
-                          color="white"
+                          color="textColor"
                           width="fit-content"
                           position="absolute"
                           top="-1px"
@@ -292,7 +299,7 @@ const ProductDetails = () => {
 
               {/* ------------------ MULTIPACK PRICING ------------------ */}
               <Box mt={10} mb={4}>
-                <Heading size="md" mb={3} color="gray.700">
+                <Heading textColor={textColor} size="md" mb={3} color={textColor}>
                   Multipack Options
                 </Heading>
 
@@ -301,7 +308,7 @@ const ProductDetails = () => {
                     <Card
                       key={mp?.multipack_id}
                       position="relative"
-                      bgColor="white"
+                      bgColor={cardBg}
                       border="1px solid #e0e0e0"
                       p={5}
                       w="100%"
@@ -310,12 +317,12 @@ const ProductDetails = () => {
                       boxShadow="md"
                     >
                       <Stack spacing={2}>
-                        <Text  fontSize="14px">
+                        <Text fontSize="14px" textColor={textColor}>
                           {mp?.pack_quantity} Packs × {mp?.base_quantity_value}{" "}
                           {mp?.base_quantity_type}
                         </Text>
 
-                        <Text color="gray.600" fontSize="14px">
+                        <Text color="gray.600" fontSize="14px" textColor={textColor}>
                           Total Quantity: {mp?.total_quantity_value}
                         </Text>
 
@@ -323,12 +330,13 @@ const ProductDetails = () => {
                           <Text
                             fontSize="14px"
                             fontWeight="bold"
+                            textColor={textColor}
                           >
                             ₹{mp?.discounted_price}
                           </Text>
                           <Text
                             textDecoration="line-through"
-                            color="gray.500"
+                            textColor={textColor}
                             fontSize="13px"
                           >
                             ₹{mp?.actual_price}
@@ -336,7 +344,7 @@ const ProductDetails = () => {
                         </Flex>
 
                         <Badge bgColor="#ffa726"
-                          color="white"
+                          color={textColor}
                           width="fit-content"
                           position="absolute"
                           top="-1px"
@@ -358,7 +366,7 @@ const ProductDetails = () => {
                 <Section title="Product Images">
                   <SimpleGrid columns={{ base: 2, md: 4 }} spacing={2}>
                     {data?.details?.images?.map((img, i) => (
-                      <Card key={i} p={2} shadow="sm" borderRadius="lg">
+                      <Card key={i} p={2} shadow="sm" borderRadius="lg" bg={cardBg}>
                         <Image src={img.src} h="120px" objectFit="cover" />
                       </Card>
                     ))}
@@ -367,7 +375,7 @@ const ProductDetails = () => {
 
                 {/* ---- OVERVIEW ---- */}
                 <Section title="Product Overview">
-                  <Text data={data?.details?.product_overview} />
+                  <Text textColor={textColor} data={data?.details?.product_overview} />
                 </Section>
 
                 {/* ---- FEATURES ---- */}

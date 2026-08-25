@@ -4,12 +4,18 @@ import axios from "axios";
 import { Config } from "../../utils/Config";
 import { WarningTwoIcon } from "@chakra-ui/icons";
 import { AuthContext } from "../Context/AuthContext";
+import { useColorModeValue } from "@chakra-ui/react";
 
 const DeleteBannerModal = ({ isDeleteModalOpen, onDeleteModalClose, fetchBanner, selectedBannerId, }) => {
   const toast = useToast();
   const [loading, setLoading] = useState(false);
   const { auth } = useContext(AuthContext);
   const apiToken = auth?.token
+  const bgColor = useColorModeValue("#E53E3E","#c42424");
+  const textColor = useColorModeValue("white","gray.100");
+  const hoverBg = useColorModeValue("#ee3838","#e41212de")
+  
+
   console.log(apiToken, "TokenindeleteBannerModel")
   const handleDelete = async () => {
     setLoading(true);
@@ -78,11 +84,13 @@ const DeleteBannerModal = ({ isDeleteModalOpen, onDeleteModalClose, fetchBanner,
               </Button>
 
               <Button
-                colorScheme="red"
+              bgColor={bgColor}
+              textColor={textColor}
                 borderRadius="full"
                 px={6}
                 onClick={handleDelete}
                 isDisabled={loading}
+                _hover={{bgColor:hoverBg}}
               >
                 {loading ? <Spinner size="sm" /> : "Delete"}
               </Button>

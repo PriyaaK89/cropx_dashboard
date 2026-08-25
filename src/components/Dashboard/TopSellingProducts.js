@@ -6,6 +6,7 @@ import {
   VStack,
   HStack,
 } from "@chakra-ui/react";
+import { useColorModeValue } from "@chakra-ui/react";
 
 const products = [
   {
@@ -47,7 +48,8 @@ const products = [
 
 const TopSellingProducts = () => {
   return (
-    <Box bg="white" p={4} borderRadius="xl" boxShadow="md">
+    <Box bg={useColorModeValue("white", "#1E293B")}
+     color={useColorModeValue("gray.800", "white")} p={4} borderRadius="xl" boxShadow="md">
       <Text fontWeight="semibold" fontSize="lg">
         Top selling products
       </Text>

@@ -15,10 +15,15 @@ import {
 import axios from "axios";
 import { WarningTwoIcon } from "@chakra-ui/icons";
 import { Config } from "../../utils/Config";
+import { useColorModeValue } from "@chakra-ui/react";
 
 const DeleteCategory = ({ isOpen, onClose, categoryId, fetchCategories }) => {
   const toast = useToast();
   const [loading, setLoading] = useState(false);
+    const bgColor = useColorModeValue("#E53E3E","#c42424");
+    const textColor = useColorModeValue("white","gray.100");
+    const hoverBg = useColorModeValue("#ee3838","#d41717")
+    
 
   // DELETE API CALL
   const handleDelete = async () => {
@@ -57,7 +62,7 @@ const DeleteCategory = ({ isOpen, onClose, categoryId, fetchCategories }) => {
 
       <ModalContent
       >
-        <Flex bg="red.500" color="white" px="16px" py="5px" justify="space-between" algin="center" borderTopRadius="md">
+        <Flex bg={bgColor} color={textColor} px="16px" py="5px" justify="space-between" algin="center" borderTopRadius="md">
         <Text fontWeight="bold">
           Delete Category
         </Text>
@@ -89,7 +94,9 @@ const DeleteCategory = ({ isOpen, onClose, categoryId, fetchCategories }) => {
               </Button>
 
               <Button
-                colorScheme="red"
+              bgColor={bgColor}
+              textColor={textColor}
+              _hover={{bgColor:hoverBg}}
                 borderRadius="full"
                 px={6}
                 onClick={handleDelete}

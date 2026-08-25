@@ -22,6 +22,7 @@ import {
 import axios from "axios";
 import { Config } from "../../utils/Config";
 import { FiUploadCloud } from "react-icons/fi";
+import { useColorModeValue } from "@chakra-ui/react";
 
 const CollectionFormModal = ({ isOpen, onClose }) => {
   const [title, setTitle] = useState("");
@@ -33,6 +34,9 @@ const CollectionFormModal = ({ isOpen, onClose }) => {
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const bgColor = useColorModeValue("#2664a7", "#1E293B");
+  const textColor = useColorModeValue("white", "gray.100");
 
   const toast = useToast();
 
@@ -108,8 +112,8 @@ const CollectionFormModal = ({ isOpen, onClose }) => {
     <Modal isOpen={isOpen} onClose={onClose} size="lg" isCentered>
       <ModalOverlay />
       <ModalContent>
-        <Flex bg="#5c94cf" color="white" px="16px" py="5px" justifyContent="space-between" algin="center" borderTopRadius="md">
-             <Text fontWeight="bold">Create Collection</Text>
+        <Flex bg={bgColor} color={textColor} px="16px" py="5px" justifyContent="space-between" algin="center" borderTopRadius="md">
+             <Text fontWeight="medium">Create Collection</Text>
         <ModalCloseButton position="static" />
         </Flex>
        
@@ -117,11 +121,11 @@ const CollectionFormModal = ({ isOpen, onClose }) => {
         <ModalBody>
           <SimpleGrid columns={2} spacing={4}>
             <FormControl mb="4px" gridColumn="span 2" >
-              <FormLabel fontSize="14px" fontWeight="bold">
+              <FormLabel fontSize="12px" fontWeight="medium">
                 Title
               </FormLabel>
               <Input
-                fontSize="14px"
+                fontSize="12px"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Enter title"
@@ -129,22 +133,22 @@ const CollectionFormModal = ({ isOpen, onClose }) => {
             </FormControl>
 
             <FormControl mb="4px">
-              <FormLabel fontSize="14px" fontWeight="bold">
+              <FormLabel fontSize="12px" fontWeight="medium">
                 Slug
               </FormLabel>
               <Input
-                fontSize="14px"
+                fontSize="12px"
                 value={slug}
                 onChange={(e) => setSlug(e.target.value)}
                 placeholder="Enter slug"
               />
             </FormControl>
             <FormControl mb="4px">
-              <FormLabel fontSize="14px" fontWeight="bold">
+              <FormLabel fontSize="12px" fontWeight="medium">
                 Home Order
               </FormLabel>
               <Input
-                fontSize="14px"
+                fontSize="12px"
                 type="number"
                 value={homeOrder}
                 onChange={(e) => setHomeOrder(e.target.value)}
@@ -153,11 +157,11 @@ const CollectionFormModal = ({ isOpen, onClose }) => {
             </FormControl>
 
             <FormControl mb="4px">
-              <FormLabel fontSize="14px" fontWeight="bold">
+              <FormLabel fontSize="12px" fontWeight="medium">
                 Show In Menu
               </FormLabel>
               <Select
-                fontSize="14px"
+                fontSize="12px"
                 value={showInMenu}
                 onChange={(e) => setShowInMenu(Number(e.target.value))}
                 placeholder="Select option"
@@ -170,11 +174,11 @@ const CollectionFormModal = ({ isOpen, onClose }) => {
             
 
             <FormControl mb="4px">
-              <FormLabel fontSize="14px" fontWeight="bold">
+              <FormLabel fontSize="12px" fontWeight="medium">
                 Show On Home
               </FormLabel>
               <Select
-                fontSize="14px"
+                fontSize="12px"
                 value={showOnHome}
                 onChange={(e) => setShowOnHome(Number(e.target.value))}
                 placeholder="Select option"
@@ -184,11 +188,11 @@ const CollectionFormModal = ({ isOpen, onClose }) => {
               </Select>
             </FormControl >
              <FormControl mb="4px" gridColumn="span 2">
-              <FormLabel fontSize="14px" fontWeight="bold">
+              <FormLabel fontSize="12px" fontWeight="medium">
                 Description
               </FormLabel>
               <Textarea
-                fontSize="14px"
+                fontSize="12px"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Enter description"
@@ -197,12 +201,12 @@ const CollectionFormModal = ({ isOpen, onClose }) => {
 
             {/* IMAGE */}
             <FormControl mb="4px" gridColumn="span 2">
-              <FormLabel fontSize="14px" fontWeight="bold">
+              <FormLabel fontSize="12px" fontWeight="medium">
                 Image
               </FormLabel>
               <Box
                 border="2px dashed"
-                borderColor="gray.300"
+                borderColor="gray.400"
                 borderRadius="md"
                 p={6}
                 display="flex"
@@ -241,12 +245,12 @@ const CollectionFormModal = ({ isOpen, onClose }) => {
         </ModalBody>
 
         <ModalFooter>
-          <Button variant="ghost" mr={3} onClick={onClose}>
+          <Button variant="ghost"  mr={3} onClick={onClose}>
             Cancel
           </Button>
           <Button
           bgColor="#4c9aee" 
-          color="white"
+          color={textColor}
           onClick={handleSubmit}
             isLoading={loading}
              _hover={{bgColor:"#2664a7"}}

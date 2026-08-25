@@ -31,6 +31,7 @@ import TopBar from "../TopBar/TopBar";
 import ResponsiveNavbar from "../TopBar/ResponsiveNavbar";
 import { Config } from "../../utils/Config";
 import { FiUploadCloud } from "react-icons/fi";
+import { useColorModeValue } from "@chakra-ui/react";
 
 
 // ================= SAFE DATE =================
@@ -70,6 +71,11 @@ const UpdateProduct = () => {
   const [categories, setCategories] = useState([]);
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState("");
+
+  const pageBg = useColorModeValue("gray.50", "#0E1629");
+  const cardBg = useColorModeValue("white", "#1E293B");
+  const textColor = useColorModeValue("gray.800", "gray.100");
+  
 
   const [formData, setFormData] = useState({
     product_name: "",
@@ -157,13 +163,13 @@ const UpdateProduct = () => {
 
   // ================= UI =================
   return (
-    <Box bg="#f8f8fb" pt={{ base: "60px", lg: 0 }}>
+    <Box bg={pageBg} pt={{ base: "60px", lg: 0 }}>
       <Flex>
         <Box display={{ base: "none", lg: "block" }}>
           <LeftSidebar />
         </Box>
 
-        <Box w={{ base: "100%", lg: "calc(100% - 260px)" }} ml={{ lg: "260px" }} px={6}>
+        <Box w={{ base: "100%", lg: "calc(100% - 260px)" }} ml={{lg:"260px"}} px={6}>
           <Box display={{ base: "block", lg: "none" }}>
             <ResponsiveNavbar />
           </Box>
@@ -172,7 +178,7 @@ const UpdateProduct = () => {
             <TopBar />
           </Box>
 
-          <Box bg="white" mt={4} p={4} borderRadius="lg" boxShadow="md">
+          <Box bg={cardBg} textColor={textColor} mt={4} p={4} borderRadius="lg" boxShadow="md">
             <Breadcrumb fontSize="13px">
               <BreadcrumbItem>
                 <BreadcrumbLink as={Link} to="/">
@@ -198,7 +204,7 @@ const UpdateProduct = () => {
 
                 <FormControl mb="4px">
                   <FormLabel fontSize="14px" fontWeight="bold">Category</FormLabel>
-                  <Select fontSize="14px"  name="category_id" value={formData.category_id} onChange={handleChange}>
+                  <Select fontSize="14px" name="category_id" value={formData.category_id} onChange={handleChange}>
                     <option value="">Select</option>
                     {categories.map((c) => (
                       <option key={c.id} value={c.id}>{c.cate_name}</option>
@@ -208,7 +214,7 @@ const UpdateProduct = () => {
 
                 <FormControl mb="4px">
                   <FormLabel fontSize="14px" fontWeight="bold">Description</FormLabel>
-                  <Textarea fontSize="14px"  name="product_description" value={formData.product_description} onChange={handleChange} />
+                  <Textarea fontSize="14px" name="product_description" value={formData.product_description} onChange={handleChange} />
                 </FormControl>
               </VStack>
 
@@ -225,7 +231,7 @@ const UpdateProduct = () => {
                 <FormControl mb="4px">
                   <FormLabel fontSize="14px" fontWeight="bold">MFG Date</FormLabel>
                   <DatePicker
-                  fontSize="14px"
+                    fontSize="14px"
                     selected={formData.mfg_date}
                     onChange={(d) => handleDateChange(d, "mfg_date")}
                     customInput={<CustomDateInput placeholder="YYYY-MM-DD" />}
@@ -237,7 +243,7 @@ const UpdateProduct = () => {
                 <FormControl mb="4px">
                   <FormLabel fontSize="14px" fontWeight="bold">EXP Date</FormLabel>
                   <DatePicker
-                  fontSize="14px"
+                    fontSize="14px"
                     selected={formData.exp_date}
                     onChange={(d) => handleDateChange(d, "exp_date")}
                     customInput={<CustomDateInput placeholder="YYYY-MM-DD" />}
@@ -260,15 +266,15 @@ const UpdateProduct = () => {
                   <Box
                     border="2px dashed"
                     p={6}
-                  borderColor="gray.300"
-                         borderRadius="md"
-                     display="flex"
-                     flexDirection="column"
-                     alignItems="center"
-                     justifyContent="center"
+                    borderColor="gray.300"
+                    borderRadius="md"
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                    justifyContent="center"
                     cursor="pointer"
                     position="relative"
-                        _hover={{ borderColor: "blue.400" }}
+                    _hover={{ borderColor: "blue.400" }}
 
                     onClick={() => !preview && document.getElementById("productImage").click()}
                   >
@@ -292,7 +298,7 @@ const UpdateProduct = () => {
                       </>
                     ) : (
                       <>
-                        <FiUploadCloud  size={40} color="#4299E1" />
+                        <FiUploadCloud size={40} color="#4299E1" />
                         <Text mt={2}>Click to upload image</Text>
                       </>
                     )}

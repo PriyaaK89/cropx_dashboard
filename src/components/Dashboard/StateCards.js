@@ -1,8 +1,10 @@
 import { Box, Flex, Text, Icon, SimpleGrid } from "@chakra-ui/react";
 import { FiShoppingCart, FiDollarSign, FiUsers } from "react-icons/fi";
 import { BsClipboardCheck } from "react-icons/bs";
-
+import { useColorModeValue } from "@chakra-ui/react";
 const StateCards = () => {
+  const bgColor = useColorModeValue("white", "#1E293B");
+  const textColor = useColorModeValue("gray.800", "white");
   const cards = [
     {
       title: "Total Sales",
@@ -43,7 +45,8 @@ const StateCards = () => {
       {cards.map((card, index) => (
         <Box
           key={index}
-          bg="white"
+          bg={bgColor}
+          text={textColor}
           p={5}
           borderRadius="xl"
           boxShadow="sm"

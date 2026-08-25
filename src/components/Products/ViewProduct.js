@@ -29,6 +29,7 @@ import UpdateMultiVariantModal from "./UpdateMultiVariantModal";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { GoHomeFill } from "react-icons/go";
+import { useColorModeValue } from "@chakra-ui/react";
 
 import DeleteSingleVariantModal from "./DeleteSingleVariantModal";
 
@@ -36,9 +37,16 @@ const ViewProduct = () => {
   const { id } = useParams();
   const [productData, setProductData] = useState(null);
   const [variantID, setVariantID] = useState(null);
-   const [productId, setProductID] = useState(null);
+  const [productId, setProductID] = useState(null);
   const [multiPackId, setMultiPackId] = useState();
   const { isOpen, onOpen, onClose } = useDisclosure();
+   const pageBg = useColorModeValue("gray.50", "#0E1629");
+  const cardBg = useColorModeValue("white", "#1E293B");
+  const textColor = useColorModeValue("gray.800", "gray.100");
+  const inputBg = useColorModeValue("white", "gray.700");
+  const labelColor = useColorModeValue("gray.700", "gray.300");
+
+
   const {
     isOpen: isMultiVariantOpen,
     onOpen: onMultiVariantOpen,
@@ -89,6 +97,7 @@ const ViewProduct = () => {
     onSinglePackVariantModalOpen();
   };
 
+ 
   return (
     <>
       <DeleteSingleVariantModal
@@ -134,7 +143,7 @@ const ViewProduct = () => {
       />
 
       {/* ===================== LAYOUT FIXED HERE ===================== */}
-      <Box width="100%" bg="#f8f8f8" pt={{ base: "60px", lg: 0 }}>
+      <Box width="100%" bg={pageBg} pt={{ base: "60px", lg: 0 }}>
         <Flex>
           <Box display={{ base: "none", lg: "block" }}>
             <LeftSidebar />
@@ -163,7 +172,8 @@ const ViewProduct = () => {
             </Box>
 
             <Box
-              backgroundColor="white"
+              backgroundColor={cardBg}
+              textColor={textColor}
               p={4}
               mt={4}
               boxShadow="lg"
@@ -198,14 +208,14 @@ const ViewProduct = () => {
                 />
 
                 <Box>
-                  <Heading size="lg">{product.product_name}</Heading>
+                  <Heading  size="lg">{product.product_name}</Heading>
                   <Flex gap="10px" mt="10px">
                     {product.product_category}
                     <Badge colorScheme="blue" fontSize="14px">
                       {product.product_type}
                     </Badge>
                   </Flex>
-                  <Text mt="15px" fontSize="16px" color="gray.600">
+                  <Text mt="15px" fontSize="16px" color={textColor}>
                     {product.product_description}
                   </Text>
                 </Box>
@@ -250,7 +260,7 @@ const ViewProduct = () => {
                           </Box>
                         </Flex>
 
-                        <Text color="gray.600">
+                        <Text color={textColor}>
                           Actual Price: ₹{v.actual_price}
                         </Text>
 
@@ -269,9 +279,9 @@ const ViewProduct = () => {
                           size="sm"
                           width="100%"
                           colorScheme="teal"
-                          onClick={() =>{
-                             setVariantID(v.variant_id);
-                             onUpdateSinglePackVariantOpen();
+                          onClick={() => {
+                            setVariantID(v.variant_id);
+                            onUpdateSinglePackVariantOpen();
                           }}
                         >
                           Update Variant
@@ -320,7 +330,7 @@ const ViewProduct = () => {
                           {m.base_quantity_type}
                         </Text>
 
-                        <Text color="gray.600">
+                        <Text color={textColor}>
                           Total Qty: {m.quantity_value}
                         </Text>
 
@@ -339,9 +349,9 @@ const ViewProduct = () => {
                           onClick={() => {
                             setVariantID(m.variant_id);
                             setProductID(id);
-                            setMultiPackId(m.multipack_id)
+                            setMultiPackId(m.multipack_id);
                             onUpdateMultiVariantOpen();
-                          }} 
+                          }}
                         >
                           Update Variant
                         </Button>

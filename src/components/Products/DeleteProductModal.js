@@ -15,8 +15,14 @@ import { WarningTwoIcon } from "@chakra-ui/icons";
 import React from "react";
 import axios from "axios";
 import { Config } from "../../utils/Config";
+import { useColorModeValue } from "@chakra-ui/react";
 
 const DeleteProductModal = ({ isOpen, onClose, productId, getProducts }) => {
+  const bgColor = useColorModeValue("#E53E3E","#c42424");
+  const textColor = useColorModeValue("white","gray.100");
+
+    const hoverBg = useColorModeValue("#ee3838","#d41717")
+  
 
     const toast = useToast();
 
@@ -42,7 +48,7 @@ const DeleteProductModal = ({ isOpen, onClose, productId, getProducts }) => {
     <Modal isOpen={isOpen} onClose={onClose} isCentered motionPreset="slideInBottom">
       <ModalOverlay/>
       <ModalContent>
-        <Flex bg="red.600" color="white" px="16px" py="5px" justifyContent="space-between" align="center" borderTopRadius="md">
+        <Flex bg={bgColor} color={textColor} px="16px" py="5px" justifyContent="space-between" align="center" borderTopRadius="md">
             <Text fontWeight="bold">
           Delete Product
         </Text>
@@ -64,7 +70,6 @@ const DeleteProductModal = ({ isOpen, onClose, productId, getProducts }) => {
           <Button
             variant="outline"
             borderColor="gray.300"
-            _hover={{ bg: "gray.100" }}
             flex={1}
             onClick={onClose}
           >
@@ -72,9 +77,10 @@ const DeleteProductModal = ({ isOpen, onClose, productId, getProducts }) => {
           </Button>
 
           <Button
-            bg="red.500"
-            color="white"
-            _hover={{ bg: "red.600" }}
+            bg={bgColor}
+            color={textColor}
+            _hover={{ bg: hoverBg
+             }}
             flex={1}
             onClick={handleDelete}
           >

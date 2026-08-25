@@ -17,6 +17,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { Config } from "../../utils/Config";
+import { useColorModeValue } from "@chakra-ui/react";
 
 const ChildCategory = ({ isOpen, onClose }) => {
   const toast = useToast();
@@ -30,6 +31,11 @@ const ChildCategory = ({ isOpen, onClose }) => {
 
   const [childName, setChildName] = useState("");
   const [childSlug, setChildSlug] = useState("");
+
+  const bgColor = useColorModeValue("#2664a7", "#1E293B");
+  const textColor = useColorModeValue("white","gray.100");
+   const bgHover = useColorModeValue("#1e6abb", "#172336");
+      
 
   //  GET CATEGORIES
   const fetchCategories = async () => {
@@ -125,16 +131,16 @@ const ChildCategory = ({ isOpen, onClose }) => {
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
-         <Flex bg="#5c94cF" color="white" px="16px" py="5px" justify="space-between" algin="center" borderTopRadius="md">
+         <Flex bg={bgColor} color={textColor} px="16px" py="5px" justify="space-between" algin="center" borderTopRadius="md">
           <Text fontWeight="bold"> Add Child Category</Text>
                <ModalCloseButton position="static" />
         </Flex>
         <ModalBody>
           {/* CATEGORY */}
-          <FormControl mb="4px" isRequired>
-            <FormLabel fontSize="14px" fontWeight="bold">Category</FormLabel>
+          <FormControl mb="2px" isRequired>
+            <FormLabel fontSize="12px" fontWeight={500} >Category</FormLabel>
             <Select
-            fontSize="14px"
+            fontSize="12px"
               placeholder="Select category"
               value={categoryId}
               onChange={handleCategoryChange}
@@ -148,10 +154,10 @@ const ChildCategory = ({ isOpen, onClose }) => {
           </FormControl>
 
           {/* SUB CATEGORY */}
-          <FormControl mb="4px" isRequired>
-            <FormLabel fontSize="14px" fontWeight="bold">Sub Category</FormLabel>
+          <FormControl mb={2} isRequired >
+            <FormLabel fontSize="12px" fontWeight={500}>Sub Category</FormLabel>
             <Select
-             fontSize="14px"
+             fontSize="12px"
               placeholder="Select sub category"
               value={subCategoryId}
               onChange={(e) => setSubCategoryId(e.target.value)}
@@ -166,10 +172,10 @@ const ChildCategory = ({ isOpen, onClose }) => {
           </FormControl>
 
           {/* CHILD NAME */}
-          <FormControl mb="4px" isRequired>
-            <FormLabel fontSize="14px" fontWeight="bold">Child Category Name</FormLabel>
+          <FormControl mb={2} isRequired>
+            <FormLabel fontSize="12px" fontWeight={500}>Child Category Name</FormLabel>
             <Input
-             fontSize="14px"
+             fontSize="12px"
               placeholder="Enter child category name"
               value={childName}
               onChange={(e) => setChildName(e.target.value)}
@@ -177,10 +183,10 @@ const ChildCategory = ({ isOpen, onClose }) => {
           </FormControl>
 
           {/* CHILD SLUG */}
-          <FormControl mb="4px" isRequired>
-            <FormLabel fontSize="14px" fontWeight="bold">Child Slug</FormLabel>
+          <FormControl mb={2} isRequired>
+            <FormLabel fontSize="12px" fontWeight={500}>Child Slug</FormLabel>
             <Input
-             fontSize="14px"
+             fontSize="12px"
               placeholder="Enter Your Slug"
               value={childSlug}
               onChange={(e) => setChildSlug(e.target.value)}
@@ -193,9 +199,9 @@ const ChildCategory = ({ isOpen, onClose }) => {
             Cancel
           </Button>
           <Button 
-           bg="#5c94cF"
-          color="white"
-          _hover={{bgColor:"#2664a7"}}  onClick={handleSubmit}>
+           bg={bgColor}
+          color={textColor}
+          _hover={{bgColor:bgHover}}  onClick={handleSubmit}>
             Add
           </Button>
         </ModalFooter>

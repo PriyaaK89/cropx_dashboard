@@ -14,6 +14,7 @@ import {
 import axios from "axios";
 import { Config } from "../../utils/Config";
 import { useState } from "react";
+import { useColorModeValue } from "@chakra-ui/react";
 
 const DeleteCollectionModal = ({
   isOpen,
@@ -23,6 +24,8 @@ const DeleteCollectionModal = ({
 }) => {
   const toast = useToast();
   const [loading, setLoading] = useState(false);
+  const bgColor = useColorModeValue("#e53e3e", "#1E293B");
+   const textColor = useColorModeValue("white", "gray.100");
 
   const handleDelete = async () => {
     try {
@@ -55,8 +58,8 @@ const DeleteCollectionModal = ({
       <ModalOverlay />
       <ModalContent>
         <Flex
-          bg="red.500"
-          color="white"
+          bg={bgColor}
+          color={textColor}
           px="16px"
           py="5px"
           justify="space-between"
@@ -76,7 +79,7 @@ const DeleteCollectionModal = ({
             Cancel
           </Button>
 
-          <Button colorScheme="red" onClick={handleDelete} isDisabled={loading}>
+          <Button bgColor="red.600" color="white" _hover={{bgColor:"red.700"}} onClick={handleDelete} isDisabled={loading}>
             {loading ? <Spinner size="sm" /> : "Delete"}
           </Button>
         </ModalFooter>

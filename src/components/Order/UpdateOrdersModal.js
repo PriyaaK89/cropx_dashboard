@@ -9,27 +9,74 @@ import {
   Flex,
   Text,
   useToast,
+  Box,
+  Circle,
+  Icon,
 } from "@chakra-ui/react";
-import { useState, useContext } from "react";
+import { CheckIcon, TimeIcon } from "@chakra-ui/icons";
+import { FaTruck } from "react-icons/fa";
+import { IoHomeOutline } from "react-icons/io5";
+import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { Config } from "../../utils/Config";
 import { AuthContext } from "../Context/AuthContext";
+import { useColorModeValue } from "@chakra-ui/react";
 
-const UpdateOrderModal = ({ isOpen, onClose, orderId, refreshOrders }) => {
+/* ---------------- ORDER STEPS ---------------- */
+const steps = [
+  { label: "Order Placed", status: "PLACED", icon: TimeIcon },
+  { label: "Dispatched", status: "DISPATCHED", icon: CheckIcon },
+  { label: "Shipped", status: "SHIPPED", icon: FaTruck },
+  { label: "Delivered", status: "DELIVERED", icon: IoHomeOutline },
+];
+
+const UpdateOrderModal = ({
+  isOpen,
+  onClose,
+  orderId,
+  refreshOrders,
+  currentStatus = "PLACED",
+}) => {
+  const [localStatus, setLocalStatus] = useState(currentStatus);
   const [selectedStatus, setSelectedStatus] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const bgColor = useColorModeValue("#2664a7", "#1E293B");
+  const textColor = useColorModeValue("white", "gray.100");
+     const bgHover = useColorModeValue("#1e6abb", "#172336");
+  
   const { auth } = useContext(AuthContext);
   const apiToken = auth?.token;
   const toast = useToast();
-  console.log(orderId, "orderId")
 
-  // status button click
-  const handleStatusClick = (status) => {
-    setSelectedStatus(status);
+  /* 🔹 Sync parent status ONLY when modal opens */
+  useEffect(() => {
+    if (isOpen) {
+      setLocalStatus(currentStatus);
+      setSelectedStatus("");
+    }
+  }, [isOpen, currentStatus]);
+
+  /* 🔹 Get next allowed status */
+  const getNextStatus = (status) => {
+    const index = steps.findIndex((s) => s.status === status);
+    return steps[index + 1]?.status || null;
   };
 
-  // update api call
+  const nextAllowedStatus = getNextStatus(localStatus);
+
+  /* 🔹 Stepper index */
+  const currentIndex = steps.findIndex(
+    (step) => step.status === (selectedStatus || localStatus)
+  );
+
+  /* 🔹 Status click */
+  const handleStatusClick = (status) => {
+    if (status === nextAllowedStatus) {
+      setSelectedStatus(status);
+    }
+  };
+
+  /* 🔹 Update API */
   const handleUpdateStatus = async () => {
     if (!selectedStatus) {
       toast({
@@ -49,13 +96,16 @@ const UpdateOrderModal = ({ isOpen, onClose, orderId, refreshOrders }) => {
         new_status: selectedStatus,
       };
 
-      const response = await axios.put(`${Config?.update_order_status}`, payload,
+      const response = await axios.put(
+        Config.update_order_status,
+        payload,
         {
           headers: {
-            Authorization: `Bearer ${apiToken}`
-          }
+            Authorization: `Bearer ${apiToken}`,
+          },
         }
-      )
+      );
+
       if (response?.status === 200) {
         toast({
           title: "Order status updated successfully",
@@ -64,16 +114,17 @@ const UpdateOrderModal = ({ isOpen, onClose, orderId, refreshOrders }) => {
           isClosable: true,
         });
 
-        refreshOrders();      // list refresh
-        setSelectedStatus(""); // reset
-        onClose();
+        /* 🔥 MAIN FIX */
+        setLocalStatus(selectedStatus);
+        setSelectedStatus("");
+
+        /* refresh parent list */
+        refreshOrders();
       }
-
-
     } catch (error) {
       toast({
         title: "Failed to update order",
-        description: error.response?.data?.message || "Something went wrong",
+        description: error?.response?.data?.message || "Something went wrong",
         status: "error",
         duration: 2500,
         isClosable: true,
@@ -83,7 +134,6 @@ const UpdateOrderModal = ({ isOpen, onClose, orderId, refreshOrders }) => {
     }
   };
 
-  // modal close reset
   const handleClose = () => {
     setSelectedStatus("");
     onClose();
@@ -93,48 +143,108 @@ const UpdateOrderModal = ({ isOpen, onClose, orderId, refreshOrders }) => {
     <Modal isOpen={isOpen} onClose={handleClose} isCentered>
       <ModalOverlay />
       <ModalContent>
-        <Flex bg="#5c94cf" color="white" px="16px" py="5px" justify="space-between" align="center" borderTopRadius="md" >
+        {/* ---------- Header ---------- */}
+        <Flex
+          bg={bgColor}
+          color={textColor}
+          px="16px"
+          py="8px"
+          justify="space-between"
+          align="center"
+          borderTopRadius="md"
+        >
           <Text fontWeight="bold">Update Order Status</Text>
           <ModalCloseButton position="static" />
         </Flex>
 
-        <ModalBody p="2rem 0rem">
-          <Flex justifyContent="center" align="center">
+        {/* ---------- Stepper ---------- */}
+        <Box p={4}>
+          <Flex justify="space-between" align="center" position="relative">
+            {steps.map((step, index) => {
+              const isActive = index <= currentIndex;
 
-            {["DISPATCHED", "SHIPPED", "DELIVERED"].map((status) => (
+              return (
+                <Flex
+                  key={step.status}
+                  direction="column"
+                  align="center"
+                  flex="1"
+                  position="relative"
+                >
+                  {index !== 0 && (
+                    <Box
+                      position="absolute"
+                      top="18px"
+                      left="-50%"
+                      width="100%"
+                      height="2px"
+                      bg={isActive ? "blue.400" : "gray.300"}
+                    />
+                  )}
 
-              <Button
-                key={status}
-                mr={3}
-                mb={2}
-                px="8px"
-                variant="outline"
-                bg={selectedStatus === status ? "blue.100" : "white"}
-                onClick={() => handleStatusClick(status)}
-              >
-                {status}
-              </Button>
+                  <Circle
+                    size="36px"
+                    bg={isActive ? "blue.400" : "gray.300"}
+                    color="white"
+                  >
+                    <Icon as={step.icon} boxSize={4} />
+                  </Circle>
 
-            ))}
+                  <Text
+                    mt={2}
+                    fontSize="sm"
+                    fontWeight={isActive ? "bold" : "normal"}
+                    color={isActive ? "blue.600" : "gray.500"}
+                    textAlign="center"
+                  >
+                    {step.label}
+                  </Text>
+                </Flex>
+              );
+            })}
+          </Flex>
+        </Box>
+
+        {/* ---------- Status Buttons ---------- */}
+        <ModalBody>
+          <Flex justify="center" wrap="wrap">
+            {["DISPATCHED", "SHIPPED", "DELIVERED"].map((status) => {
+              const isDisabled =
+                status !== nextAllowedStatus ||
+                localStatus === "DELIVERED";
+
+              return (
+                <Button
+                  key={status}
+                  mr={3}
+                  mb={2}
+                  variant="outline"
+                  isDisabled={isDisabled}
+                  bg={selectedStatus === status ? "blue.100" : {bgColor}}
+                  onClick={() => handleStatusClick(status)}
+                >
+                  {status}
+                </Button>
+              );
+            })}
           </Flex>
         </ModalBody>
 
-        <ModalFooter p="0px 0px 10px 0px">
-          <Button colorScheme="gray" onClick={handleClose} mr={2}>
+        {/* ---------- Footer ---------- */}
+        <ModalFooter>
+          <Button mr={2} onClick={handleClose}>
             Cancel
           </Button>
           <Button
-            bgColor="#5c94cf"
-            color="white"
-            mr={3}
+            bg={bgColor}
+            color={textColor}
             onClick={handleUpdateStatus}
             isLoading={loading}
-            _hover={{bgColor:"#2664a7"}}
+            _hover={{ bg: bgHover }}
+            isDisabled={localStatus === "DELIVERED"}
           >
             Update
           </Button>
-
-          
         </ModalFooter>
       </ModalContent>
     </Modal>

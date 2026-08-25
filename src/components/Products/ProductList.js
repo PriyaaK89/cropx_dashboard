@@ -7,6 +7,7 @@ import {
   Flex,
   Input,
   Select,
+  IconButton,
   Table,
   Thead,
   Tbody,
@@ -17,6 +18,7 @@ import {
   HStack,
   Spinner,
   useDisclosure,
+  useColorMode,
 } from "@chakra-ui/react";
 import axios from "axios";
 import TopBar from "../TopBar/TopBar";
@@ -28,12 +30,13 @@ import { useNavigate } from "react-router-dom";
 import DeleteProductModal from "./DeleteProductModal";
 import { FaInfoCircle } from "react-icons/fa";
 import ExportButton from "../Button/ExportBtn";
-
+import ProductImageViewModal from "./ProductImageViewModal";
+import { useColorModeValue } from "@chakra-ui/react";
 const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [previewImage, setPreviewImage] = useState("");
   const [productId, setProductId] = useState("");
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
@@ -45,6 +48,18 @@ const ProductList = () => {
 
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
+   const bgColor = useColorModeValue("white", "#1E293B");
+  const textColor = useColorModeValue("gray.800", "white");
+   const rowHoverBg = useColorModeValue("gray.50", "gray.700")
+
+
+  // Modal disclosures
+
+  const {
+    isOpen: isProductImageModalOpen,
+    onOpen: onProductImageModalOpen,
+    onClose: onProductImageModalClose,
+  } = useDisclosure();
 
   /* ================= FETCH PRODUCTS ================= */
   const getProducts = async () => {
@@ -77,13 +92,13 @@ const ProductList = () => {
   }, [page, limit, search, expiryFilter]);
   const productHeader = [
     "name",
-     "category",
-     "sub_category",
-     "child_category",
-     "brand",
-     "type",
+    "category",
+    "sub_category",
+    "child_category",
+    "brand",
+    "type",
      "stock",
-     "expiry_status"
+    "expiry_status",
   ];
 
   const productExportData = filtered.map((item) => ({
@@ -96,8 +111,13 @@ const ProductList = () => {
     stock:
       (item.single_packs || []).reduce((a, b) => a + b.stock_qty, 0) +
       (item.multi_packs || []).reduce((a, b) => a + b.stock_qty, 0),
-     expiry_status: item.expiry_status
+    expiry_status: item.expiry_status,
   }));
+
+  const handleImagePreview = (image) => {
+    setPreviewImage(image);
+    onProductImageModalOpen();
+  };
 
   /* ================= DELETE MODAL ================= */
   const handleDeleteModal = (id) => {
@@ -105,6 +125,8 @@ const ProductList = () => {
     onOpen();
   };
 
+ 
+  
   return (
     <>
       <DeleteProductModal
@@ -113,6 +135,13 @@ const ProductList = () => {
         productId={productId}
         getProducts={getProducts}
       />
+      {previewImage && (
+        <ProductImageViewModal
+          isOpen={isProductImageModalOpen}
+          onClose={onProductImageModalClose}
+          previewImage={previewImage}
+        />
+      )}
 
       <Box
         width={{ base: "100%", lg: "calc(100% - 260px)" }}
@@ -139,7 +168,8 @@ const ProductList = () => {
 
         <Box
           mt={4}
-          bg="white"
+          bg={bgColor}
+          color={textColor}
           p={4}
           borderRadius="0.75rem"
           boxShadow="lg"
@@ -150,32 +180,37 @@ const ProductList = () => {
             justifyContent="space-between"
             alignItems="center"
           >
-            <Text fontSize="2xl" fontWeight="600" mb={4}>
+            <Text fontSize="2xl"  fontWeight="600" mb={4}>
               Product List
             </Text>
-            <HStack>
-              <ExportButton
-                data={productExportData}
-                headers={productHeader}
-                fileName="products.csv"
-              />
-              <Button
-                p={4}
-                colorScheme="blue"
-                size="sm"
-                onClick={() => navigate("/add-product")}
-              >
-                Add Product
-              </Button>
-            </HStack>
-          </Box>
 
+            <Button
+              variant="outline"
+              border="1px"
+              borderColor="#2275FC"
+              borderRadius="8px"
+              color="#2275FC"
+              bg="white"
+              px={6}
+              py={5}
+              fontSize="14px"
+              fontWeight="500"
+              onClick={() => navigate("/add-product")}
+              _hover={{
+                bg: "#1357c4",
+                color: "white",
+              }}
+            >
+              + Add Product
+            </Button>
+          </Box>
           {/* ================= FILTERS ================= */}
           <Flex
             mb={4}
             gap={4}
             flexWrap="wrap"
             direction={{ base: "column", md: "row" }}
+            alignItems="center"
           >
             <Input
               placeholder="Search product..."
@@ -197,6 +232,13 @@ const ProductList = () => {
               <option value="near_expiry">Near Expiry</option>
               <option value="up_to_date">Up To Date</option>
             </Select>
+            <Box ml={{ base: "0", md: "auto" }}>
+              <ExportButton
+                data={productExportData}
+                headers={productHeader}
+                fileName="products.csv"
+              />
+            </Box>
           </Flex>
 
           {/* ================= TABLE ================= */}
@@ -212,7 +254,7 @@ const ProductList = () => {
                   minW={{ base: "1200px", md: "1500px", xl: "1750px" }}
                   className="productsTable"
                 >
-                  <Thead bg="gray.100">
+                  <Thead bg="gray.100" mb={2}>
                     <Tr>
                       <Th minW="275px">Product</Th>
                       <Th minW="200px">Category</Th>
@@ -227,37 +269,32 @@ const ProductList = () => {
                   </Thead>
                   <Tbody>
                     {filtered.map((item) => (
-                      <Tr key={item.id}>
+                      <Tr key={item.id} _hover={{ bg: rowHoverBg }}>
                         <Td>
-                          <HStack spacing={3}>
+                          <Box position="relative" w="50px" h="50px">
                             <Image
                               src={item.product_img}
                               alt={item.product_name}
                               boxSize="50px"
-                              rounded="md"
                               objectFit="cover"
+                              rounded="md"
                             />
-                            <Box>
-                              <Text
-                                overflow="hidden"
-                                textOverflow="ellipsis"
-                                whiteSpace="nowrap"
-                                fontWeight="600"
-                              >
-                                {item.product_name}
-                              </Text>
-                              <Text
-                                overflow="hidden"
-                                textOverflow="ellipsis"
-                                whiteSpace="nowrap"
-                                fontSize="sm"
-                                color="gray.500"
-                              >
-                                {" "}
-                                {item.product_description}{" "}
-                              </Text>
-                            </Box>
-                          </HStack>
+                            {/* Overlay Icon */}
+                            <IconButton
+                              icon={<FiEye />}
+                              size="xs"
+                              position="absolute"
+                              top="-2%"
+                              left="90%"
+                              bg="blackAlpha.600"
+                              color="white"
+                              _hover={{ bg: "blackAlpha.800" }}
+                              onClick={() =>
+                                handleImagePreview(item.product_img)
+                              }
+                              aria-label="Preview Image"
+                            />
+                          </Box>
                         </Td>
                         <Td>{item.category_name}</Td>
 
@@ -278,8 +315,9 @@ const ProductList = () => {
                                   0,
                                 ) >
                               0
-                                ? " #e7f5eb"
-                                : "#ffcece"
+                                ? " #FFDCDC"
+                                : "#D9ECFF"
+
                             }
                             color={
                               item.single_packs.reduce(
@@ -291,10 +329,11 @@ const ProductList = () => {
                                   0,
                                 ) >
                               0
-                                ? " #5a6d5a"
-                                : "#623434"
+                                ? " #990000"
+                                : "#004B9A"
                             }
-                            px={3}
+                            fontSize="10px"
+                            px="6px"
                             py={1}
                             rounded="lg"
                             textAlign="center"
@@ -324,17 +363,18 @@ const ProductList = () => {
 
                         <Td>
                           <Badge
+                          fontSize="10px"
                             bg={
                               item.expiry_status === "near_expiry"
-                                ? "#ffcece"
-                                : "#e7f5eb"
+                                ? "#FFDCDC"
+                                : "#D9ECFF"
                             }
                             color={
                               item.expiry_status === "near_expiry"
-                                ? "#623434"
-                                : "#5a6d5a"
+                                ? "#990000"
+                                : "#004B9A"
                             }
-                            px={2}
+                            px="6px"
                             py={1}
                             rounded="lg"
                           >
@@ -347,14 +387,14 @@ const ProductList = () => {
                         <Td>
                           <HStack spacing={2}>
                             <Button
-                              bgColor="white"
+                              bgColor={bgColor}
                               size="sm"
                               onClick={() => navigate(`/product/${item.id}`)}
                             >
                               <FiEye size={18} color="#2563eb" />
                             </Button>
                             <Button
-                              bgColor="white"
+                              bgColor={bgColor}
                               size="sm"
                               onClick={() =>
                                 navigate(`/product-details/${item.id}`)
@@ -363,7 +403,7 @@ const ProductList = () => {
                               <FaInfoCircle size={18} color="#FFA500" />
                             </Button>
                             <Button
-                              bgColor="white"
+                              bgColor={bgColor}
                               size="sm"
                               onClick={() =>
                                 navigate(`/update-product/${item.id}`)
@@ -372,7 +412,7 @@ const ProductList = () => {
                               <FiEdit size={18} color="#16a34a" />
                             </Button>
                             <Button
-                              bg="white"
+                              bg={bgColor}
                               size="sm"
                               onClick={() => handleDeleteModal(item.id)}
                             >
@@ -391,7 +431,8 @@ const ProductList = () => {
                 mt={6}
                 px={4}
                 py={3}
-                bg="gray.50"
+                bg={bgColor}
+                color={textColor}
                 borderRadius="lg"
                 justifyContent="space-between"
                 align="center"

@@ -12,12 +12,19 @@ import {
   SimpleGrid,
   Badge,
 } from "@chakra-ui/react";
+import { useColorModeValue } from "@chakra-ui/react";
 
 const ViewOrderListModal = ({
+  
   isOpen,
   onClose,
   selectedItems = [],
-}) => {
+
+  
+}) =>{
+  const bgColor = useColorModeValue("#2664a7", "#1E293B");
+   const textColor = useColorModeValue("white", "gray.100");
+  
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xl" isCentered>
       <ModalOverlay />
@@ -25,8 +32,8 @@ const ViewOrderListModal = ({
 
         {/* HEADER */}
         <Flex
-          bg="#5c94cf"
-          color="white"
+          bg={bgColor}
+          color={textColor}
           justify="space-between"
           align="center"
           px="16px"
@@ -67,7 +74,7 @@ const ViewOrderListModal = ({
                   <Text fontWeight="bold" mt={2}>
                     ₹{item.variant_discounted_price}
                   </Text>
-                  <Text as="s" color="gray.500" mr="1rem">
+                  <Text as="s" mr="1rem">
                     ₹{item.variant_actual_price}
                   </Text>
 
@@ -110,14 +117,14 @@ const ViewOrderListModal = ({
                       {item.variant_quantity_type}
                     </Text>
 
-                    <Text color="gray.600">
+                    <Text>
                       Total Qty: {item.total_quantity_value}
                     </Text>
 
                     <Text fontWeight="bold">
                       ₹{item.multipack_discounted_price}
                     </Text>
-                    <Text as="s" color="gray.500">
+                    <Text as="s">
                       ₹{item.multipack_actual_price}
                     </Text>
 

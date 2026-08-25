@@ -16,6 +16,7 @@ import {
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Config } from "../../utils/Config";
+import { useColorModeValue } from "@chakra-ui/react";
 
 const UpdateMultiVariantModal = ({
   isUpdateMultiVariantOpen,
@@ -26,11 +27,9 @@ const UpdateMultiVariantModal = ({
   variants,
   productId,
 }) => {
-  console.log("multipack id ", multiPackId);
-
+  
   const toast = useToast();
-  console.log(variantID, "variantIDin multipack");
-  console.log(multiPackId, "multipackid multipack");
+
 
   const [formData, setFormData] = useState({
     product_id: productId,
@@ -39,6 +38,10 @@ const UpdateMultiVariantModal = ({
     unit_price: "",
     discount_percentage: "",
   });
+   const bgColor = useColorModeValue("#2664a7", "#1E293B");
+     const textColor = useColorModeValue("white","gray.100");
+   const bgHover = useColorModeValue("#1e6abb", "#172336");
+     
 
   useEffect(() => {
     if (variantID && variants?.multi_packs?.length > 0) {
@@ -106,8 +109,8 @@ const UpdateMultiVariantModal = ({
       <ModalOverlay />
       <ModalContent>
         <Flex
-          bg="#5c94cF"
-          color="white"
+          bg={bgColor}
+          color={textColor}
           px="16px"
           py="5px"
           justify="space-between"
@@ -162,9 +165,9 @@ const UpdateMultiVariantModal = ({
         </ModalBody>
         <ModalFooter>
           <Button
-            bg="#5c94cF"
-            color="white"
-            _hover={{ bgColor: "#2664a7" }}
+            bg={bgColor}
+            color={textColor}
+            _hover={{ bgColor: bgHover }}
             onClick={handleUpdateMultiPack}
             mx="auto"
           >

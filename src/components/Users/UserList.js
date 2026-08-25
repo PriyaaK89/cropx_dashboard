@@ -17,8 +17,12 @@ import ResponsiveNavbar from "../TopBar/ResponsiveNavbar";
 import TopBar from "../TopBar/TopBar";
 import { Config } from "../../utils/Config";
 import ExportButton from "../Button/ExportBtn";
+import { useColorModeValue } from "@chakra-ui/react";
 
 const UserList = () => {
+  const bgColor = useColorModeValue("white","#1E293B");
+  const textColor = useColorModeValue("gray.800","white");
+  const rowHoverBg = useColorModeValue("gray.50","gray.700");
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -73,7 +77,7 @@ const UserList = () => {
         <TopBar />
       </Box>
 
-      <Box p={4} bg="white" mt={4} borderRadius="0.75rem" boxShadow="lg" mx={{base:3,lg:0}}>
+      <Box p={4}  bg={bgColor} textColor={textColor} mt={4} borderRadius="0.75rem" boxShadow="lg" mx={{base:3,lg:0}}>
          
          
         <Flex justify="space-between" align="center" px={5} mt={5}>
@@ -90,7 +94,7 @@ const UserList = () => {
         </Flex>
 
 
-        <Box overflowX="auto" px={4} w="100%">
+        <Box overflowX="auto" px={4} w="100%" mt={2}>
           <Table
             variant="simple"
             minW={{ base: "800px", md: "1000px", xl: "1200px" }}
@@ -98,17 +102,17 @@ const UserList = () => {
           >
             <Thead bg="gray.100">
               <Tr>
-                <Th minW="220px">Name</Th>
-                <Th minW="300px">Email</Th>
-                <Th minH="220px">Password</Th>
-                <Th minW="160px">Role</Th>
+                <Th minW="100px">Name</Th>
+                <Th minW="200px">Email</Th>
+                <Th minH="150px">Password</Th>
+                <Th minW="200px">Role</Th>
               </Tr>
             </Thead>
 
             <Tbody>
               {loading ? (
                 <Tr>
-                  <Td colSpan={4}>
+                  <Td colSpan={4} >
                     <Flex justify="center" py={6}>
                       <Spinner size="xl" />
                     </Flex>
@@ -130,7 +134,7 @@ const UserList = () => {
                 </Tr>
               ) : (
                 users.map((user) => (
-                  <Tr key={user.id}>
+                  <Tr key={user.id} _hover={{bg: rowHoverBg}}>
                     <Td>{user.name}</Td>
                     <Td>{user.email}</Td>
                     <Td>{user.password}</Td>

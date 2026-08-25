@@ -12,9 +12,11 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import React from "react";
-import ExportButton from "../Button/ExportBtn"
+import ExportButton from "../Button/ExportBtn";
+import { useColorModeValue } from "@chakra-ui/react";
 
 const RecentOrders = () => {
+  const rowHoverBg = useColorModeValue("gray.50", "gray.700")
   const orders = [
     { no: "#00745", status: "Pending", customer: "Giordano Bruno", date: "2020-11-02", total: "$2,742.00" },
     { no: "#00513", status: "Hold", customer: "Hans Weber", date: "2020-09-05", total: "$204.00" },
@@ -52,18 +54,18 @@ const RecentOrders = () => {
   };
 
   return (
-    <Box bg="white" borderRadius="lg" boxShadow="md" p={4}>
+    <Box bg={useColorModeValue("white", "#1E293B")}
+      color={useColorModeValue("gray.800", "white")} borderRadius="lg" boxShadow="md" p={4}>
       <Flex justifyContent="space-between" alignItems="center" mb={2}>
           <Text fontSize="16px" fontWeight="600" mb={3}>
         Recent orders
       </Text>
-       
-        <ExportButton
+           <ExportButton
           data={orderExportData}
           headers={orderHeaders}
           fileName="recent-orders.csv"
         />
-
+       
       </Flex>
       
       <Box overflowX="auto">
@@ -96,11 +98,10 @@ const RecentOrders = () => {
           <Tbody>
             {orders.map((order, index) => {
               const style = statusStyle(order.status);
-
+ 
               return (
-                <Tr key={index} _hover={{ bg: "gray.50" }}>
+                <Tr key={index} _hover={{ bg: rowHoverBg }}>
                   <Td fontWeight="500">{order.no}</Td>
-
                   <Td>
                     <Badge
                       bg={style.bg}

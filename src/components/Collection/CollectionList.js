@@ -8,6 +8,7 @@ import ImageViewModal from "./ImageViewModal";
 import { FiEye } from "react-icons/fi";
 import axios from "axios";
 import { Config } from "../../utils/Config";
+import { useColorModeValue } from "@chakra-ui/react";
 
 import {
   Box,
@@ -16,7 +17,7 @@ import {
   Tbody,
   Tr,
   Th,
-  Td,
+  Td, 
   Spinner,
   Text,
   HStack,
@@ -28,6 +29,7 @@ import {
 } from "@chakra-ui/react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FiEdit } from "react-icons/fi";
+import ExportButton from "../Button/ExportBtn";
 
 const CollectionList = () => {
   const [collections, setCollections] = useState([]);
@@ -37,7 +39,8 @@ const CollectionList = () => {
 
   // Pagination states
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(5);
+  const [total,setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [previewImage, setPreviewImage] = useState(null);
 
@@ -95,7 +98,28 @@ const CollectionList = () => {
     setSelectedCollection(item);
     onCollectionFormModalOpen();
   };
-
+  const collectionsHeader = [
+    "id",
+    "image",
+    "tilte",
+    "slug",
+    "show_in_menu",
+    "description"
+  ]
+  const collectionsExportData = collections.map((item)=>{
+    console.log(item);
+    return{
+    id: item.id,
+    image: item.image,
+    tilte: item.title,
+    slug: item.slug,
+    show_in_menu: item.show_in_menu,
+    description: item.description
+    }
+  })
+  const bgColor = useColorModeValue("white","#1E293B");
+  const textColor = useColorModeValue("gray.800","white");
+  const rowHoverBg = useColorModeValue("gray.50","gray.700")
   return (
     <>
       <CollectionFormModal isOpen={isOpen} onClose={onClose} />
@@ -139,7 +163,8 @@ const CollectionList = () => {
         {/* Collection Table */}
         <Box
           mt={4}
-          bg="white"
+          bg={bgColor}
+          textColor={textColor}
           p={4}
           borderRadius="0.75rem"
           boxShadow="lg"
@@ -149,10 +174,28 @@ const CollectionList = () => {
             <Text fontSize="lg" fontWeight="bold" mb={4}>
               Collection List
             </Text>
-            <Button bg="#5c94cf" _hover={{bgColor:"#2664a7"}} color="white" onClick={onOpen}>
+            <Button  variant="outline" border="1px"
+              borderRadius="8px"
+              color="#2275fc"
+              bg={bgColor}
+              px={6}
+              py={5}
+              fontSize="14px"
+              fontWeight="500"
+               _hover={{bg:"#1357c4",color:"white"}} onClick={onOpen}>
               Create Collection
             </Button>
           </Flex>
+           <Flex justify="flex-end" mt={2} mb={3}>
+                 <ExportButton
+            headers={collectionsHeader}
+            data={collectionsExportData}
+            fileName="collections.csv"
+          />
+           </Flex>
+           
+          
+
 
           {loading ? (
             <Flex justify="center" mt={10}>
@@ -183,7 +226,7 @@ const CollectionList = () => {
 
                   <Tbody>
                     {collections.map((item) => (
-                      <Tr key={item.id}>
+                      <Tr key={item.id} _hover={{bg: rowHoverBg}}>
                         <Td>{item.id}</Td>
                         <Td>
                            <Box position="relative" w="50px" h="50px">
@@ -221,12 +264,12 @@ const CollectionList = () => {
                             <Button
                               size="sm"
                               onClick={() => handleUpdate(item)}
-                              bgColor="white"
+                              bgColor={bgColor}
                             >
                               <FiEdit size={18} color="#16a34a" />
                             </Button>
                             <Button
-                            bgColor="white"
+                            bgColor={bgColor}
                               size="sm"
                               onClick={() => handleDelete(item)}
                             >
@@ -242,52 +285,46 @@ const CollectionList = () => {
               {/* Pagination */}
               <Flex
                 mt={6}
+                px={4}
                 justifyContent="space-between"
                 align="center"
                 flexWrap="wrap"
+                gap={3}
               >
-                <Flex gap={10} align="center">
-                  <Text fontSize="md">
-                    Page {page} of {totalPages}
-                  </Text>
-                  <select
-                    style={{ width: "120px" }}
-                    value={limit}
-                    onChange={(e) => {
-                      setLimit(Number(e.target.value));
-                      setPage(1);
-                    }}
-                  >
-                    <option value={5}>5</option>
-                    <option value={10}>10</option>
-                    <option value={15}>15</option>
-                  </select>
-                </Flex>
-
-                <HStack>
-                  <Button
-                    isDisabled={page === 1}
-                    onClick={() => setPage(page - 1)}
-                  >
-                    Prev
-                  </Button>
-                  {Array.from({ length: totalPages }).map((_, i) => (
+                <Text fontSize="12px" color="gray.600">
+                    Showing {(page - 1) * limit + 1 }  to {" "}
+                    {Math.min(page * limit, total)} of {total} entries
+                </Text>
+                <Flex gap={1}>
                     <Button
-                      key={i}
-                      size="sm"
-                      onClick={() => setPage(i + 1)}
-                      colorScheme={page === i + 1 ? "blue" : "gray"}
+                     fontWeight="medium"
+                     size="sm"
+                     variant="outline"
+                     isDisabled={page === 1}
+                     onClick={()=>setPage(page - 1)}
+                    >Preview</Button>
+                    {Array.from({length: totalPages}).map((_ , i)=>(
+                       <Button 
+                        key={i}
+                        size="sm"
+                        colorScheme="blue"
+                        variant={page === i + 1 ? "solid" : "outline"}
+                        onClick={()=> setPage(i + 1)}
+                       >
+                        {i + 1}
+                       </Button>
+                    ))}
+                    <Button 
+                     size="sm"
+                     fontWeight="bold"
+                     variant="outline"
+                     isDisabled={page === totalPages}
+                     onClick={() => setPage(page + 1)}
                     >
-                      {i + 1}
+                      Next
                     </Button>
-                  ))}
-                  <Button
-                    isDisabled={page === totalPages}
-                    onClick={() => setPage(page + 1)}
-                  >
-                    Next
-                  </Button>
-                </HStack>
+                </Flex>
+               
               </Flex>
             </>
           )}

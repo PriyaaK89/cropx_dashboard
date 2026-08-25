@@ -16,6 +16,7 @@ import BestSelling from "./BestSelling";
 import NewArrivals from "./NewArrivals";
 import { Config } from "../../utils/Config";
 
+
 const ProductByType = () => {
   const [products, setProducts] = useState([]);
   const [newArrivals, setNewArrivals] = useState([]);
@@ -74,6 +75,9 @@ const ProductByType = () => {
     fetchProducts();
   }, [activeTab, page, limit]);
 
+const bgColor = useColorModeValue("white", "#1E293B");
+  const textColor = useColorModeValue("gray.800", "white");
+  
   return (
     <>
       <ProductQuantityModal
@@ -97,7 +101,7 @@ const ProductByType = () => {
           <TopBar />
         </Box>
 
-        <Box mt={4} bg="white" p={4} borderRadius="lg" boxShadow="lg">
+        <Box mt={4} bg={bgColor} textColor={textColor} p={4} borderRadius="lg" boxShadow="lg">
           {/* Tabs */}
           <Flex justify="center" mb={4} gap="10px">
             <Button

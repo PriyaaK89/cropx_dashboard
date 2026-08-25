@@ -3,11 +3,32 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { extendTheme, ColorModeScript } from '@chakra-ui/react';
+import { ChakraProvider } from "@chakra-ui/react";
+
+const config = {
+  initialColorMode : "light",
+  useSystemColorMode : false,
+}
+const theme = extendTheme({
+   config, 
+   styles: {
+    global: (props) =>({
+      body: {
+        bg: props.colorMode === "dark" ? "#0E1629" : "gray.50",
+        color: props.colorMode === "dark" ? "gray.100" : "gray.800"
+      },
+    })
+   }
+});
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <ColorModeScript initialColorMode={theme.config.initialColorMode}  />
+    <ChakraProvider theme={theme}>
+          <App />
+    </ChakraProvider>
   </React.StrictMode>
 );
 

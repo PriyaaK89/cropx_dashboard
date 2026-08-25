@@ -1,5 +1,6 @@
 import { Bar } from "react-chartjs-2";
 import { Box, Text } from "@chakra-ui/react";
+import { useColorModeValue } from "@chakra-ui/react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -23,7 +24,23 @@ const barData = {
     {
       label: "Monthly Users",
       data: [65, 59, 80, 81, 56, 55, 40],
-      backgroundColor: "rgba(72, 187, 120, 0.6)",
+      // backgroundColor: "rgba(72, 187, 120, 0.6)",
+        backgroundColor: (context) => {
+         const chart = context.chart;
+         const {ctx, chartArea} = chart;
+         if(!chartArea) return;
+         const gradient = ctx.createLinearGradient(
+          0,
+          chartArea.bottom,
+          0,
+          chartArea.top
+         );
+           gradient.addColorStop(0, "#29569e"); // dark blue (bottom)
+            gradient.addColorStop(1, "#a7c2db"); // teal blue (top)
+
+         return gradient;
+     },
+       borderRadius: 8,
     },
   ],
 };
@@ -42,7 +59,8 @@ const barOptions = {
 
 const DashboardBarChart = () => (
   <Box
-    bg="white"
+  bg={useColorModeValue("white", "#1E293B")}
+  color={useColorModeValue("gray.800", "white")}
     p={4}
     borderRadius="xl"
     boxShadow="sm"
